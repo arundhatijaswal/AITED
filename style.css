@@ -1,0 +1,27 @@
+* {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.fancy {
+	width: 80%;
+	margin: auto;
+	margin-top: 10%;
+}
+
+.header {
+	font-size: 5em;
+	font-weight: 700;
+	text-align: center;
+}
+
+.sub-header {
+	font-size: 1.2em;
+	font-weight: 300;
+	text-align: center;
+	letter-spacing: 2px;
+	padding: 1% 0 2% 0;
+}
+
+#topics {
+	margin-bottom: 3%;
+}

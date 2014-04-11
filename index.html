@@ -3,18 +3,34 @@
     <head>
         <!-- files to be loaded first -->
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> -->
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="Plugins/Bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="Plugins/Bootstrap/css/bootstrap-theme.min.css">
+        <script src="Plugins/Bootstrap/js/bootstrap.min.js"></script>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <title>TED 2.0</title>
         <link href="style.css" rel="stylesheet" />
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
     </head>
 
-    <body>
-    	
+    <body class="fancy">
+        <!-- HEADER -->
+        <div class="header">TED 2.0</div>
+        <div class="sub-header">ideas worth automating</div>
+
+        <!-- TOPICS -->
+    	<select class="form-control" id="topics">
+            <option>Select a topic</option>
+            <option>Education</option>
+            <option>Technology</option>
+            <option>Entertainment</option>
+            <option>Politics</option>
+            <option>Money</option>
+        </select>
+
+        <!-- BUTTONS -->
+        <button type="button" class="btn btn-default">Generate</button>
     </body>
 
 </html>
