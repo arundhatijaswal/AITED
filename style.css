@@ -1,17 +1,25 @@
+/*  styles for the whole document */
+
 * {
 	font-family: 'Open Sans', sans-serif;
 }
 
 .fancy {
-	width: 80%;
+	width: 50%;
 	margin: auto;
 	margin-top: 10%;
 }
 
+/* home page */
 .header {
-	font-size: 5em;
+	font-size: 7em;
 	font-weight: 700;
 	text-align: center;
+}
+
+.cursive {
+	font-family: 'Gloria Hallelujah', cursive;
+	color: red;
 }
 
 .sub-header {
@@ -19,9 +27,15 @@
 	font-weight: 300;
 	text-align: center;
 	letter-spacing: 2px;
-	padding: 1% 0 2% 0;
+	padding: 1% 0 4% 0;
 }
 
 #topics {
+	width: 70%;
+	margin: auto;
 	margin-bottom: 3%;
+}
+
+#submit {
+	margin: auto;
 }
