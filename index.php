@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>Machine Learning Final Report</title>
+    <title>TED2.0</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">NBA Game Outcome Predictor</a>
+              <a class="navbar-brand" href="#">TED2.0</a>
             </div>
           </div>
         </div>
