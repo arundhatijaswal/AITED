@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 # import sys
 
-r = requests.get("http://www.pythonforbeginners.com/python-on-the-web/web-scraping-with-beautifulsoup/")
 # googleURL = "http://www.google.com/"
 # searchQuery = "top+10+issues+in+"
 # topic = sys.argv[1]
