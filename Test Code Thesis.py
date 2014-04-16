@@ -1,6 +1,5 @@
 import urllib
 import json as m_json
-<<<<<<< HEAD
 import requests, random, re, string
 from bs4 import BeautifulSoup
 
@@ -8,18 +7,10 @@ query = raw_input ( '\nTopic: ' )
 queryText = 'issues in '
 query = queryText + query + ' site:businessinsider.com'
 query = urllib.urlencode ( { 'q' : query } )
-=======
-
-keyword = 'sports'
-searchQuery = 'issues in ' + keyword + ' site:businessinsider.com'
-
-query = urllib.urlencode ( { 'q' : searchQuery } )
->>>>>>> FETCH_HEAD
 response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
 json = m_json.loads ( response )
 results = json [ 'responseData' ] [ 'results' ]
 
-<<<<<<< HEAD
 thesisURL = results[random.randint(0, (len(results) - 1))]['url']
 r = requests.get(thesisURL)
 data = r.text
@@ -37,19 +28,6 @@ print '\nThesis: ', re.sub(r'<|>|\/|h1', r'', thesisRaw), '\n'
 #     title = result['title']
 #     url = result['url']   # was URL in the original and that threw a name error exception
 #     print ( title + '; ' + url )
-=======
-
-
-for result in results:
-    title = result['titleNoFormatting']
-    #"""
-    if 'Business Insider' in title:
-        questionIndex = title.index('Business Insider')
-        newTitle = title[:questionIndex-3]
-        print newTitle
-    #"""
-    #print title
->>>>>>> FETCH_HEAD
 
 
 # import urllib
