@@ -3,11 +3,12 @@ import json as m_json
 import requests, random, re, string
 from bs4 import BeautifulSoup
 
-<<<<<<< HEAD
+
 def genThesis():
 	query = raw_input ( '\nTopic: ' )
-	queryText = 'issues in '
-	query = queryText + query + ' site:businessinsider.com'
+	# keyword = raw_input ( '\nkeyword: ' )
+	queryText = 'reason why'
+	query = queryText + query + ' is important site:listcrux.com'
 	query = urllib.urlencode ( { 'q' : query } )
 	response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
 	json = m_json.loads ( response )
@@ -21,8 +22,13 @@ def genThesis():
 
 	#print thesisURL
 	thesisRaw = str(soup.h1)
+
 	#print thesisRaw
 	print '\nThesis: ', re.sub(r'<|>|\/|h1', r'', thesisRaw), '\n'
+
+	# to open the document and read the text
+
+
 	#print thesis
 	# print(soup.get_text())
 
@@ -31,34 +37,6 @@ def main():
 
 if __name__ == "__main__":
 	main()
-=======
-query = raw_input ( '\nTopic: ' )
-# keyword = raw_input ( '\nkeyword: ' )
-queryText = 'reason why'
-query = queryText + query + ' is important site:listcrux.com'
-query = urllib.urlencode ( { 'q' : query } )
-response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
-json = m_json.loads ( response )
-results = json [ 'responseData' ] [ 'results' ]
-
-thesisURL = results[random.randint(0, (len(results) - 1))]['url']
-r = requests.get(thesisURL)
-data = r.text
-soup = BeautifulSoup(data)
-
-
-#print thesisURL
-thesisRaw = str(soup.h1)
-
-#print thesisRaw
-print '\nThesis: ', re.sub(r'<|>|\/|h1', r'', thesisRaw), '\n'
-
-# to open the document and read the text
-
-
-#print thesis
-# print(soup.get_text())
->>>>>>> FETCH_HEAD
 
 # for result in results:
 #     title = result['title']
