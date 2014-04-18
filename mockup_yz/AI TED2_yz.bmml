@@ -5,14 +5,18 @@
         <text>A%20Web%20Page%0Ahttp%3A//</text>
       </controlProperties>
     </control>
-    <control controlID="2" controlTypeID="com.balsamiq.mockups::ComboBox" x="541" y="127" w="262" h="-1" measuredW="155" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::ComboBox" x="541" y="127" w="262" h="-1" measuredW="88" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Please%20select%20a%20topic</text>
+        <text>education</text>
       </controlProperties>
     </control>
-    <control controlID="3" controlTypeID="__group__" x="809" y="126" w="262" h="26" measuredW="262" measuredH="26" zOrder="3" locked="false" isInGroup="-1">
+    <control controlID="3" controlTypeID="__group__" x="809" y="126" w="262" h="27" measuredW="262" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
       <groupChildrenDescriptors>
-        <control controlID="0" controlTypeID="com.balsamiq.mockups::TextInput" x="67" y="0" w="195" h="-1" measuredW="79" measuredH="26" zOrder="0" locked="false" isInGroup="3"/>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::TextInput" x="67" y="0" w="195" h="-1" measuredW="53" measuredH="27" zOrder="0" locked="false" isInGroup="3">
+          <controlProperties>
+            <text>money</text>
+          </controlProperties>
+        </control>
         <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="0" y="3" w="52" h="-1" measuredW="53" measuredH="21" zOrder="1" locked="false" isInGroup="3">
           <controlProperties>
             <text>Keyword%3A</text>
@@ -49,13 +53,8 @@
     </control>
     <control controlID="13" controlTypeID="com.balsamiq.mockups::TextArea" x="465" y="168" w="643" h="368" measuredW="200" measuredH="140" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
+        <backgroundAlpha>0.75</backgroundAlpha>
         <text>%20%0AType%20is%20something%20we%20consume%20in%20enormous%20quantities.%20In%20much%20of%20the%20world%2C%20it%27s%20completely%20inescapable.%20But%20few%20consumers%20are%20concerned%20to%20know%20where%20a%20particular%20typeface%20came%20from%20or%20when%20or%20who%20designed%20it%2C%20if%2C%20indeed%2C%20there%20was%20any%20human%20agency%20involved%20in%20its%20creation%2C%20if%20it%20didn%27t%20just%20sort%20of%20materialize%20out%20of%20the%20software%20ether.%0A0%3A36%0ABut%20I%20do%20have%20to%20be%20concerned%20with%20those%20things.%20It%27s%20my%20job.%20I%27m%20one%20of%20the%20tiny%20handful%20of%20people%20who%20gets%20badly%20bent%20out%20of%20shape%20by%20the%20bad%20spacing%20of%20the%20T%20and%20the%20E%20that%20you%20see%20there.%20I%27ve%20got%20to%20take%20that%20slide%20off.%20I%20can%27t%20stand%20it.%20Nor%20can%20Chris.%20There.%20Good.%0A0%3A55%0ASo%20my%20talk%20is%20about%20the%20connection%20between%20technology%20and%20design%20of%20type.%20The%20technology%20has%20changed%20a%20number%20of%20times%20since%20I%20started%20work%3A%20photo%2C%20digital%2C%20desktop%2C%20screen%2C%20web.%20I%27ve%20had%20to%20survive%20those%20changes%20and%20try%20to%20understand%20their%20implications%20for%20what%20I%20do%20for%20design.%20This%20slide%20is%20about%20the%20effect%20of%20tools%20on%20form.%20The%20two%20letters%2C%20the%20two%20K%27s%2C%20the%20one%20on%20your%20left%2C%20my%20right%2C%20is%20modern%2C%20made%20on%20a%20computer.%20All%20straight%20lines%20are%20dead%20straight.%20The%20curves%20have%20that%20kind%20of%20mathematical%20smoothness%20that%20the%20B%E9zier%20formula%20imposes.%20On%20the%20right%2C%20ancient%20Gothic%2C%20cut%20in%20the%20resistant%20material%20of%20steel%20by%20hand.%20None%20of%20the%20straight%20lines%20are%20actually%20straight.%20The%20curves%20are%20kind%20of%20subtle.%20It%20has%20that%20spark%20of%20life%20from%20the%20human%20hand%20that%20the%20machine%20or%20the%20program%20can%20never%20capture.%20What%20a%20contrast.</text>
-      </controlProperties>
-    </control>
-    <control controlID="14" controlTypeID="com.balsamiq.mockups::List" x="541" y="151" w="262" h="447" measuredW="100" measuredH="447" zOrder="6" locked="false" isInGroup="-1">
-      <controlProperties>
-        <markup>true</markup>
-        <text>Politics%0AHealth%0ABusiness%0AEducation%0AReligion%0AEnvironment%0AScience%0ATechnology%0ARelationships%0AFamily%0AEntertainment%0ALaw%0ASports%0AFashion%0AWeather%0AComedy%0AAnimals%0AParenting%0AInnovation%0ADreams%0ATransportation</text>
       </controlProperties>
     </control>
   </controls>
