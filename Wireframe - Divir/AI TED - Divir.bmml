@@ -1,0 +1,94 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="1245" measuredH="666" mockupW="968" mockupH="649">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="277" y="17" w="968" h="649" measuredW="450" measuredH="400" zOrder="0" locked="true" isInGroup="-1">
+      <controlProperties>
+        <text>A%20Web%20Page%0Ahttp%3A//</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::ComboBox" x="404" y="257" w="262" h="-1" measuredW="155" measuredH="24" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Please%20select%20a%20topic</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::Button" x="497" y="554" w="-1" h="-1" measuredW="77" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Generate</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="__group__" x="404" y="305" w="262" h="26" measuredW="262" measuredH="26" zOrder="2" locked="false" isInGroup="-1">
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::TextInput" x="67" y="0" w="195" h="-1" measuredW="79" measuredH="26" zOrder="0" locked="false" isInGroup="13"/>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="0" y="3" w="52" h="-1" measuredW="53" measuredH="21" zOrder="1" locked="false" isInGroup="13">
+          <controlProperties>
+            <text>Keyword%3A</text>
+          </controlProperties>
+        </control>
+      </groupChildrenDescriptors>
+    </control>
+    <control controlID="25" controlTypeID="__group__" x="404" y="124" w="262" h="110" measuredW="262" measuredH="110" zOrder="4" locked="false" isInGroup="-1">
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::Canvas" x="0" y="0" w="262" h="110" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="25"/>
+        <control controlID="1" controlTypeID="__group__" x="13" y="23" w="236" h="64" measuredW="236" measuredH="64" zOrder="1" locked="false" isInGroup="25">
+          <groupChildrenDescriptors>
+            <control controlID="0" controlTypeID="com.balsamiq.mockups::Label" x="37" y="43" w="149" h="-1" measuredW="139" measuredH="21" zOrder="0" locked="false" isInGroup="1">
+              <controlProperties>
+                <text>ideas%20worth%20automating</text>
+              </controlProperties>
+            </control>
+            <control controlID="1" controlTypeID="__group__" x="0" y="0" w="236" h="43" measuredW="236" measuredH="43" zOrder="1" locked="false" isInGroup="1">
+              <groupChildrenDescriptors>
+                <control controlID="0" controlTypeID="com.balsamiq.mockups::Title" x="0" y="0" w="162" h="-1" measuredW="81" measuredH="43" zOrder="0" locked="false" isInGroup="1">
+                  <controlProperties>
+                    <color>0</color>
+                    <text>TED</text>
+                  </controlProperties>
+                </control>
+                <control controlID="1" controlTypeID="com.balsamiq.mockups::Title" x="74" y="0" w="162" h="-1" measuredW="58" measuredH="43" zOrder="1" locked="false" isInGroup="1">
+                  <controlProperties>
+                    <color>13576743</color>
+                    <text>2.0</text>
+                  </controlProperties>
+                </control>
+              </groupChildrenDescriptors>
+            </control>
+          </groupChildrenDescriptors>
+        </control>
+      </groupChildrenDescriptors>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::TagCloud" x="397" y="413" w="277" h="114" measuredW="350" measuredH="110" zOrder="7" locked="false" isInGroup="-1"/>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::Label" x="404" y="377" w="-1" h="-1" measuredW="107" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Popular%20keywords%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::List" x="404" y="281" w="262" h="322" measuredW="100" measuredH="447" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <markup>true</markup>
+        <text>Politics%0AHealth%0ABusiness%0AEducation%0AReligion%0AEnvironment%0AScience%0ATechnology%0ARelationships%0AFamily%0AEntertainment%0ALaw%0ASports%0AFashion%0AWeather%0AComedy%0AAnimals%0AParenting%0AInnovation%0ADreams%0ATransportation</text>
+      </controlProperties>
+    </control>
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::Canvas" x="766" y="124" w="415" h="488" measuredW="100" measuredH="70" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <borderStyle>roundedSolid</borderStyle>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="__group__" x="792" y="153" w="362" h="437" measuredW="362" measuredH="437" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <markup>true</markup>
+      </controlProperties>
+      <groupChildrenDescriptors>
+        <control controlID="0" controlTypeID="com.balsamiq.mockups::Paragraph" x="0" y="34" w="362" h="403" measuredW="275" measuredH="80" zOrder="0" locked="false" isInGroup="33">
+          <controlProperties>
+            <text>%20%0ALorem%20Ipsum%20is%20simply%20dummy%20text%20of%20the%20printing%20and%20typesetting%20industry.%20Lorem%20Ipsum%20has%20been%20the%20industry%27s%20standard%20dummy%20text%20ever%20since%20the%201500s.%0A%20%0AWhen%20an%20unknown%20printer%20took%20a%20galley%20of%20type%20and%20scrambled%20it%20to%20make%20a%20type%20specimen%20book.%20It%20has%20survived%20not%20only%20five%20centuries%2C%20but%20also%20the%20leap%20into%20electronic%20typesetting%2C%20remaining%20essentially%20unchanged.%20It%20was%20popularised.%0A%20%0ALorem%20Ipsum%20is%20simply%20dummy%20text%20of%20the%20printing%20and%20typesetting%20industry.%20Lorem%20Ipsum%20has%20been%20the%20industry%27s%20standard%20dummy%20text%20ever%20since%20the%201500s%2C%20when%20an%20unknown%20printer%20took%20a%20galley%20of%20type%20and%20scrambled%20it%20to%20make%20a%20type%20specimen%20book.%20It%20has%20survived%20not%20only%20five%20centuries%2C%20but%20also%20the%20leap%20into%20electronic%20typesetting%2C%20remaining%20essentially%20unchanged.%0A%20%0AThe%20industry%27s%20standard%20dummy%20text%20ever%20since%20the%201500s%2C%20when%20an%20unknown%20printer%20took%20a%20galley%20of%20type%20and%20scrambled%20it%20to%20make%20a%20type%20specimen%20book.%20It%20has%20survived%20not%20only%20five%20centuries%2C%20but%20also%20the%20leap%20into%20electronic%20typesetting%2C%20remaining%20essentially%20unchanged.</text>
+          </controlProperties>
+        </control>
+        <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="127" y="0" w="-1" h="-1" measuredW="98" measuredH="24" zOrder="1" locked="false" isInGroup="33">
+          <controlProperties>
+            <size>16</size>
+            <text>This%20is%20a%20Title</text>
+          </controlProperties>
+        </control>
+      </groupChildrenDescriptors>
+    </control>
+  </controls>
+</mockup>
