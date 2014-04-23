@@ -5,17 +5,18 @@ from bs4 import BeautifulSoup
 
 
 def genThesis():
-	query = raw_input ( '\nTopic: ' )
-	# keyword = raw_input ( '\nkeyword: ' )
+	topic = raw_input ( '\nTopic: ' )
+	keyword = raw_input ( '\nkeyword: ' )
 	websites = {'businessinsider.com': 'h1', 'cnn.com': 'h1'}
-	web = random.choice(websites.keys())
-	queryText = 'reason why'
-	query = queryText + query + ' is important site:' + web
+	#web = random.choice(websites.keys())
+	web = 'businessinsider.com'
+	queryText = 'reason why '
+	query = queryText + topic + ' and ' + keyword + ' is important site:' + web
 	query = urllib.urlencode ( { 'q' : query } )
 	response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
 	json = m_json.loads ( response )
 	results = json [ 'responseData' ] [ 'results' ]
-	print 'length of results: ', len(results)
+    # print 'length of results: ', len(results)
 
 	thesisURL = results[random.randint(0, (len(results) - 1))]['url']
 	r = requests.get(thesisURL)
@@ -30,7 +31,9 @@ def genThesis():
 	    print('other token')
 
 	#print thesisRaw
-	print '\nThesis: ', re.sub(r'<|>|\/|h1', r'', thesisRaw), '\n'
+	print '\nTitle: ', re.sub(r'<|>|\/|h1', r'', thesisRaw), '\n'
+	
+	return topic, keyword
 
 	# to open the document and read the text
 
@@ -39,7 +42,8 @@ def genThesis():
 	# print(soup.get_text())
 
 def main():
-	genThesis()
+	query, keyword = genThesis()
+	return query, keyword
 
 if __name__ == "__main__":
 	main()
