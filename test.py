@@ -43,7 +43,7 @@ while (len(line) != 0):
 
 soup = BeautifulSoup(data)
 # quotes = soup.find_all(class=re.compile("bqQuoteLink"))
-print weburl
+# print weburl
 print '"' + soup.find("span", { "class":"bqQuoteLink" }).text + '"'
 print " - " + soup.find("div", {"class":"bq-aut"}).text
 

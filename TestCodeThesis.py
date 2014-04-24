@@ -2,6 +2,7 @@ import urllib
 import json as m_json
 import requests, random, re, string, random
 from bs4 import BeautifulSoup
+from nltk.corpus import stopwords
 
 
 def genThesis():
@@ -27,11 +28,17 @@ def genThesis():
 	#print thesisURL
 	if websites[web] == 'h1':
 	    thesisRaw = str(soup.h1)
+	    thesisTemp = soup.h1.text
 	else:
 	    print('other token')
 
 	#print thesisRaw
-	print '\nTitle: ', re.sub(r'<|>|\/|h1', r'', thesisRaw), '\n'
+	print 'text version--- ', thesisTemp
+	# title = '\nTitle: ', re.sub(r'<|>|\/|h1', r'', thesisRaw), '\n'
+	# print title
+
+	mykeywords = [w for w in thesisTemp.split() if not w in stopwords.words('english')]
+	print mykeywords
 	
 	return topic, keyword
 
