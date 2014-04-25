@@ -15,6 +15,24 @@ from termcolor import colored
 # APIkey = '7c97ba9b1d0135fec4970763a88200b94ea1e0c2'
 issues = []
 
+""" 
+THE IDEA BEHIND THIS....
+
+we need a way to generate a better "title" for each chosen topic.
+
+Version 1: no keywords
+======================
+1. user selects a topic out of a list of 5-6 topics
+2. the topic chosen will determine the specific site that is used
+	a.) the site that's used is a predetermined one that lists issues related
+		to the topic and will be easy for us to extract info from
+3. based on the topic and website, the "title" is generated 
+
+
+Version 2: with keywords
+======================== 
+"""
+
 
 def genTopic():
 	""" google search API scraper that returns the 
@@ -24,13 +42,17 @@ def genTopic():
 	# keyword = raw_input ( 'Enter Keyword (optional): ' )
 	topic = 'education'
 	keyword = ''
+
+	# analyze raw input
+	if topic == 'education':
+		web = 
 	# websites = {'www.usnews.com/opinion/articles': 'h1', 'cnn.com': 'h1', 'huffingtonpost.com': 'h1'}
 	# web = random.choice(websites.keys())
 	web = 'list25.com'
-	queryText = {'list of challenges within ': 'one', 'list of problems in ': 'two', 'top issues in ': 'three'}
-	querySearch = random.choice(queryText.keys())
+	phrase = ['list of challenges within ', 'list of problems in ', 'top issues in ']
+	querySearch = random.choice(phrase)
 
-	if keyword == "":
+	if keyword == '':
 		query = querySearch + topic + ' site:' + web
 	else:
 		query = querySearch + topic + ' and ' + keyword + ' site:' + web
