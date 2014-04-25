@@ -14,6 +14,7 @@ from termcolor import colored
 # Global variables
 # APIkey = '7c97ba9b1d0135fec4970763a88200b94ea1e0c2'
 issues = []
+results = []
 
 """ 
 THE IDEA BEHIND THIS....
@@ -33,55 +34,89 @@ Version 2: with keywords
 ======================== 
 """
 
-
 def genTopic():
-	""" google search API scraper that returns the 
-	title of an article based on the selected topic 
-	and keyword """
-	# topic = raw_input ( '\nEnter Topic: ' )
-	# keyword = raw_input ( 'Enter Keyword (optional): ' )
-	topic = 'education'
-	keyword = ''
+	""" google search API scraper that returns the title of an article based 
+	on the selected topic and keyword """
 
-	# analyze raw input
-	if topic == 'education':
-		web = 
-	# websites = {'www.usnews.com/opinion/articles': 'h1', 'cnn.com': 'h1', 'huffingtonpost.com': 'h1'}
-	# web = random.choice(websites.keys())
-	web = 'list25.com'
-	phrase = ['list of challenges within ', 'list of problems in ', 'top issues in ']
-	querySearch = random.choice(phrase)
+	topic = 'politics'
+	web = 'http://www.debate.org/opinions/'+topic
+	
+	r = requests.get(web)
+	data = r.text
+	soup = BeautifulSoup(data)
+	# print soup.prettify()
 
-	if keyword == '':
-		query = querySearch + topic + ' site:' + web
-	else:
-		query = querySearch + topic + ' and ' + keyword + ' site:' + web
+	results = soup.findAll("span", {"class": "q-title"}).string
+	print random.choice(results)
 
-	query = urllib.urlencode ( { 'q' : query } )
-	response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
-	json = m_json.loads ( response )
 
-	# stores the results of the google search
-	results = json [ 'responseData' ] [ 'results' ]
-	# print results.prettify()
 
-	if len(results) > 0:
-		URL = results[random.randint(0, (len(results) - 1))]['url']
-		r = requests.get(URL)
-		data = r.text
-		soup = BeautifulSoup(data)
-		# print soup.prettify()
 
-		# print URL 
-		print '\nURL: ', URL
+# def genTopic():
+# 	""" google search API scraper that returns the title of an article based 
+# 	on the selected topic and keyword """
 
-		# get the list items
-		print soup.findAll("div", {"class": "list-entry"})
+# 	# data = {'education': 'http://www.huffingtonpost.com/jacob-ruytenbeek/how-to-make-education-more-affordable_b_3744356.html',
+# 	# 		'parenting': 'http://www.parenting.com/article/the-top-10-concerns-of-new-parents',
+# 	# 		'technology':'http://scottberkun.com/2011/the-top-10-unsolved-tech-problems-help-wanted/',
+# 	# 		'politics' : 'http://www.policymic.com/articles/21496/the-10-biggest-political-issues-we-ll-be-taking-about-in-2013',
+# 	# 		'fashion'  : 'http://smallbusiness.chron.com/top-ten-ethical-issues-fashion-business-21866.html',
+# 	# 		'sports'   : 'http://bleacherreport.com/articles/1207951-the-10-biggest-problems-in-sports',
+# 	# 		'health'   : 'http://www.intrahealth.org/blog/top-10-global-health-issues-watch-2014#.U1rE3OZdX-8'
+# 	# 		}
+
+# 	topic = 'politics'
+# 	web = 'http://www.debate.org/opinions/'+topic
+# 	# if topic == 'entertainment':
+# 	# 	topic = random.choice('television', 'movies', 'celebrity gossip', 'music')
+
+# 	# based on selected topic, we will visit one of these sites
+	
+
+# 	# websites = {'www.usnews.com/opinion/articles': 'h1', 'cnn.com': 'h1', 'huffingtonpost.com': 'h1'}
+# 	# web = random.choice(websites.keys())
+# 	# web = 'list25.com'
+# 	# phrase = ['list of challenges within ', 'list of problems in ', 'top issues in ']
+# 	# querySearch = random.choice(phrase)
+
+# 	# if keyword == '':
+# 	# 	query = querySearch + topic + ' site:' + web
+# 	# else:
+# 	# 	query = querySearch + topic + ' and ' + keyword + ' site:' + web
+# 	# query = 
+# 	# query = urllib.urlencode ( { 'q' : query } )
+# 	# response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
+# 	# json = m_json.loads ( response )
+
+# 	# stores the results of the google search
+# 	# results = json [ 'responseData' ] [ 'results' ]
+# 	# print results.prettify()
+
+# 	r = requests.get(web)
+# 	data = r.text
+# 	soup = BeautifulSoup(data)
+# 	# print soup.prettify()
+
+# 	results = soup.findAll("span", {"class": "q-title"})
+# 	print random.choice(results)
+
+# 	# if len(results) > 0:
+# 	# 	URL = results[random.randint(0, (len(results) - 1))]['url']
+# 	# 	r = requests.get(URL)
+# 	# 	data = r.text
+# 	# 	soup = BeautifulSoup(data)
+# 	# 	# print soup.prettify()
+
+# 	# 	# print URL 
+# 	# 	print '\nURL: ', URL
+
+# 	# 	# get the list items
+# 	# 	print soup.findAll("div", {"class": "list-entry"})
 
 		
-	else:
-		print 'Search returned zero (0) results. Trying again...', '\n'
-		genTopic()
+# 	# else:
+# 	# 	print 'Search returned zero (0) results. Trying again...', '\n'
+# 	# 	genTopic()
 
 
 
