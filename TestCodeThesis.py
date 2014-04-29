@@ -8,11 +8,11 @@ from nltk.corpus import wordnet
 from sets import Set
 
 
-def textFinder(results, synonyms):
-    challengeURL = results[random.randint(0, (len(results) - 1))]['url']
+def text_find(results, synonyms):
+    challenge_url = results[random.randint(0, (len(results) - 1))]['url']
 
-    print challengeURL
-    r = requests.get(challengeURL)
+    print challenge_url
+    r = requests.get(challenge_url)
     data = r.text
     soup = BeautifulSoup(data)
     # print snippets
@@ -27,16 +27,16 @@ def textFinder(results, synonyms):
     return -1
 
 
-def genThesis():
+def gen_thesis():
     """ google search API scraper that returns the
-	title of an article based on the selected topic 
-	and keyword """
+    title of an article based on the selected topic
+    and keyword """
     topic = raw_input('\nTopic: ')
     keyword = raw_input('\nkeyword: ')
     websites = {'businessinsider.com': 'h1', 'cnn.com': 'h1'}
     web = random.choice(websites.keys())
-    queryText = 'reason why '
-    query = queryText + topic + ' and ' + keyword + ' is important site:' + web
+    query_text = 'reason why '
+    query = query_text + topic + ' and ' + keyword + ' is important site:' + web
     query = urllib.urlencode({'q': query})
     response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query).read()
     json = m_json.loads(response)
@@ -47,28 +47,28 @@ def genThesis():
     print '\nSite searched: ', web
     print 'length of results: ', len(results)
 
-    thesisURL = results[random.randint(0, (len(results) - 1))]['url']
+    thesis_url = results[random.randint(0, (len(results) - 1))]['url']
 
-    print thesisURL
-    r = requests.get(thesisURL)
+    print thesis_url
+    r = requests.get(thesis_url)
     data = r.text
     soup = BeautifulSoup(data)
 
     if websites[web] == 'h1':
-        thesisRaw = str(soup.h1)
-        thesisTemp = soup.h1.text
+        thesis_raw = str(soup.h1)
+        thesis_temp = soup.h1.text
     else:
         print('other token')
 
-    print '\nGenerated Topic: ', thesisTemp, '\n'
+    print '\nGenerated Topic: ', thesis_temp, '\n'
 
-    #print thesisRaw
-    print 'text version--- ', thesisTemp
-    # title = '\nTitle: ', re.sub(r'<|>|\/|h1', r'', thesisRaw), '\n'
+    #print thesis_raw
+    print 'text version--- ', thesis_temp
+    # title = '\nTitle: ', re.sub(r'<|>|\/|h1', r'', thesis_raw), '\n'
     # print title
 
-    thesisTemp = thesisTemp.lower()
-    mykeywords = [w for w in thesisTemp.split() if not w in stopwords.words('english')]
+    thesis_temp = thesis_temp.lower()
+    mykeywords = [w for w in thesis_temp.split() if not w in stopwords.words('english')]
     mykeywordsstr = []
     for word in mykeywords:
         try:
@@ -83,11 +83,11 @@ def genThesis():
     #
     #
     #
-    queryText = 'biggest challenge in ' + topic + " " + keyword
+    query_text = 'biggest challenge in ' + topic + " " + keyword
     for word in mykeywordsstr:
-        queryText = queryText + ' ' + word
-    queryText = urllib.urlencode({'q': queryText})
-    response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + queryText).read()
+        query_text = query_text + ' ' + word
+    query_text = urllib.urlencode({'q': query_text})
+    response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
     json = m_json.loads(response)
     results = json['responseData']['results']
     # print query
@@ -100,7 +100,7 @@ def genThesis():
     syns_set = Set(syns)
     for syn in syns_set:
         syn.replace("_", " ")
-    if textFinder(results, syns_set) == -1:
+    if text_find(results, syns_set) == -1:
         print "no bottleneck found"
 
     #
@@ -110,11 +110,11 @@ def genThesis():
     #
     #
     #
-    queryText = 'solution to ' + topic + " " + keyword
+    query_text = 'solution to ' + topic + " " + keyword
     for word in mykeywordsstr:
-        queryText = queryText + ' ' + word
-    queryText = urllib.urlencode({'q': queryText})
-    response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + queryText).read()
+        query_text = query_text + ' ' + word
+    query_text = urllib.urlencode({'q': query_text})
+    response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
     json = m_json.loads(response)
     results = json['responseData']['results']
     # print query
@@ -127,14 +127,35 @@ def genThesis():
     syns_set = Set(syns)
     for syn in syns_set:
         syn.replace("_", " ")
-    if textFinder(results, syns_set) == -1:
+    if text_find(results, syns_set) == -1:
         print "no solution found"
-        
-        
-        
-    return thesisTemp, keyword
-
-
+    #
+    #
+    #
+    #generate the impact section
+    #
+    #
+    #
+    # query_text = 'impact of ' + topic + " " + keyword
+    # for word in mykeywordsstr:
+    #     query_text = query_text + ' ' + word
+    # query_text = urllib.urlencode({'q': query_text})
+    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
+    # json = m_json.loads(response)
+    # results = json['responseData']['results']
+    # # print query
+    # # print json
+    #
+    # print 'length of results: ', len(results)
+    #
+    # syns_tmp = wordnet.synsets('impact')
+    # syns = [l.name for s in syns_tmp for l in s.lemmas]
+    # syns_set = Set(syns)
+    # for syn in syns_set:
+    #     syn.replace("_", " ")
+    # if textFinder(results, syns_set) == -1:
+    #     print "no impact found"
+    return thesis_temp, keyword
 # to open the document and read the text
 
 # send generated topic to stop words to be cleaned
@@ -143,7 +164,7 @@ def genThesis():
 
 
 def main():
-    query, keyword = genThesis()
+    query, keyword = gen_thesis()
     return query, keyword
 
 
