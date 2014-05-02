@@ -18,10 +18,11 @@ def genTopic():
 
 	# first, take the topic and navigate to the debates.org website
 	search = raw_input ( '\nEnter Topic: ' )
-	web = ['http://www.debate.org/opinions/'+search+'/?sort=popular', 
-		   'http://www.debate.org/opinions/'+search+'/?sort=popular',
-		   'http://www.debate.org/opinions/'+search+'/?sort=popular']
+	websites = ['http://www.debate.org/opinions/'+search+'/?sort=popular', 
+		   'http://www.debate.org/opinions/'+search+'/?p=2&sort=popular',
+		   'http://www.debate.org/opinions/'+search+'/?p=3&sort=popular']
 	
+	web = random.choice(websites)
 	r = requests.get(web)
 	data = r.text
 	soup = BeautifulSoup(data)
