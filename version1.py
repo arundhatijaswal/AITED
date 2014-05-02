@@ -11,23 +11,6 @@ issues = []
 results = []
 keywords = []
 
-""" 
-THE IDEA BEHIND THIS....
-
-we need a way to generate a better "title" for each chosen topic.
-
-Version 1: no keywords
-======================
-1. user selects a topic out of a list of 5-6 topics
-2. the topic chosen will determine the specific site that is used
-	a.) the site that's used is a predetermined one that lists issues related
-		to the topic and will be easy for us to extract info from
-3. based on the topic and website, the "title" is generated 
-
-
-Version 2: with keywords
-======================== 
-"""
 
 def genTopic():
 	""" web scraper that returns the title debate from debate.org. 
@@ -35,7 +18,9 @@ def genTopic():
 
 	# first, take the topic and navigate to the debates.org website
 	search = raw_input ( '\nEnter Topic: ' )
-	web = 'http://www.debate.org/opinions/'+search
+	web = ['http://www.debate.org/opinions/'+search+'/?sort=popular', 
+		   'http://www.debate.org/opinions/'+search+'/?sort=popular',
+		   'http://www.debate.org/opinions/'+search+'/?sort=popular']
 	
 	r = requests.get(web)
 	data = r.text
@@ -56,7 +41,7 @@ def genThesis():
 	title = genTopic()
 
 	# print a random topic
-	print '\n', colored(title, 'red')
+	print '\n', colored(title, 'white')
 
 	# remove stopwords using nltk stop list and print the keywords
 	keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
@@ -64,14 +49,14 @@ def genThesis():
 	print '\nStripped Keywords: ', keys, '\n'
 
 	# use the keywords to do a search for a topic
-	websites = {'www.usnews.com/opinion/articles': 'h1', 
-				'cnn.com': 'h1', 
-				'huffingtonpost.com': 'h1',
-				'businessinsider.com': 'h1',
-				'www.nytimes.com': 'h1'
-		}
-	web = random.choice(websites.keys())
-	query = keys + ' site:' + web
+	websites = ['cnn.com', 
+				'huffingtonpost.com',
+				'businessinsider.com',
+				'www.nytimes.com'
+	]
+
+	web = random.choice(websites)
+	query = 'reason why ' + title + ' site:' + web
 
 	query = urllib.urlencode ( { 'q' : query } )
 	response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
@@ -79,11 +64,9 @@ def genThesis():
 
 	# stores the results of the google search
 	results = json [ 'responseData' ] [ 'results' ]
-	# print results.prettify()
 
 	if len(results) > 0:
 		thesisURL = results[random.randint(0, (len(results) - 1))]['url']
-
 		r = requests.get(thesisURL)
 		data = r.text
 		soup = BeautifulSoup(data)
@@ -91,6 +74,7 @@ def genThesis():
 
 		title = str(soup.title).replace("<title>", "").replace("</title>", "")
 		print title
+		print thesisURL
 	else:
 		print 'Search returned zero (0) results. Trying again...', '\n'
 		genThesis()
