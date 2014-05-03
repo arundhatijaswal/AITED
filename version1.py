@@ -5,12 +5,13 @@ import requests, random, re, string
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 from termcolor import colored
+import nltk.data
 
 # Global variables
-issues = []
+issues = {}
 results = []
-keywords = []
-
+args = []
+opinions = []
 
 def genTopic():
 	""" web scraper that returns the title debate from debate.org. 
@@ -28,57 +29,115 @@ def genTopic():
 	soup = BeautifulSoup(data)
 	# print soup.prettify()
 
-	# gather all of the debates on that page and remove html tags
-	results = soup.find_all("span", "q-title")
+	results = soup.find_all("p", "l-name") 
 	for i in range(0, len(results)):
-		x = str(results[i]).replace('<span class="q-title">', '').replace('</span>', '')
-		issues.append(x)
+		
+		# get the titles
+		temp = results[i].find("span", "q-title").text
+		tmps = temp.split()
 
-	title = random.choice(issues)
-	return title
+		# for each title, make sure it's appropriate length and get the url
+		# add title and url to dictionary
+		if len(tmps) > 5 and len(tmps) < 20: 
+			title = ' '.join(tmps)
+			url = 'http://www.debate.org'+results[i].find("a").get('href')+'?nsort=3&ysort=3'
+			issues[str(title)] = str(url)
+
+	topic = random.choice(issues.keys())
+	link = issues[topic]
+	return topic, link, search
 
 
 def genThesis():
-	title = genTopic()
+	""" in order to generate the thesis, we need the following:
+		- title
+		- url
+		- rating = opinion
+		- thesis: the bold text for the yes or no section 
+		- support: the sentence following the yes or no bold statement
+	"""
 
-	# print a random topic
-	print '\n', colored(title, 'white')
+	title, url, category = genTopic()
 
-	# remove stopwords using nltk stop list and print the keywords
-	keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
-	keys = ' '.join(keywords)
-	print '\nStripped Keywords: ', keys, '\n'
+	
+	print colored(title, 'red')
+	print '===================================================== \n'
 
-	# use the keywords to do a search for a topic
-	websites = ['cnn.com', 
-				'huffingtonpost.com',
-				'businessinsider.com',
-				'www.nytimes.com'
-	]
+	r = requests.get(url)
+	data = r.text
+	soup = BeautifulSoup(data)
 
-	web = random.choice(websites)
-	query = 'reason why ' + title + ' site:' + web
+	vote = soup.find("span", "no-text").text
+	strings = str(vote).split()
+	rating = int(strings[0][:-1]) # this is the 'no' rating
 
-	query = urllib.urlencode ( { 'q' : query } )
-	response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
-	json = m_json.loads ( response )
-
-	# stores the results of the google search
-	results = json [ 'responseData' ] [ 'results' ]
-
-	if len(results) > 0:
-		thesisURL = results[random.randint(0, (len(results) - 1))]['url']
-		r = requests.get(thesisURL)
-		data = r.text
-		soup = BeautifulSoup(data)
-		# print soup.prettify()
-
-		title = str(soup.title).replace("<title>", "").replace("</title>", "")
-		print title
-		print thesisURL
+	if rating > 50:
+		print rating, " No"
+		args = soup.find('div', attrs={'id':'no-arguments'}).find_all("li", "hasData")
+		# print args
+		for i in range(0, len(args)):
+			# find the list items
+			temp = args[i].find("h2").text
+			userArg = args[i].find("p").text
+			tmps = temp.split()
+			if len(tmps) > 3: 
+				opinions.append(' '.join(tmps))
+		print 'Position: '+opinions[0]+'\n'
+		print userArg
 	else:
-		print 'Search returned zero (0) results. Trying again...', '\n'
-		genThesis()
+		print rating, " Yes"
+		args = soup.find('div', attrs={'id':'yes-arguments'}).find_all("li", "hasData")
+		# print args
+		for i in range(0, len(args)):
+			# find the list items
+			temp = args[i].find("h2").text
+			userArg = args[i].find("p").text
+			tmps = temp.split()
+			if len(tmps) > 3: 
+				opinions.append(' '.join(tmps))
+		print 'Position: '+opinions[0]+'\n'
+		print userArg
+
+	return
+	# remove stopwords using nltk stop list and print the keywords
+	# keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
+	# keys = ' '.join(keywords)
+	# print '\nStripped Keywords: ', keys, '\n'
+
+
+	# query = urllib.urlencode ( { 'q' : query } )
+	# response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
+	# json = m_json.loads ( response )
+
+	# # stores the results of the google search
+	# results = json [ 'responseData' ] [ 'results' ]
+
+
+	# # use the keywords to do a search for a topic
+	# websites = ['cnn.com', 
+	# 			'huffingtonpost.com',
+	# 			'businessinsider.com',
+	# 			'www.nytimes.com'
+	# ]
+
+	# web = random.choice(websites)
+	# query = 'reason why ' + title + ' site:' + web
+
+	
+
+	# if len(results) > 0:
+	# 	thesisURL = results[random.randint(0, (len(results) - 1))]['url']
+	# 	r = requests.get(thesisURL)
+	# 	data = r.text
+	# 	soup = BeautifulSoup(data)
+	# 	# print soup.prettify()
+
+	# 	title = str(soup.title).replace("<title>", "").replace("</title>", "")
+	# 	print title
+	# 	print thesisURL
+	# else:
+	# 	print 'Search returned zero (0) results. Trying again...', '\n'
+	# 	genThesis()
 
 
 
