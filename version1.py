@@ -12,10 +12,11 @@ issues = {}
 results = []
 args = []
 opinions = []
+argSplit = []
 
 def genTopic():
-	""" web scraper that returns the title debate from debate.org. 
-	this will serve as the main topic of our script """ 
+	""" web scraper that returns the title and url debate from 
+	debate.org. This will form the thesis of our script """ 
 
 	# first, take the topic and navigate to the debates.org website
 	search = raw_input ( '\nEnter Topic: ' )
@@ -49,17 +50,19 @@ def genTopic():
 
 
 def genThesis():
-	""" in order to generate the thesis, we need the following:
+	""" 
+	in order to generate the thesis, we need the following:
 		- title
 		- url
 		- rating = opinion
 		- thesis: the bold text for the yes or no section 
+			** the thesis has to contain some keywords from the title
 		- support: the sentence following the yes or no bold statement
 	"""
 
 	title, url, category = genTopic()
 
-	
+	print '\n'
 	print colored(title, 'red')
 	print '===================================================== \n'
 
@@ -72,7 +75,7 @@ def genThesis():
 	rating = int(strings[0][:-1]) # this is the 'no' rating
 
 	if rating > 50:
-		print rating, " No"
+		# print rating, " No"
 		args = soup.find('div', attrs={'id':'no-arguments'}).find_all("li", "hasData")
 		# print args
 		for i in range(0, len(args)):
@@ -82,10 +85,10 @@ def genThesis():
 			tmps = temp.split()
 			if len(tmps) > 3: 
 				opinions.append(' '.join(tmps))
-		print 'Position: '+opinions[0]+'\n'
-		print userArg
+		# 
+		# print userArg
 	else:
-		print rating, " Yes"
+		# print rating, " Yes"
 		args = soup.find('div', attrs={'id':'yes-arguments'}).find_all("li", "hasData")
 		# print args
 		for i in range(0, len(args)):
@@ -95,10 +98,20 @@ def genThesis():
 			tmps = temp.split()
 			if len(tmps) > 3: 
 				opinions.append(' '.join(tmps))
-		print 'Position: '+opinions[0]+'\n'
-		print userArg
+		# print 'Top Argument: '+opinions[0]+'\n'
+		# print userArg
 
+	# print 'Top Argument: '+opinions[0]+'\n'
+
+	# get the first sentence in the top user's argument
+	tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+	support = ''.join(tokenizer.tokenize(userArg.strip())[0])
+
+	thesis = opinions[0]+' '+support
+	print "Thesis: "
+	print thesis
 	return
+
 	# remove stopwords using nltk stop list and print the keywords
 	# keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
 	# keys = ' '.join(keywords)
