@@ -4,16 +4,8 @@ import json as m_json
 import requests, random, re, string
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
-<<<<<<< HEAD
 # from termcolor import colored
-=======
-<<<<<<< HEAD
-#from termcolor import colored
-=======
-from termcolor import colored
->>>>>>> FETCH_HEAD
 import nltk.data
->>>>>>> FETCH_HEAD
 
 # Global variables
 issues = {}
@@ -28,20 +20,10 @@ def genTopic(topic):
 	debate.org. This will form the thesis of our script """ 
 
 	# first, take the topic and navigate to the debates.org website
-<<<<<<< HEAD
 	search = topic
-=======
-<<<<<<< HEAD
-	#search = raw_input ( '\nEnter Topic: ' )
-	search = 'education'
-	web = 'http://www.debate.org/opinions/'+search
-=======
-	search = raw_input ( '\nEnter Topic: ' )
->>>>>>> FETCH_HEAD
 	websites = ['http://www.debate.org/opinions/'+search+'/?sort=popular', 
 		   'http://www.debate.org/opinions/'+search+'/?p=2&sort=popular',
 		   'http://www.debate.org/opinions/'+search+'/?p=3&sort=popular']
->>>>>>> FETCH_HEAD
 	
 	web = random.choice(websites)
 	r = requests.get(web)
@@ -51,20 +33,6 @@ def genTopic(topic):
 
 	results = soup.find_all("p", "l-name") 
 	for i in range(0, len(results)):
-<<<<<<< HEAD
-		x = str(results[i]).replace('<span class="q-title">', '').replace('</span>', '')
-		issues.append(x)
-
-	title = random.choice(issues)
-	return title
-
-
-def genThesis():
-	title = genTopic()
-
-	# print a random topic
-	#print '\n', colored(title, 'red')
-=======
 		
 		# get the titles
 		temp = results[i].find("span", "q-title").text
@@ -103,44 +71,10 @@ def genThesis(topic):
 	r = requests.get(url)
 	data = r.text
 	soup = BeautifulSoup(data)
->>>>>>> FETCH_HEAD
 
 	# remove stopwords using nltk stop list and print the keywords
 	keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
 	keys = ' '.join(keywords)
-<<<<<<< HEAD
-	print '\nStripped Keywords: ', keys, '\n'
-
-	# use the keywords to do a search for a topic
-	websites = {'www.usnews.com/opinion/articles': 'h1', 
-				'cnn.com': 'h1', 
-				'huffingtonpost.com': 'h1',
-				'businessinsider.com': 'h1',
-				'www.nytimes.com': 'h1'
-		}
-	web = random.choice(websites.keys())
-	query = keys + ' site:' + web
-	#print query
-
-	query = urllib.urlencode ( { 'q' : query } )
-	response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
-	json = m_json.loads ( response )
-
-	# stores the results of the google search
-	results = json [ 'responseData' ] [ 'results' ]
-	# print results.prettify()
-
-	if len(results) > 0:
-		thesisURL = results[random.randint(0, (len(results) - 1))]['url']
-
-		r = requests.get(thesisURL)
-		data = r.text
-		soup = BeautifulSoup(data)
-		# print soup.prettify()
-
-		title = str(soup.title).replace("<title>", "").replace("</title>", "")
-		print title
-=======
 	
 	vote = soup.find("span", "no-text").text
 	strings = str(vote).split()
@@ -165,7 +99,6 @@ def genThesis(topic):
 							if count > 2:
 								opinions.append(' '.join(tmps))
 								# print count
->>>>>>> FETCH_HEAD
 	else:
 		# print rating, " Yes"
 		args = soup.find('div', attrs={'id':'yes-arguments'}).find_all("li", "hasData")
@@ -316,16 +249,5 @@ def main():
 	topic = raw_input ( '\nEnter Topic: ' )
 	genThesis(topic)
 
-<<<<<<< HEAD
 if __name__ == "__main__":
 	main()
-=======
-<<<<<<< HEAD
-
-if __name__ == "__main__":
-	main()
-=======
-# if __name__ == "__main__":
-# 	main()
->>>>>>> FETCH_HEAD
->>>>>>> FETCH_HEAD
