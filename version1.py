@@ -4,7 +4,7 @@ import json as m_json
 import requests, random, re, string
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
-from termcolor import colored
+#from termcolor import colored
 
 # Global variables
 issues = []
@@ -34,13 +34,14 @@ def genTopic():
 	this will serve as the main topic of our script """ 
 
 	# first, take the topic and navigate to the debates.org website
-	search = raw_input ( '\nEnter Topic: ' )
+	#search = raw_input ( '\nEnter Topic: ' )
+	search = 'education'
 	web = 'http://www.debate.org/opinions/'+search
 	
 	r = requests.get(web)
 	data = r.text
 	soup = BeautifulSoup(data)
-	# print soup.prettify()
+	#print soup.prettify()
 
 	# gather all of the debates on that page and remove html tags
 	results = soup.find_all("span", "q-title")
@@ -56,7 +57,7 @@ def genThesis():
 	title = genTopic()
 
 	# print a random topic
-	print '\n', colored(title, 'red')
+	#print '\n', colored(title, 'red')
 
 	# remove stopwords using nltk stop list and print the keywords
 	keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
@@ -72,6 +73,7 @@ def genThesis():
 		}
 	web = random.choice(websites.keys())
 	query = keys + ' site:' + web
+	#print query
 
 	query = urllib.urlencode ( { 'q' : query } )
 	response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
@@ -100,6 +102,7 @@ def genThesis():
 
 def main():
 	genThesis()
+
 
 if __name__ == "__main__":
 	main()
