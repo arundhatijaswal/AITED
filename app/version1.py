@@ -15,15 +15,15 @@ opinions = []
 argSplit = []
 
 
-def genTopic(topic):
+def genTopic(category):
 	""" web scraper that returns the title and url from 
 	debate.org. This will form the thesis of our script """ 
 
 	# first, take the topic and navigate to the debates.org website
-	search = raw_input ( '\nEnter Topic: ' )
-	websites = ['http://www.debate.org/opinions/'+search+'/?sort=popular', 
-		   'http://www.debate.org/opinions/'+search+'/?p=2&sort=popular',
-		   'http://www.debate.org/opinions/'+search+'/?p=3&sort=popular']
+	# search = raw_input ( '\nEnter Topic: ' )
+	websites = ['http://www.debate.org/opinions/'+category+'/?sort=popular', 
+		   'http://www.debate.org/opinions/'+category+'/?p=2&sort=popular',
+		   'http://www.debate.org/opinions/'+category+'/?p=3&sort=popular']
 	
 	web = random.choice(websites)
 	r = requests.get(web)
@@ -47,7 +47,7 @@ def genTopic(topic):
 
 	topic = random.choice(issues.keys())
 	link = issues[topic]
-	return topic, link, search
+	return topic, link, category
 
 
 def genThesis(topic):
@@ -118,7 +118,7 @@ def genThesis(topic):
 								opinions.append(' '.join(tmps))
 								# print count
 	if not opinions:
-		genThesis()
+		genThesis(topic)
 	else:
 		# print 'Top Argument: '+opinions[0]+'\n'
 		topArg = opinions[0].split()
@@ -129,7 +129,7 @@ def genThesis(topic):
 		thesis = opinions[0]+' '+support
 		# print "Thesis: "
 		# print thesis
-	return category, title, thesis
+	return title, thesis
 
 
 def stemmer(word):
