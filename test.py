@@ -4,9 +4,9 @@ import requests, random, re, string, random
 import urllib2
 import urllib
 import sys
-from TestCodeThesis import genThesis
+from TestCodeThesis import gen_thesis
 
-topic, keyword = genThesis()
+topic, keyword = gen_thesis()
 # print thesis
 query1 = topic + " " + keyword + " site:brainyquote.com"
 # print query1

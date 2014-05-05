@@ -1,6 +1,6 @@
 from flask import render_template
 from app import app
-from TestCodeThesis import genThesis
+from TestCodeThesis import gen_thesis
 from forms import LoginForm
 from flask import render_template, flash, redirect
 
