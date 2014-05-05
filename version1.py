@@ -4,7 +4,7 @@ import json as m_json
 import requests, random, re, string
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
-from termcolor import colored
+# from termcolor import colored
 import nltk.data
 
 # Global variables
@@ -20,7 +20,7 @@ def genTopic(topic):
 	debate.org. This will form the thesis of our script """ 
 
 	# first, take the topic and navigate to the debates.org website
-	search = raw_input ( '\nEnter Topic: ' )
+	search = topic
 	websites = ['http://www.debate.org/opinions/'+search+'/?sort=popular', 
 		   'http://www.debate.org/opinions/'+search+'/?p=2&sort=popular',
 		   'http://www.debate.org/opinions/'+search+'/?p=3&sort=popular']
@@ -63,9 +63,10 @@ def genThesis(topic):
 
 	title, url, category = genTopic(topic)
 
-	# print '\n'
-	# print colored(title, 'red')
-	# print '===================================================== \n'
+	print '\n'
+	print title
+	print '===================================================== \n'
+	print url
 
 	r = requests.get(url)
 	data = r.text
@@ -118,7 +119,9 @@ def genThesis(topic):
 								opinions.append(' '.join(tmps))
 								# print count
 	if not opinions:
-		genThesis()
+		genThesis(topic)
+		# print 'No thesis generated'
+		return category, title
 	else:
 		# print 'Top Argument: '+opinions[0]+'\n'
 		topArg = opinions[0].split()
@@ -128,8 +131,8 @@ def genThesis(topic):
 
 		thesis = opinions[0]+' '+support
 		# print "Thesis: "
-		# print thesis
-	return category, title, thesis
+		print thesis
+		return category, title, thesis
 
 
 def stemmer(word):
@@ -242,8 +245,9 @@ def stemmer(word):
 
 
 
-# def main():
-# 	genThesis()
+def main():
+	topic = raw_input ( '\nEnter Topic: ' )
+	genThesis(topic)
 
-# if __name__ == "__main__":
-# 	main()
+if __name__ == "__main__":
+	main()
