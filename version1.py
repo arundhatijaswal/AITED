@@ -128,7 +128,7 @@ def genThesis(topic):
 		thesis = opinions[0]+' '+support
 		# print "Thesis: "
 		# print thesis
-	return title, thesis
+		return title, thesis
 
 
 def stemmer(word):

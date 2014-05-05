@@ -4,15 +4,11 @@ import json as m_json
 import requests, random, re, string
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
-from termcolor import colored
 import nltk.data
 
 # Global variables
 issues = {}
 results = []
-args = []
-opinions = []
-argSplit = []
 
 
 def genTopic(category):
@@ -78,6 +74,9 @@ def genThesis(topic):
 	vote = soup.find("span", "no-text").text
 	strings = str(vote).split()
 	rating = int(strings[0][:-1]) # this is the 'no' rating
+	opinions = []
+	args = []
+	argSplit = []
 
 	if rating > 50:
 		# print rating, " No"
