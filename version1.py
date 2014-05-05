@@ -4,32 +4,28 @@ import json as m_json
 import requests, random, re, string
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
-# from termcolor import colored
 import nltk.data
 
 # Global variables
 issues = {}
 results = []
-args = []
-opinions = []
-argSplit = []
 
 
-def genTopic(topic):
+def genTopic(category):
 	""" web scraper that returns the title and url from 
 	debate.org. This will form the thesis of our script """ 
 
 	# first, take the topic and navigate to the debates.org website
-	search = topic
-	websites = ['http://www.debate.org/opinions/'+search+'/?sort=popular', 
-		   'http://www.debate.org/opinions/'+search+'/?p=2&sort=popular',
-		   'http://www.debate.org/opinions/'+search+'/?p=3&sort=popular']
+	# search = raw_input ( '\nEnter Topic: ' )
+	websites = ['http://www.debate.org/opinions/'+category+'/?sort=popular', 
+		   'http://www.debate.org/opinions/'+category+'/?p=2&sort=popular',
+		   'http://www.debate.org/opinions/'+category+'/?p=3&sort=popular']
 	
 	web = random.choice(websites)
 	r = requests.get(web)
 	data = r.text
 	soup = BeautifulSoup(data)
-	#print soup.prettify()
+	# print soup.prettify()
 
 	results = soup.find_all("p", "l-name") 
 	for i in range(0, len(results)):
@@ -47,7 +43,7 @@ def genTopic(topic):
 
 	topic = random.choice(issues.keys())
 	link = issues[topic]
-	return topic, link, search
+	return topic, link, category
 
 
 def genThesis(topic):
@@ -63,10 +59,9 @@ def genThesis(topic):
 
 	title, url, category = genTopic(topic)
 
-	print '\n'
-	print title
-	print '===================================================== \n'
-	print url
+	# print '\n'
+	# print colored(title, 'red')
+	# print '===================================================== \n'
 
 	r = requests.get(url)
 	data = r.text
@@ -79,6 +74,9 @@ def genThesis(topic):
 	vote = soup.find("span", "no-text").text
 	strings = str(vote).split()
 	rating = int(strings[0][:-1]) # this is the 'no' rating
+	opinions = []
+	args = []
+	argSplit = []
 
 	if rating > 50:
 		# print rating, " No"
@@ -120,8 +118,6 @@ def genThesis(topic):
 								# print count
 	if not opinions:
 		genThesis(topic)
-		# print 'No thesis generated'
-		return category, title
 	else:
 		# print 'Top Argument: '+opinions[0]+'\n'
 		topArg = opinions[0].split()
@@ -131,8 +127,8 @@ def genThesis(topic):
 
 		thesis = opinions[0]+' '+support
 		# print "Thesis: "
-		print thesis
-		return category, title, thesis
+		# print thesis
+	return title, thesis
 
 
 def stemmer(word):
@@ -245,9 +241,8 @@ def stemmer(word):
 
 
 
-def main():
-	topic = raw_input ( '\nEnter Topic: ' )
-	genThesis(topic)
+# def main():
+# 	genThesis()
 
-if __name__ == "__main__":
-	main()
+# if __name__ == "__main__":
+# 	main()
