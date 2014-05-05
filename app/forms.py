@@ -3,10 +3,9 @@ from wtforms import SelectField, SubmitField
 from wtforms.validators import Required
 
 list_of_topics = (
-	('Comedy', 'Comedy'),
+	('Funny', 'Comedy'),
     ('Education', 'Education'),
     ('Entertainment', 'Entertainment'),
-    ('Environment', 'Environment'),
     ('Fashion', 'Fashion'),
     ('Health', 'Health'),
     ('Politics', 'Politics'),
@@ -14,9 +13,9 @@ list_of_topics = (
     ('Science', 'Science'),
     ('Sports', 'Sports'),
     ('Technology', 'Technology'),
-    ('Transportation', 'Transportation'),
+    ('Cars', 'Transportation'),
 )
 
 class topicsForm(Form):
     topics = SelectField('category', choices=list_of_topics, validators=[Required()])
-    submit = submit = SubmitField("Send")
+    submit = SubmitField("Send")

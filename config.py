@@ -1,2 +1,0 @@
-CSRF_ENABLED = True
-SECRET_KEY = 'F34TF$($e34D'
