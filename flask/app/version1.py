@@ -134,8 +134,10 @@ def genThesis(topic):
 		topArg = opinions[0].split()
 		thesis = opinions[0]+' '+support
 		# print "Thesis: "
-		# print thesis
-		return title, thesis
+		print "from version1"
+		print title
+		print thesis
+		return "title", "thesis"
 
 
 
@@ -177,7 +179,9 @@ def genThesis(topic):
 
 
 # def main():
-# 	genThesis()
+# 	topic = raw_input("Enter topic: ")
+# 	title, thesis = genThesis(topic)
+# 	return title, thesis
 
 # if __name__ == "__main__":
 # 	main()
