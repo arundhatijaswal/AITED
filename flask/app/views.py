@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 # from app import app
 import version1
 from forms import topicsForm 
+from flask import Flask, redirect, url_for
 
 app = Flask(__name__)
 count = 0
@@ -25,13 +26,15 @@ def index():
 		topic = request.form['topics']
 		if topic == 'Comedy': topic == 'Funny'
 		elif topic == 'Transportation': topic == 'Cars'
-
-		title, thesis = statement()
-		if title == "no title" or thesis == "no thesis":
-			index()
-		else:
+		try:
+			title, thesis = version1.genThesis(topic)
 			return render_template('index.html', form=form, category=topic, thesis=thesis, title=title)
-
+		except:
+		# 	title, thesis = ""
+		# if title == "" or thesis == "":
+			 return redirect('', code=302)
+		# else:
+		
 		# title or thesis == NoneType:
 		# 	title, thesis = version1.genThesis(topic)
 		# else:
