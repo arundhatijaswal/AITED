@@ -126,18 +126,19 @@ def genThesis(topic):
 	support = ''.join(tokenizer.tokenize(userArg.strip())[0])
 
 	if not opinions:
-		genThesis(topic)
+		return "", ""
+		# genThesis(topic)
 	elif not userArg:
-		genThesis(topic)
+		return "", ""
+		# genThesis(topic)
 	else:
 		# print 'Top Argument: '+opinions[0]+'\n'
 		topArg = opinions[0].split()
 		thesis = opinions[0]+' '+support
 		# print "Thesis: "
-		print "from version1"
-		print title
-		print thesis
-		return "title", "thesis"
+		print 'Title: ', title
+		print 'Thesis: ', thesis
+		return title, thesis
 
 
 
@@ -178,10 +179,12 @@ def genThesis(topic):
 
 
 
-# def main():
-# 	topic = raw_input("Enter topic: ")
-# 	title, thesis = genThesis(topic)
-# 	return title, thesis
+def main():
+	topic = raw_input("Enter topic: ")
+	title, thesis = genThesis(topic)
+	while title == "" or thesis == "":
+		title, thesis = genThesis(topic)
+	print title, thesis
 
-# if __name__ == "__main__":
-# 	main()
+if __name__ == "__main__":
+	main()

@@ -6,24 +6,22 @@ from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 from nltk.corpus import wordnet
 from sets import Set
-from version1 import genThesis
+import version1
 
 
 def extract_keywords(topic):
-    print "in testcodethesis"
-    myThesis = genThesis(topic)
-    print "back in testcodethesis"
-    # print myTitle
-    print myThesis
+    myTitle, myThesis = version1.genThesis(topic)
+    while myTitle == "" or myThesis == "":
+        myTitle, myThesis = version1.genThesis(topic)
     myThesis_temp = myThesis.lower()
     Keywords = [w for w in myThesis_temp.split() if not w in stopwords.words('english')]
     Keywordsstr = []
-    for word in mykeywords:
+    for word in Keywordsstr:
         try:
             Keywordsstr.append(str(word))
         except:
             pass
-    print Keywordsstr
+    # print Keywordsstr
     return Keywordsstr
 
 def text_find(query_text, queryKeyword):
@@ -35,7 +33,7 @@ def text_find(query_text, queryKeyword):
     # print query
     # print json
 
-    print 'length of results: ', len(results)
+    # print 'length of results: ', len(results)
 
     syns_tmp = wordnet.synsets(queryKeyword)
     syns = [l.name for s in syns_tmp for l in s.lemmas]
@@ -51,14 +49,14 @@ def text_find(query_text, queryKeyword):
     # print snippets
     for syn in syns_set:
         # print syn
-        syn.replace("_", " ")
+        syn = syn.replace("_", " ")
         snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
         if len(snippets) != 0:
             section_text = random.choice(snippets).text
             print section_text
             return section_text
-        else:
-            print syn, " not found"
+        # else:
+        #     print syn, " not found"
     return "no section text found"
 
 
@@ -127,6 +125,7 @@ def gen_thesis(topic):
     for word in thesisKeywords:
         query_text = query_text + ' ' + word
     queryKeyword = 'challenge'
+    print '\nchallenge section'
     text_find(query_text, queryKeyword)
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
@@ -156,7 +155,8 @@ def gen_thesis(topic):
     for word in thesisKeywords:
         query_text = query_text + ' ' + word
     queryKeyword = 'solution'
-    # text_find(query_text, queryKeyword)
+    print '\nsolution section'
+    text_find(query_text, queryKeyword)
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
     # json = m_json.loads(response)
@@ -199,7 +199,7 @@ def gen_thesis(topic):
     #     syn.replace("_", " ")
     # if textFinder(results, syns_set) == -1:
     #     print "no impact found"
-    return thesis_temp, keyword
+    # return thesis_temp, keyword
 # to open the document and read the text
 
 # send generated topic to stop words to be cleaned
@@ -209,8 +209,9 @@ def gen_thesis(topic):
 
 def main():
     topic = raw_input("Enter topic: ")
-    query, keyword = gen_thesis(topic)
-    return query, keyword
+    gen_thesis(topic)
+    # query, keyword = 
+    # return query, keyword
 
 
 if __name__ == "__main__":

@@ -9,15 +9,6 @@ app = Flask(__name__)
 count = 0
 app.secret_key = 'F34TF$($e34D'
 
-def statement():
-	title = ""
-	thesis = ""
-	try:
-		title, thesis = version1.genThesis(topic)
-		return title, thesis 
-	except:
-		return "no title", "no thesis"
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -28,6 +19,9 @@ def index():
 		elif topic == 'Transportation': topic == 'Cars'
 		try:
 			title, thesis = version1.genThesis(topic)
+			while title == "" or thesis == "":
+				title, thesis = version1.genThesis(topic)
+				# return redirect('', code=302)
 			return render_template('index.html', form=form, category=topic, thesis=thesis, title=title)
 		except:
 		# 	title, thesis = ""
