@@ -16,15 +16,16 @@ def extract_keywords(topic):
     myThesis_temp = myThesis.lower()
     Keywords = [w for w in myThesis_temp.split() if not w in stopwords.words('english')]
     Keywordsstr = []
-    for word in Keywordsstr:
+    for word in Keywords:
         try:
             Keywordsstr.append(str(word))
         except:
             pass
-    # print Keywordsstr
+    #print "Keywordsstr: ", Keywordsstr
     return Keywordsstr
 
 def text_find(query_text, queryKeyword):
+    #print "query test: ", query_text
 
     query_text = urllib.urlencode({'q': query_text})
     response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
@@ -48,7 +49,7 @@ def text_find(query_text, queryKeyword):
     soup = BeautifulSoup(data)
     # print snippets
     for syn in syns_set:
-        # print syn
+        print syn
         syn = syn.replace("_", " ")
         snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
         if len(snippets) != 0:
@@ -66,6 +67,7 @@ def gen_thesis(topic):
     and keyword """
 
     thesisKeywords = extract_keywords(topic)
+    #print "thesis keywords: ", thesisKeywords
 
     # topic = raw_input('\nTopic: ')
     # keyword = raw_input('\nkeyword: ')
