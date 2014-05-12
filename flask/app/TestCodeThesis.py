@@ -115,7 +115,7 @@ def gen_thesis(topic):
 
     #
     #
-    #generate the bottleneck section
+    #generate the importance section
     #
     #
     #
