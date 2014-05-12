@@ -9,14 +9,11 @@ from sets import Set
 import version1
 
 
-def extract_keywords(topic):
-    myTitle, myThesis = version1.genThesis(topic)
-    while myTitle == "" or myThesis == "":
-        myTitle, myThesis = version1.genThesis(topic)
+def extract_keywords(myThesis):
     myThesis_temp = myThesis.lower()
     Keywords = [w for w in myThesis_temp.split() if not w in stopwords.words('english')]
     Keywordsstr = []
-    for word in Keywordsstr:
+    for word in Keywords:
         try:
             Keywordsstr.append(str(word))
         except:
@@ -65,7 +62,10 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
-    thesisKeywords = extract_keywords(topic)
+    myTitle, myThesis = version1.genThesis(topic)
+    while myTitle == "" or myThesis == "":
+        myTitle, myThesis = version1.genThesis(topic)
+    thesisKeywords = extract_keywords(myThesis)
 
     # topic = raw_input('\nTopic: ')
     # keyword = raw_input('\nkeyword: ')
@@ -169,7 +169,7 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'solution'
     print '\nsolution section'
-    text_find(query_text, queryKeyword)
+    solution = text_find(query_text, queryKeyword)
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
     # json = m_json.loads(response)
@@ -193,6 +193,16 @@ def gen_thesis(topic):
     #
     #
     #
+    query_text = 'impact of ' 
+    solutionKeywords = extract_keywords(solution)
+    for word in solutionKeywords:
+        query_text = query_text + ' ' + word
+    query_text = query_text + ' on ' + topic
+    for word in thesisKeywords:
+        query_text = query_text + ' ' + word
+    queryKeyword = 'impact'
+    print '\nimpact section'
+    text_find(query_text, queryKeyword)
     # query_text = 'impact of ' + topic + " " + keyword
     # for word in mykeywordsstr:
     #     query_text = query_text + ' ' + word
