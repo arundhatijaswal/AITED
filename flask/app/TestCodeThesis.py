@@ -113,6 +113,19 @@ def gen_thesis(topic):
     #         pass
     # print mykeywordsstr
 
+    #
+    #
+    #generate the bottleneck section
+    #
+    #
+    #
+    query_text = 'importance of ' + topic
+    for word in thesisKeywords:
+        query_text = query_text + ' ' + word
+    queryKeyword = 'importance'
+    print '\nimportance section'
+    text_find(query_text, queryKeyword)
+
 
     #
     #
