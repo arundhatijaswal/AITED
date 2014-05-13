@@ -10,53 +10,72 @@
         <title>TED 2.0</title>
         <link rel="stylesheet" href="static/plugins/Bootstrap/css/bootstrap.min.css" />
         <link rel="stylesheet" href="static/plugins/Bootstrap/css/bootstrap-theme.min.css" />
-        <link href="static/css/style.css" rel="stylesheet" />
+        <link rel="stylesheet" href="static/css/style.css" />
+        <link rel="stylesheet" href="static/css/load.css" />
         <script src="static/plugins/Bootstrap/js/bootstrap.min.js"></script>
         <script src="static/js/ted.js"></script>
+        <script src="static/js/modernizr.custom.js"></script>
     </head>
 
-    <body class="fancy">
-        <!-- HEADER -->
-        <div class="header">TED <span class="cursive">2.0</span></div>
-        <div class="sub-header">ideas worth automating</div>
+    <body onload="checkFirstVisit()">
 
-        
-        <!-- FORM -->
-        <form class="form-horizontal" role="form" method='post' action='/' name="topics">
+        <div id="front">
+            <!-- HEADER -->
+            <div class="header">TED <span class="cursive">2.0</span></div>
+            <div class="sub-header">ideas worth automating</div>
 
-            <!-- TOPICS 
-            <select class="form-control" id="topics" name="topics">
-                <option>Select a topic</option>
-                <option value='Comedy'>Comedy</option>
-                <option value='Education'>Education</option>
-                <option value='Entertainment'>Entertainment</option>
-                <option value='Environment'>Environment</option>
-                <option value='Fashion'>Fashion</option>
-                <option value='Health'>Health</option>
-                <option value='Politics'>Politics</option>
-                <option value='Religion'>Religion</option>
-                <option value='Science'>Science</option>
-                <option value='Sports'>Sports</option>
-                <option value='Technology'>Technology</option>
-                <option value='Transportation'>Transportation</option>
-            </select>-->
-            {{ form.topics }}
-            
-
-            <!-- BUTTONS -->
-            <div class="form-group">
-                <div class="col-sm-offset-2">
-                {{ form.submit }}
+            <!-- FORM -->
+            <form class="form-horizontal" role="form" method='post' action='/' name="topics">
+                <div class="select-style">
+                    {{ form.topics }}
                 </div>
-            </div>
-        </form>
-        
-
-        <!-- CONTENT TO BE DISPLAYED -->
-        <div id="content">
-            <h1>{{category}}</h1>
-            <h3>{{title}}</h3>
-            <p>{{thesis}}</p>
+                
+                <!-- BUTTONS -->
+                <div class="button">
+                    {{ form.submit }}
+                </div>
+            </form>
         </div>
+
+        <div id="back">
+           
+            <!-- the component -->
+            <section class="main">
+                <div class="wrapper">
+                    <div class="inner">
+                        <span>L</span>
+                        <span>o</span>
+                        <span>a</span>
+                        <span>d</span>
+                        <span>i</span>
+                        <span>n</span>
+                        <span>g</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTENT TO BE DISPLAYED -->
+            <div id="content">
+                <h1 class="category">{{category}}</h1>
+                <h3 class="title">{{title}}</h3>
+                <p class="part1">{{thesis}}</p>
+                <p class="part2">{{importance}}</p>
+                <p class="part3">{{challenge}}</p>
+                <p class="part4">{{solution}}</p>
+                <p class="part5">{{impact}}</p>
+            </div>
+        </div>
+
     </body>
+
+    <script type="text/javascript">
+        $('#submit').click(function() {
+            setTimeout( "jQuery('.header').addClass('header-shrink');", 2000 );
+            setTimeout( "jQuery('#front').addClass('transitioned shadow').css({'padding':'0'});", 1400 );
+            setTimeout( "jQuery('.sub-header').hide();", 2000 );
+            setTimeout( "jQuery('form').removeClass('form-horizontal').addClass('form-inline');", 2000 );
+            setTimeout( "jQuery('div').removeClass('button');", 2000 );
+            setTimeout( "jQuery('.select-style').css({'float':'left', 'width':'65%', 'margin-left':'15%', 'margin-right':'10px'});", 2000 );
+        });
+    </script>
 </html>

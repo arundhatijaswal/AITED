@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request
 # from app import app
-import version1
+import ScriptGen
 from forms import topicsForm 
 from flask import Flask, redirect, url_for
 
@@ -17,27 +17,32 @@ def index():
 		topic = request.form['topics']
 		if topic == 'Comedy': topic == 'Funny'
 		elif topic == 'Transportation': topic == 'Cars'
+		thesis ="this is where the thesis goes. it's very important for this project"
 		try:
-			title, thesis = version1.genThesis(topic)
-			while title == "" or thesis == "":
-				title, thesis = version1.genThesis(topic)
-				# return redirect('', code=302)
-			return render_template('index.html', form=form, category=topic, thesis=thesis, title=title)
+			contents = ScriptGen.gen_thesis(topic)
+			title = contents[0]
+			thesis = contents[1]
+			importance = contents[2]
+			challenge = contents[3]
+			solution = contents[4]
+			impact = contents[5]
+
+			while title == "" or thesis == "" or importance == "" or challenge == "" or solution == "" or impact == "":
+				contents = ScriptGen.gen_thesis(topic)
+				title = contents[0]
+				thesis = contents[1]
+				importance = contents[2]
+				challenge = contents[3]
+				solution = contents[4]
+				impact = contents[5]
+			return render_template('index.html', form=form, title=title, thesis=thesis, importance=importance, challenge=challenge, solution=solution, impact=impact)
 		except:
-		# 	title, thesis = ""
-		# if title == "" or thesis == "":
 			 return redirect('', code=302)
-		# else:
-		
-		# title or thesis == NoneType:
-		# 	title, thesis = version1.genThesis(topic)
-		# else:
+
 	elif request.method == 'GET':
-		# topic = request.form['topics']
 		return render_template('index.html', form=form)
 
 
 if __name__ == '__main__':
-	# app.run(debug=True)
 	port = int(os.environ.get("PORT", 5000))
 	app.run(debug=True, host='0.0.0.0', port=port)

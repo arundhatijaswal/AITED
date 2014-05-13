@@ -6,8 +6,9 @@ from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 from nltk.corpus import wordnet
 from sets import Set
-import version1
+import thesis
 
+section = []
 
 def extract_keywords(myThesis):
     myThesis_temp = myThesis.lower()
@@ -62,11 +63,12 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
-    myTitle, myThesis = version1.genThesis(topic)
+    myTitle, myThesis = thesis.genThesis(topic)
     while myTitle == "" or myThesis == "":
-        myTitle, myThesis = version1.genThesis(topic)
+        myTitle, myThesis = thesis.genThesis(topic)
     thesisKeywords = extract_keywords(myThesis)
-
+    section.append(myTitle)
+    section.append(myThesis)
     # topic = raw_input('\nTopic: ')
     # keyword = raw_input('\nkeyword: ')
     # websites = {'businessinsider.com': 'h1', 'cnn.com': 'h1'}
@@ -115,7 +117,7 @@ def gen_thesis(topic):
 
     #
     #
-    #generate the bottleneck section
+    #generate the importance section
     #
     #
     #
@@ -124,7 +126,8 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'importance'
     print '\nimportance section'
-    text_find(query_text, queryKeyword)
+    importance = text_find(query_text, queryKeyword)
+    section.append(importance)
 
 
     #
@@ -139,7 +142,8 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'challenge'
     print '\nchallenge section'
-    text_find(query_text, queryKeyword)
+    section.append(text_find(query_text, queryKeyword))
+
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
     # json = m_json.loads(response)
@@ -170,6 +174,7 @@ def gen_thesis(topic):
     queryKeyword = 'solution'
     print '\nsolution section'
     solution = text_find(query_text, queryKeyword)
+    section.append(solution)
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
     # json = m_json.loads(response)
@@ -202,7 +207,8 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'impact'
     print '\nimpact section'
-    text_find(query_text, queryKeyword)
+    impact = text_find(query_text, queryKeyword)
+    section.append(impact)
     # query_text = 'impact of ' + topic + " " + keyword
     # for word in mykeywordsstr:
     #     query_text = query_text + ' ' + word
@@ -223,6 +229,8 @@ def gen_thesis(topic):
     # if textFinder(results, syns_set) == -1:
     #     print "no impact found"
     # return thesis_temp, keyword
+
+    return section
 # to open the document and read the text
 
 # send generated topic to stop words to be cleaned
@@ -230,14 +238,14 @@ def gen_thesis(topic):
 # print filtered_words
 
 
-def main():
-    topic = raw_input("Enter topic: ")
-    gen_thesis(topic)
-    # query, keyword = 
-    # return query, keyword
+# def main():
+#     # topic = raw_input("Enter topic: ")
+#     gen_thesis(topic)
+#     # query, keyword = 
+#     # return query, keyword
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
 
