@@ -19,10 +19,11 @@ def extract_keywords(myThesis):
             Keywordsstr.append(str(word))
         except:
             pass
-    # print Keywordsstr
+    #print "Keywordsstr: ", Keywordsstr
     return Keywordsstr
 
 def text_find(query_text, queryKeyword):
+    #print "query test: ", query_text
 
     query_text = urllib.urlencode({'q': query_text})
     response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
@@ -46,7 +47,7 @@ def text_find(query_text, queryKeyword):
     soup = BeautifulSoup(data)
     # print snippets
     for syn in syns_set:
-        # print syn
+        print syn
         syn = syn.replace("_", " ")
         snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
         if len(snippets) != 0:
@@ -63,7 +64,12 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
+<<<<<<< HEAD:flask/app/ScriptGen.py
     myTitle, myThesis = thesis.genThesis(topic)
+=======
+
+    myTitle, myThesis = version1.genThesis(topic)
+>>>>>>> FETCH_HEAD:flask/app/TestCodeThesis.py
     while myTitle == "" or myThesis == "":
         myTitle, myThesis = thesis.genThesis(topic)
     thesisKeywords = extract_keywords(myThesis)
