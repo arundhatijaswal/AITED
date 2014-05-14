@@ -66,13 +66,6 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> FETCH_HEAD
->>>>>>> FETCH_HEAD
     myTitle, myThesis = thesis.genThesis(topic)
     while myTitle == "" or myThesis == "":
         myTitle, myThesis = thesis.genThesis(topic)

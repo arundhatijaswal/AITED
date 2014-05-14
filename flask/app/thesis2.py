@@ -111,9 +111,9 @@ def genThesis(topic):
 
 	title, url, category = genTopic(topic)
 
-	# print '\n'
-	# print title
-	# print '===================================================== \n'
+	print '\n'
+	print title
+	print '===================================================== \n'
 
 	r = requests.get(url)
 	data = r.text
@@ -220,16 +220,20 @@ def genThesis(topic):
 
 	if not data:
 		print "Couldn't find anything - data dictionary"
-		# return "", ""
+		return "", ""
 	else: #if they aren't empty, do this
 		# print 'Top Argument: '+opinions[0]+'\n'
 		# topArg = opinions[0].split()
 		""" send the thesis and userArgs off to the function to be strengthened """
 		# thesis = opinions[0]+' '+long_support
-		thesis_stmt = improvements(title, data)
+		# thesis_stmt = improvements(title, data)
 		# print "Thesis: "
 		# print thesis
-		return thesis_stmt
+		one = random.choice(data.keys())
+		two = data[one]
+		thesis = one + two
+		print 'Thesis: ', thesis
+		return title, thesis
 
 
 def main():

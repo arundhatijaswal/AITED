@@ -12,7 +12,6 @@ app.secret_key = 'F34TF$($e34D'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-<<<<<<< HEAD
 	form = topicsForm()
 	if request.method == 'POST':
 		topic = request.form['topics']
@@ -32,48 +31,17 @@ def index():
 			solution = contents[4]
 			impact = contents[5]
 
-			# while title == "" or thesis == "" or importance == "" or challenge == "" or solution == "" or impact == "":
-			# 	contents = ScriptGen.gen_thesis(topic)
-			# 	title = contents[0]
-			# 	thesis = contents[1]
-			# 	importance = contents[2]
-			# 	challenge = contents[3]
-			# 	solution = contents[4]
-			# 	impact = contents[5]
+			while title == "" or thesis == "" or importance == "" or challenge == "" or solution == "" or impact == "":
+				contents = ScriptGen.gen_thesis(topic)
+				title = contents[0]
+				thesis = contents[1]
+				importance = contents[2]
+				challenge = contents[3]
+				solution = contents[4]
+				impact = contents[5]
 			return render_template('index.html', form=form, title=title, thesis=thesis, importance=importance, challenge=challenge, solution=solution, impact=impact)
 		except:
-			 return redirect('', code=302)
-=======
-    form = topicsForm()
-    if request.method == 'POST':
-        topic = request.form['topics']
-        if topic == 'Comedy':
-            topic == 'Funny'
-        elif topic == 'Transportation':
-            topic == 'Cars'
-        thesis = "this is where the thesis goes. it's very important for this project"
-        try:
-            contents = ScriptGen.gen_thesis(topic)
-            title = contents[0]
-            thesis = contents[1]
-            importance = contents[2]
-            challenge = contents[3]
-            solution = contents[4]
-            impact = contents[5]
-
-            while title == "" or thesis == "" or importance == "" or challenge == "" or solution == "" or impact == "":
-                contents = ScriptGen.gen_thesis(topic)
-                title = contents[0]
-                thesis = contents[1]
-                importance = contents[2]
-                challenge = contents[3]
-                solution = contents[4]
-                impact = contents[5]
-            return render_template('index.html', form=form, title=title, thesis=thesis, importance=importance,
-                                   challenge=challenge, solution=solution, impact=impact)
-        except:
             return redirect('', code=302)
->>>>>>> FETCH_HEAD
 
     elif request.method == 'GET':
         return render_template('index.html', form=form)
