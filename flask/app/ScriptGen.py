@@ -64,12 +64,8 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
-<<<<<<< HEAD:flask/app/ScriptGen.py
-    myTitle, myThesis = thesis.genThesis(topic)
-=======
 
-    myTitle, myThesis = version1.genThesis(topic)
->>>>>>> FETCH_HEAD:flask/app/TestCodeThesis.py
+    myTitle, myThesis = thesis.genThesis(topic)
     while myTitle == "" or myThesis == "":
         myTitle, myThesis = thesis.genThesis(topic)
     thesisKeywords = extract_keywords(myThesis)
