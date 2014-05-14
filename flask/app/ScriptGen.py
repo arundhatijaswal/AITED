@@ -22,7 +22,7 @@ def extract_keywords(myThesis):
     #print "Keywordsstr: ", Keywordsstr
     return Keywordsstr
 
-def text_find(query_text, queryKeyword):
+def text_find(query_text, queryKeyword, url_used):
     #print "query test: ", query_text
 
     query_text = urllib.urlencode({'q': query_text})
@@ -31,7 +31,6 @@ def text_find(query_text, queryKeyword):
     results = json['responseData']['results']
     # print query
     # print json
-
     # print 'length of results: ', len(results)
 
     syns_tmp = wordnet.synsets(queryKeyword)
@@ -40,6 +39,9 @@ def text_find(query_text, queryKeyword):
 
 
     section_url = results[random.randint(0, (len(results) - 1))]['url']
+    if url_used:
+        while section_url in url_used:
+            section_url = results[random.randint(0, (len(results) - 1))]['url']
 
     print section_url
     r = requests.get(section_url)
@@ -47,16 +49,16 @@ def text_find(query_text, queryKeyword):
     soup = BeautifulSoup(data)
     # print snippets
     for syn in syns_set:
-        print syn
+        # print syn
         syn = syn.replace("_", " ")
         snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
         if len(snippets) != 0:
             section_text = random.choice(snippets).text
             print section_text
-            return section_text
+            return 1, section_text
         # else:
         #     print syn, " not found"
-    return "no section text found"
+    return -1, section_url
 
 
 def gen_thesis(topic):
@@ -64,13 +66,171 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> FETCH_HEAD
+>>>>>>> FETCH_HEAD
     myTitle, myThesis = thesis.genThesis(topic)
     while myTitle == "" or myThesis == "":
         myTitle, myThesis = thesis.genThesis(topic)
     thesisKeywords = extract_keywords(myThesis)
     section.append(myTitle)
     section.append(myThesis)
-    # topic = raw_input('\nTopic: ')
+    #
+
+    #
+    #
+    #generate the importance section
+    #
+    #
+    #
+    query_text = 'importance of ' + topic
+    for word in thesisKeywords:
+        query_text = query_text + ' ' + word
+    queryKeyword = 'importance'
+    print '\nimportance section'
+    used_url = []
+    success, importance = text_find(query_text, queryKeyword, used_url)
+    while(success == -1):
+        success, importance = text_find(query_text, queryKeyword, used_url.append(importance))
+    section.append(importance)
+
+
+    #
+    #
+    #
+    #generate the bottleneck section
+    #
+    #
+    #
+    query_text = 'biggest challenge in ' + topic
+    for word in thesisKeywords:
+        query_text = query_text + ' ' + word
+    queryKeyword = 'challenge'
+    print '\nchallenge section'
+    used_url = []
+    success, bottleneck = text_find(query_text, queryKeyword, used_url)
+    while(success == -1):
+        success, bottleneck = text_find(query_text, queryKeyword, used_url.append(bottleneck))
+    section.append(bottleneck)
+
+    # query_text = urllib.urlencode({'q': query_text})
+    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
+    # json = m_json.loads(response)
+    # results = json['responseData']['results']
+    # # print query
+    # # print json
+
+    # print 'length of results: ', len(results)
+
+    # syns_tmp = wordnet.synsets('challenge')
+    # syns = [l.name for s in syns_tmp for l in s.lemmas]
+    # syns_set = Set(syns)
+    # for syn in syns_set:
+    #     syn.replace("_", " ")
+    # if text_find(results, syns_set) == -1:
+    #     print "no bottleneck found"
+
+    #
+    #
+    #
+    #generate the solution section
+    #
+    #
+    #
+    query_text = 'solution to ' + topic
+    for word in thesisKeywords:
+        query_text = query_text + ' ' + word
+    queryKeyword = 'solution'
+    print '\nsolution section'
+    used_url = []
+    success, solution = text_find(query_text, queryKeyword, used_url)
+    while(success == -1):
+        success, solution = text_find(query_text, queryKeyword, used_url.append(solution))
+    section.append(solution)
+    # query_text = urllib.urlencode({'q': query_text})
+    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
+    # json = m_json.loads(response)
+    # results = json['responseData']['results']
+    # # print query
+    # # print json
+
+    # print 'length of results: ', len(results)
+
+    # syns_tmp = wordnet.synsets('solution')
+    # syns = [l.name for s in syns_tmp for l in s.lemmas]
+    # syns_set = Set(syns)
+    # for syn in syns_set:
+    #     syn.replace("_", " ")
+    # if text_find(results, syns_set) == -1:
+    #     print "no solution found"
+    #
+    #
+    #
+    #generate the impact section
+    #
+    #
+    #
+    query_text = 'impact of ' 
+    solutionKeywords = extract_keywords(solution)
+    # for word in solutionKeywords:
+    #     query_text = query_text + ' ' + word
+    #     print word
+    # query_text = query_text + ' on ' + topic
+    for word in thesisKeywords:
+        query_text = query_text + ' ' + word
+        print word
+    queryKeyword = 'impact'
+    print '\nimpact section'
+    used_url = []
+    success, impact = text_find(query_text, queryKeyword, used_url)
+    while(success == -1):
+        success, impact = text_find(query_text, queryKeyword, used_url.append(impact))
+    section.append(impact)
+    # query_text = 'impact of ' + topic + " " + keyword
+    # for word in mykeywordsstr:
+    #     query_text = query_text + ' ' + word
+    # query_text = urllib.urlencode({'q': query_text})
+    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
+    # json = m_json.loads(response)
+    # results = json['responseData']['results']
+    # # print query
+    # # print json
+    #
+    # print 'length of results: ', len(results)
+    #
+    # syns_tmp = wordnet.synsets('impact')
+    # syns = [l.name for s in syns_tmp for l in s.lemmas]
+    # syns_set = Set(syns)
+    # for syn in syns_set:
+    #     syn.replace("_", " ")
+    # if textFinder(results, syns_set) == -1:
+    #     print "no impact found"
+    # return thesis_temp, keyword
+
+    return section
+# to open the document and read the text
+
+# send generated topic to stop words to be cleaned
+# filtered_words = [w for w in topic.split() if not w in stopwords.words('english')]
+# print filtered_words
+
+
+def main():
+    topic = raw_input("Enter topic: ")
+    gen_thesis(topic)
+    # query, keyword =
+    # return query, keyword
+
+
+if __name__ == "__main__":
+    main()
+
+
+ # topic = raw_input('\nTopic: ')
     # keyword = raw_input('\nkeyword: ')
     # websites = {'businessinsider.com': 'h1', 'cnn.com': 'h1'}
     # web = random.choice(websites.keys())
@@ -115,138 +275,3 @@ def gen_thesis(topic):
     #     except:
     #         pass
     # print mykeywordsstr
-
-    #
-    #
-    #generate the importance section
-    #
-    #
-    #
-    query_text = 'importance of ' + topic
-    for word in thesisKeywords:
-        query_text = query_text + ' ' + word
-    queryKeyword = 'importance'
-    print '\nimportance section'
-    importance = text_find(query_text, queryKeyword)
-    section.append(importance)
-
-
-    #
-    #
-    #
-    #generate the bottleneck section
-    #
-    #
-    #
-    query_text = 'biggest challenge in ' + topic
-    for word in thesisKeywords:
-        query_text = query_text + ' ' + word
-    queryKeyword = 'challenge'
-    print '\nchallenge section'
-    section.append(text_find(query_text, queryKeyword))
-
-    # query_text = urllib.urlencode({'q': query_text})
-    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
-    # json = m_json.loads(response)
-    # results = json['responseData']['results']
-    # # print query
-    # # print json
-
-    # print 'length of results: ', len(results)
-
-    # syns_tmp = wordnet.synsets('challenge')
-    # syns = [l.name for s in syns_tmp for l in s.lemmas]
-    # syns_set = Set(syns)
-    # for syn in syns_set:
-    #     syn.replace("_", " ")
-    # if text_find(results, syns_set) == -1:
-    #     print "no bottleneck found"
-
-    #
-    #
-    #
-    #generate the solution section
-    #
-    #
-    #
-    query_text = 'solution to ' + topic
-    for word in thesisKeywords:
-        query_text = query_text + ' ' + word
-    queryKeyword = 'solution'
-    print '\nsolution section'
-    solution = text_find(query_text, queryKeyword)
-    section.append(solution)
-    # query_text = urllib.urlencode({'q': query_text})
-    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
-    # json = m_json.loads(response)
-    # results = json['responseData']['results']
-    # # print query
-    # # print json
-
-    # print 'length of results: ', len(results)
-
-    # syns_tmp = wordnet.synsets('solution')
-    # syns = [l.name for s in syns_tmp for l in s.lemmas]
-    # syns_set = Set(syns)
-    # for syn in syns_set:
-    #     syn.replace("_", " ")
-    # if text_find(results, syns_set) == -1:
-    #     print "no solution found"
-    #
-    #
-    #
-    #generate the impact section
-    #
-    #
-    #
-    query_text = 'impact of ' 
-    solutionKeywords = extract_keywords(solution)
-    for word in solutionKeywords:
-        query_text = query_text + ' ' + word
-    query_text = query_text + ' on ' + topic
-    for word in thesisKeywords:
-        query_text = query_text + ' ' + word
-    queryKeyword = 'impact'
-    print '\nimpact section'
-    impact = text_find(query_text, queryKeyword)
-    section.append(impact)
-    # query_text = 'impact of ' + topic + " " + keyword
-    # for word in mykeywordsstr:
-    #     query_text = query_text + ' ' + word
-    # query_text = urllib.urlencode({'q': query_text})
-    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
-    # json = m_json.loads(response)
-    # results = json['responseData']['results']
-    # # print query
-    # # print json
-    #
-    # print 'length of results: ', len(results)
-    #
-    # syns_tmp = wordnet.synsets('impact')
-    # syns = [l.name for s in syns_tmp for l in s.lemmas]
-    # syns_set = Set(syns)
-    # for syn in syns_set:
-    #     syn.replace("_", " ")
-    # if textFinder(results, syns_set) == -1:
-    #     print "no impact found"
-    # return thesis_temp, keyword
-
-    return section
-# to open the document and read the text
-
-# send generated topic to stop words to be cleaned
-# filtered_words = [w for w in topic.split() if not w in stopwords.words('english')]
-# print filtered_words
-
-
-# def main():
-#     # topic = raw_input("Enter topic: ")
-#     gen_thesis(topic)
-#     # query, keyword = 
-#     # return query, keyword
-
-
-# if __name__ == "__main__":
-#     main()
-
-
