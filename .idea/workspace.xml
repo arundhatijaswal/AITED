@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4082fcb5-ab6d-40d9-beb6-8bfdcd442775" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flask/app/TestCodeThesis.py" afterPath="$PROJECT_DIR$/flask/app/TestCodeThesis.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flask/app/ScriptGen.py" afterPath="$PROJECT_DIR$/flask/app/ScriptGen.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AITED.iws" />
@@ -26,10 +26,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TestCodeThesis.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/flask/app/TestCodeThesis.py">
+      <file leaf-file-name="ScriptGen.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/flask/app/ScriptGen.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="118" column="5" selection-start="3598" selection-end="3598" vertical-scroll-proportion="0.23510972" vertical-offset="1620" max-vertical-offset="3585">
+            <state line="80" column="35" selection-start="2625" selection-end="2625" vertical-scroll-proportion="0.7413793" vertical-offset="727" max-vertical-offset="3870">
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -52,6 +52,7 @@
       <list>
         <option value="$PROJECT_DIR$/TestCodeThesis.py" />
         <option value="$PROJECT_DIR$/flask/app/TestCodeThesis.py" />
+        <option value="$PROJECT_DIR$/flask/app/ScriptGen.py" />
       </list>
     </option>
   </component>
@@ -86,6 +87,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -138,7 +140,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -316,11 +317,11 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299566" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -340,9 +341,9 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/flask/app/TestCodeThesis.py">
+    <entry file="file://$PROJECT_DIR$/flask/app/ScriptGen.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="5" selection-start="3598" selection-end="3598" vertical-scroll-proportion="0.23510972" vertical-offset="1620" max-vertical-offset="3585">
+        <state line="80" column="35" selection-start="2625" selection-end="2625" vertical-scroll-proportion="0.7413793" vertical-offset="727" max-vertical-offset="3870">
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
