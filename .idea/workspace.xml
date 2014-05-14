@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4082fcb5-ab6d-40d9-beb6-8bfdcd442775" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flask/app/ScriptGen.py" afterPath="$PROJECT_DIR$/flask/app/ScriptGen.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flask/app/views.py" afterPath="$PROJECT_DIR$/flask/app/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AITED.iws" />
@@ -29,10 +30,30 @@
       <file leaf-file-name="ScriptGen.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flask/app/ScriptGen.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="80" column="35" selection-start="2625" selection-end="2625" vertical-scroll-proportion="0.7413793" vertical-offset="727" max-vertical-offset="3870">
+            <state line="214" column="3" selection-start="6690" selection-end="6850" vertical-scroll-proportion="0.11764706" vertical-offset="3138" max-vertical-offset="4125">
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/flask/app/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="4" selection-start="320" selection-end="320" vertical-scroll-proportion="-0.92" vertical-offset="202" max-vertical-offset="840">
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/flask/app/templates/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="70" column="4" selection-start="2652" selection-end="3319" vertical-scroll-proportion="-15.458333" vertical-offset="679" max-vertical-offset="1305">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -52,6 +73,8 @@
       <list>
         <option value="$PROJECT_DIR$/TestCodeThesis.py" />
         <option value="$PROJECT_DIR$/flask/app/TestCodeThesis.py" />
+        <option value="$PROJECT_DIR$/flask/app/views.py" />
+        <option value="$PROJECT_DIR$/flask/app/templates/index.html" />
         <option value="$PROJECT_DIR$/flask/app/ScriptGen.py" />
       </list>
     </option>
@@ -135,6 +158,76 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AITED" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AITED" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AITED" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AITED" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AITED" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AITED" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flask" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -341,9 +434,25 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/flask/app/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="4" selection-start="2652" selection-end="3319" vertical-scroll-proportion="-15.458333" vertical-offset="679" max-vertical-offset="1305">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flask/app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="4" selection-start="320" selection-end="320" vertical-scroll-proportion="-0.92" vertical-offset="202" max-vertical-offset="840">
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/flask/app/ScriptGen.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="35" selection-start="2625" selection-end="2625" vertical-scroll-proportion="0.7413793" vertical-offset="727" max-vertical-offset="3870">
+        <state line="214" column="3" selection-start="6690" selection-end="6850" vertical-scroll-proportion="0.11764706" vertical-offset="3138" max-vertical-offset="4125">
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
