@@ -14,6 +14,7 @@ list_of_topics = (
     ('Sports', 'Sports'),
     ('Technology', 'Technology'),
     ('Transportation', 'Transportation'),
+    ('Wildcard', 'Wildcard'),
 )
 
 class topicsForm(Form):

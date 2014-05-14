@@ -3,15 +3,15 @@ $( document ).ready(function() {
     $('#submit').addClass("btn btn-default");
 });
 
-function checkFirstVisit() {
-  if(document.cookie.indexOf('mycookie')==-1) {
-    // cookie doesn't exist, create it now
-    document.cookie = 'mycookie=1';
-  }
-  else {
-    transition(); 
-  }
-}
+// function checkFirstVisit() {
+//   if(document.cookie.indexOf('mycookie')==-1) {
+//     // cookie doesn't exist, create it now
+//     document.cookie = 'mycookie=1';
+//   }
+//   else {
+//     transition(); 
+//   }
+// }
 
 function transition() {
 	setTimeout( "jQuery('.header').addClass('header-shrink');", 2000 );

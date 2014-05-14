@@ -2,8 +2,8 @@
 <html>
     <head>
         <!-- files to be loaded first -->
-        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-        <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah|Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+        <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -17,7 +17,7 @@
         <script src="static/js/modernizr.custom.js"></script>
     </head>
 
-    <body onload="checkFirstVisit()">
+    <body>
 
         <div id="front">
             <!-- HEADER -->
@@ -35,6 +35,17 @@
                     {{ form.submit }}
                 </div>
             </form>
+
+            <!-- CONTENT TO BE DISPLAYED -->
+            <div id="content">
+                <h1 class="category">{{category}}</h1>
+                <h3 class="title">{{title}}</h3>
+                <p class="part1">{{thesis}}</p>
+                <p class="part2">{{importance}}</p>
+                <p class="part3">{{challenge}}</p>
+                <p class="part4">{{solution}}</p>
+                <p class="part5">{{impact}}</p>
+            </div>
         </div>
 
         <div id="back">
@@ -54,16 +65,7 @@
                 </div>
             </section>
 
-            <!-- CONTENT TO BE DISPLAYED -->
-            <div id="content">
-                <h1 class="category">{{category}}</h1>
-                <h3 class="title">{{title}}</h3>
-                <p class="part1">{{thesis}}</p>
-                <p class="part2">{{importance}}</p>
-                <p class="part3">{{challenge}}</p>
-                <p class="part4">{{solution}}</p>
-                <p class="part5">{{impact}}</p>
-            </div>
+            
         </div>
 
     </body>

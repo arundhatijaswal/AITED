@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 import nltk.data
 from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet
 
 # Global variables
 issues = {}
@@ -17,7 +18,7 @@ def genTopic(category):
 	""" web scraper that returns the title and url from 
 	debate.org. This will form the thesis of our script """ 
 
-	# first, take the topic and navigate to the debates.org website
+	""" first, take the topic and navigate to the debates.org website """
 	# category = raw_input ( '\nEnter Topic: ' )
 	websites = ['http://www.debate.org/opinions/'+category+'/?sort=popular', 
 		   'http://www.debate.org/opinions/'+category+'/?p=2&sort=popular']
@@ -31,12 +32,12 @@ def genTopic(category):
 	results = soup.find_all("p", "l-name") 
 	for i in range(0, len(results)):
 		
-		# get the titles
+		""" get the titles """
 		temp = results[i].find("span", "q-title").text
 		tmps = temp.split()
 
-		# for each title, make sure it's appropriate length and get the url
-		# then, add title and url to dictionary
+		""" for each title, make sure it's appropriate length and get the url
+			then, add title and url to dictionary """
 		if len(tmps) > 5 and len(tmps) < 20: 
 			title = ' '.join(tmps)
 			url = 'http://www.debate.org'+results[i].find("a").get('href')+'?nsort=3&ysort=3'
@@ -45,6 +46,56 @@ def genTopic(category):
 	topic = random.choice(issues.keys())
 	link = issues[topic]
 	return topic, link, category
+
+
+def dePunc(rawword):
+    """ remove punctuation in the input string """
+    L = [ c for c in rawword if 'A' <= c <= 'Z' or 'a' <= c <= 'z' ]
+    word = ''.join(L)
+    return word
+
+
+def improvements(title, data):
+	""" this functions improves the thesis generator in 3 ways:
+	1.) fix the topArg by removing yes or no statements
+	2.) include punctuations
+	3.) make sure top argument isn't repeated in the support part
+	"""
+
+	print '\n'
+	print title
+	print '========================================================'
+	print '\n'
+	# print data
+
+	arg = random.choice(data.keys())
+	support = data[arg]
+
+
+	""" clean up the argument """
+	print "Argument: ", arg
+	print "support: ", support
+	keys = arg.split()
+
+	# print keys
+
+	if "yes" or "Yes" or "no" or "No" in keys[0]:
+		print keys[1:]
+	else:
+		print keys
+
+	""" clean up the support """
+
+
+	# temp = topArg.lower()
+
+	# # clean top argument
+	# if "Yes." or "No." in topArg[0]:
+	# 	sent = topArg[1:]
+	# 	print sent
+	# # print topArg
+	return
+
 
 
 def genThesis(topic):
@@ -67,10 +118,17 @@ def genThesis(topic):
 	r = requests.get(url)
 	data = r.text
 	soup = BeautifulSoup(data)
+	cleaned = []
 
-	# remove stopwords using nltk stop list and print the keywords
+	""" remove stopwords using nltk stop list and print the keywords """
 	keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
-	keys = ' '.join(keywords)
+	# print "keywords: ", keywords
+	for i in keywords:
+		cleaned.append(dePunc(i))
+	# print "cleaned: ", cleaned
+
+	# cleaned list of keywords
+	keys = ' '.join(cleaned)
 	
 	vote = soup.find("span", "no-text").text
 	strings = str(vote).split()
@@ -78,9 +136,13 @@ def genThesis(topic):
 	opinions = []
 	args = []
 	argSplit = []
+	clean_keys = []
+	data = {}
 
+	""" for each top argument, check if it is long enough and contains more than one word from
+	the list of title keywords. """
 	if rating > 50:
-		# print rating, " No"
+		# vote is " No"
 		args = soup.find('div', attrs={'id':'no-arguments'}).find_all("li", "hasData")
 		# print args
 		for i in range(0, len(args)):
@@ -89,18 +151,23 @@ def genThesis(topic):
 			userArg = args[i].find("p").text
 			# print userArg
 			tmps = temp.split()
-			if len(tmps) > 3: 
+			# print tmps
+			for i in tmps:
+				clean_keys.append(dePunc(i))
+
+			if len(clean_keys) > 3: 
 				count = 0
-				for i in tmps:
-					for j in keywords:
+				for i in clean_keys:
+					for j in cleaned:
 						# print stemmer.lemmatize(i).lower()+','+stemmer.lemmatize(j).lower()
 						if stemmer.lemmatize(i).lower() == stemmer.lemmatize(j).lower():
 							count += 1
-							if count > 2:
-								opinions.append(' '.join(tmps))
+							if count > 1:
+								# opinions.append(' '.join(tmps))
+								data[str(temp).encode('utf8')] = str(userArg).encode('utf8')
 								# print count
 	else:
-		# print rating, " Yes"
+		# vote is " Yes"
 		args = soup.find('div', attrs={'id':'yes-arguments'}).find_all("li", "hasData")
 		# print args
 		for i in range(0, len(args)):
@@ -109,81 +176,69 @@ def genThesis(topic):
 			userArg = args[i].find("p").text
 			# print userArg
 			tmps = temp.split()
-			if len(tmps) > 3: 
+			# print tmps
+			for i in tmps:
+				clean_keys.append(dePunc(i))
+
+			if len(clean_keys) > 3: 
+				# opinions.append(' '.join(tmps))
+				# print opinions
 				count = 0
-				for i in tmps:
-					for j in keywords:
+				for i in clean_keys:
+					for j in cleaned:
 						# print stemmer.lemmatize(i).lower()+','+stemmer.lemmatize(j).lower()
 						if stemmer.lemmatize(i).lower() == stemmer.lemmatize(j).lower():
 							count += 1
-							if count > 2:
-								opinions.append(' '.join(tmps))
+							if count > 1:
+								# opinions.append(temp)
+								data[str(temp).encode('utf8')] = str(userArg).encode('utf8')
 								# print count
-	
-	# get the first sentence in the top user's argument
-	tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-	support = ''.join(tokenizer.tokenize(userArg.strip())[0])
 
-	if not opinions:
-		return "", ""
-		# genThesis(topic)
-	elif not userArg:
-		return "", ""
-		# genThesis(topic)
-	else:
+
+	""" form the thesis by taking a random opinion and it's supporting argument """
+	# tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+	# support = ''.join(tokenizer.tokenize(userArg.strip())[0])
+	# long_support = userArg
+
+	# print data
+
+	# if not opinions: #checking if opinions is empty
+	# 	print "Couldn't find anything - opinions"
+	# 	# return "", ""
+	# elif not userArg: #checking if userArgs is empty
+	# 	print "Couldn't find anything - arguments"
+	# 	# return "", ""
+	# else: #if they aren't empty, do this
+	# 	# print 'Top Argument: '+opinions[0]+'\n'
+	# 	# topArg = opinions[0].split()
+	# 	""" send the thesis and userArgs off to the function to be strengthened """
+	# 	# thesis = opinions[0]+' '+long_support
+	# 	thesis_stmt = thesis(arg, long_support)
+	# 	print "Thesis: "
+	# 	print thesis
+	# 	# return title, thesis
+
+	if not data:
+		print "Couldn't find anything - data dictionary"
+		# return "", ""
+	else: #if they aren't empty, do this
 		# print 'Top Argument: '+opinions[0]+'\n'
-		topArg = opinions[0].split()
-		thesis = opinions[0]+' '+support
+		# topArg = opinions[0].split()
+		""" send the thesis and userArgs off to the function to be strengthened """
+		# thesis = opinions[0]+' '+long_support
+		thesis_stmt = improvements(title, data)
 		# print "Thesis: "
-		print 'Title: ', title
-		print 'Thesis: ', thesis
-		return title, thesis
-
-
-
-	# query = urllib.urlencode ( { 'q' : query } )
-	# response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query ).read()
-	# json = m_json.loads ( response )
-
-	# # stores the results of the google search
-	# results = json [ 'responseData' ] [ 'results' ]
-
-
-	# # use the keywords to do a search for a topic
-	# websites = ['cnn.com', 
-	# 			'huffingtonpost.com',
-	# 			'businessinsider.com',
-	# 			'www.nytimes.com'
-	# ]
-
-	# web = random.choice(websites)
-	# query = 'reason why ' + title + ' site:' + web
-
-	
-
-	# if len(results) > 0:
-	# 	thesisURL = results[random.randint(0, (len(results) - 1))]['url']
-	# 	r = requests.get(thesisURL)
-	# 	data = r.text
-	# 	soup = BeautifulSoup(data)
-	# 	# print soup.prettify()
-
-	# 	title = str(soup.title).replace("<title>", "").replace("</title>", "")
-	# 	print title
-	# 	print thesisURL
-	# else:
-	# 	print 'Search returned zero (0) results. Trying again...', '\n'
-	# 	genThesis()
-
-
+		# print thesis
+		return thesis_stmt
 
 
 def main():
 	topic = raw_input("Enter topic: ")
-	title, thesis = genThesis(topic)
-	while title == "" or thesis == "":
-		title, thesis = genThesis(topic)
-	print title, thesis
+	genThesis(topic)
+	# while title == "" or thesis == "":
+	# 	title, thesis = genThesis(topic)
+	# print "Thesis: "
+	# print thesis
 
 if __name__ == "__main__":
 	main()
