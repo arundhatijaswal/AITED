@@ -88,7 +88,8 @@ def gen_thesis(topic):
     used_url = []
     success, importance = text_find(query_text, queryKeyword, used_url)
     while(success == -1):
-        success, importance = text_find(query_text, queryKeyword, used_url.append(importance))
+        used_url.append(importance)
+        success, importance = text_find(query_text, queryKeyword, used_url)
     section.append(importance)
 
 
@@ -107,7 +108,8 @@ def gen_thesis(topic):
     used_url = []
     success, bottleneck = text_find(query_text, queryKeyword, used_url)
     while(success == -1):
-        success, bottleneck = text_find(query_text, queryKeyword, used_url.append(bottleneck))
+        used_url.append(bottleneck)
+        success, bottleneck = text_find(query_text, queryKeyword, bottleneck)
     section.append(bottleneck)
 
     # query_text = urllib.urlencode({'q': query_text})
@@ -142,7 +144,8 @@ def gen_thesis(topic):
     used_url = []
     success, solution = text_find(query_text, queryKeyword, used_url)
     while(success == -1):
-        success, solution = text_find(query_text, queryKeyword, used_url.append(solution))
+        used_url.append(solution)
+        success, solution = text_find(query_text, queryKeyword, solution)
     section.append(solution)
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
@@ -175,13 +178,14 @@ def gen_thesis(topic):
     # query_text = query_text + ' on ' + topic
     for word in thesisKeywords:
         query_text = query_text + ' ' + word
-        print word
+        # print word
     queryKeyword = 'impact'
     print '\nimpact section'
     used_url = []
     success, impact = text_find(query_text, queryKeyword, used_url)
     while(success == -1):
-        success, impact = text_find(query_text, queryKeyword, used_url.append(impact))
+        used_url.append(impact)
+        success, impact = text_find(query_text, queryKeyword, impact)
     section.append(impact)
     # query_text = 'impact of ' + topic + " " + keyword
     # for word in mykeywordsstr:
