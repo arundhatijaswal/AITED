@@ -1,12 +1,27 @@
 import urllib
 from pprint import pprint
 import json as m_json
-import requests, random, re, string
+import requests, random, re, string, os
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 import nltk.data
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
+
+filename = ""
+stoplist = ""
+folder = ""
+
+filename = os.listdir("app")
+
+for i in filename:
+	if i == "stopwords.txt":
+		stoplist = os.path.join("app", filename[i])
+	elif i == "nltk_data":
+		folder = os.path.join("app", filename[i])
+
+nltk.data.path.append(folder)
+
 
 # Global variables
 issues = {}
@@ -55,6 +70,18 @@ def dePunc(rawword):
     return word
 
 
+def stopWords():
+    swlist = []
+    f = open(stoplist, 'r')
+    line = f.readline()
+    while line:
+        word = line.strip()
+        swlist.append(word)
+        line = f.readline()
+    f.close()
+    return swlist
+
+
 def improvements(title, data):
 	""" this functions improves the thesis generator in 3 ways:
 	1.) fix the topArg by removing yes or no statements
@@ -97,7 +124,6 @@ def improvements(title, data):
 	return
 
 
-
 def genThesis(topic):
 	""" 
 	in order to generate the thesis, we need the following:
@@ -111,9 +137,9 @@ def genThesis(topic):
 
 	title, url, category = genTopic(topic)
 
-	print '\n'
-	print title
-	print '===================================================== \n'
+	# print '\n'
+	# print title
+	# print '===================================================== \n'
 
 	r = requests.get(url)
 	data = r.text
@@ -121,8 +147,10 @@ def genThesis(topic):
 	cleaned = []
 
 	""" remove stopwords using nltk stop list and print the keywords """
-	keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
-	# print "keywords: ", keywords
+	stoppers = stopWords()
+
+	keywords = [w for w in title.lower().split() if not w in stoppers]
+	print "keywords: ", keywords
 	for i in keywords:
 		cleaned.append(dePunc(i))
 	# print "cleaned: ", cleaned
@@ -191,7 +219,7 @@ def genThesis(topic):
 							count += 1
 							if count > 1:
 								# opinions.append(temp)
-								data[str(temp).encode('utf8')] = str(userArg).encode('utf8')
+								data[temp.encode('utf8')] = userArg.encode('utf8')
 								# print count
 
 
@@ -232,6 +260,7 @@ def genThesis(topic):
 		one = random.choice(data.keys())
 		two = data[one]
 		thesis = one + two
+		print title
 		print 'Thesis: ', thesis
 		return title, thesis
 

@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 from nltk.corpus import wordnet
 from sets import Set
-import thesis
+import thesis2
 
 section = []
 
@@ -19,8 +19,8 @@ def extract_keywords(myThesis):
             Keywordsstr.append(str(word))
         except:
             pass
-    #print "Keywordsstr: ", Keywordsstr
-    return Keywordsstr
+    # print "Keywordsstr: ", Keywordsstr
+    # return Keywordsstr
 
 def text_find(query_text, queryKeyword, url_used):
     #print "query test: ", query_text
@@ -66,14 +66,14 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
-    myTitle, myThesis = thesis.genThesis(topic)
+    myTitle, myThesis = thesis2.genThesis(topic)
     while myTitle == "" or myThesis == "":
-        myTitle, myThesis = thesis.genThesis(topic)
-    thesisKeywords = extract_keywords(myThesis)
+        myTitle, myThesis = thesis2.genThesis(topic)
+    thesisKeywords = extract_keywords(myTitle)
     section.append(myTitle)
     section.append(myThesis)
     #
-
+    # return
     #
     #
     #generate the importance section

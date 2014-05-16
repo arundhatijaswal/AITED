@@ -135,8 +135,8 @@ def genThesis(topic):
 		topArg = opinions[0].split()
 		thesis = opinions[0]+' '+support
 		# print "Thesis: "
-		print 'Title: ', title
-		print 'Thesis: ', thesis
+		# print 'Title: ', title
+		# print 'Thesis: ', thesis
 		return title, thesis
 
 
