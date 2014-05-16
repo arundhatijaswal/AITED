@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="front">
+    <!-- HEADER -->
+    <div class="header">TED <span class="cursive">2.0</span></div>
+    <div class="sub-header">ideas worth automating</div>
+
+    <!-- FORM -->
+    <div id="wrapper_form">
+        <form class="form-horizontal" role="form" method='post' action="{{ url_for('results') }}">
+            <div class="select-style">
+                <select name="topics" id="topics">
+                    <option>Select a Topic</option>
+                    <option>Comedy</option>
+                    <option>Education</option>
+                    <option>Entertainment</option>
+                    <option>Fashion</option>
+                    <option>Health</option>
+                    <option>Politics</option>
+                    <option>Religion</option>
+                    <option>Science</option>
+                    <option>Sports</option>
+                    <option>Technology</option>
+                    <option>Transportation</option>
+                    <option>Wildcard</option>
+                </select>
+            </div>
+            
+            <!-- BUTTONS -->
+            <div class="button">
+                <input type="submit" id="submit" />
+            </div>
+        </form>
+    </div>       
+</div>
+<div id="back">
+           
+    <!-- the component -->
+    <section class="main">
+        <div class="wrapper">
+            <div class="inner">
+                <span>L</span>
+                <span>o</span>
+                <span>a</span>
+                <span>d</span>
+                <span>i</span>
+                <span>n</span>
+                <span>g</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENT TO BE DISPLAYED -->
+    <div id="content">
+        <h1 class="category">{{topic}}</h1>
+        <h3 class="title">{{title}}</h3>
+        <p class="part1">{{thesis}}</p><!-- 
+        <p class="part2">{{importance}}</p>
+        <p class="part3">{{challenge}}</p>
+        <p class="part4">{{solution}}</p>
+        <p class="part5">{{impact}}</p> -->
+    </div>
+    
+    <script type="text/javascript">
+        var value = $('.category').text();
+        console.log(value);
+        $("#topics").val(value);
+        setTimeout( "jQuery('.header').addClass('header-shrink');", 2000 );
+        setTimeout( "jQuery('#front').addClass('transitioned shadow').css({'padding':'0'});", 1400 );
+        setTimeout( "jQuery('.sub-header').hide();", 2000 );
+        setTimeout( "jQuery('form').removeClass('form-horizontal').addClass('form-inline');", 2000 );
+        setTimeout( "jQuery('div').removeClass('button');", 2000 );
+        setTimeout( "jQuery('.select-style').css({'float':'left', 'width':'65%', 'margin-left':'15%', 'margin-right':'10px'});", 2000 );
+        setTimeout( "jQuery('.main').hide(); jQuery('#content').show();", 7000 );
+    </script>
+</div>
+{% endblock %}
