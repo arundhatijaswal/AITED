@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="front">
+    <!-- HEADER -->
+    <div class="header">TED <span class="cursive">2.0</span></div>
+    <div class="sub-header">ideas worth automating</div>
+
+    <!-- FORM -->
+    <div id="wrapper_form">
+        <form class="form-horizontal" role="form" method='post' action="{{ url_for('results') }}">
+            <div class="select-style">
+                <select name="topics">
+                    <option>Select a Topic</option>
+                    <option>Comedy</option>
+                    <option>Education</option>
+                    <option>Entertainment</option>
+                    <option>Fashion</option>
+                    <option>Health</option>
+                    <option>Politics</option>
+                    <option>Religion</option>
+                    <option>Science</option>
+                    <option>Sports</option>
+                    <option>Technology</option>
+                    <option>Transportation</option>
+                    <option>Wildcard</option>
+                </select>
+            </div>
+            
+            <!-- BUTTONS -->
+            <div class="button">
+                <input type="submit" id="submit" />
+            </div>
+        </form>
+    </div>       
+</div>
+
+{% endblock %}
