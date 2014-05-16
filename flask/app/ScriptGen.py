@@ -6,9 +6,14 @@ from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 from nltk.corpus import wordnet
 from sets import Set
+from nltk.stem import WordNetLemmatizer
+from nltk.stem.porter import *
+from google import search
 import thesis2
 
 section = []
+# stemmer = WordNetLemmatizer()
+stemmer = PorterStemmer()
 
 def extract_keywords(myThesis):
     myThesis_temp = myThesis.lower()
@@ -20,28 +25,34 @@ def extract_keywords(myThesis):
         except:
             pass
     # print "Keywordsstr: ", Keywordsstr
-    # return Keywordsstr
+    return Keywordsstr
 
 def text_find(query_text, queryKeyword, url_used):
     #print "query test: ", query_text
 
-    query_text = urllib.urlencode({'q': query_text})
-    response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
-    json = m_json.loads(response)
-    results = json['responseData']['results']
-    # print query
-    # print json
-    # print 'length of results: ', len(results)
+    # query_text = urllib.urlencode({'q': query_text})
+    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
+
+    urls = search(query_text, stop=10, pause=2.0)
+
+    # json = m_json.loads(response)
+    # results = json['responseData']['results']
+
 
     syns_tmp = wordnet.synsets(queryKeyword)
     syns = [l.name for s in syns_tmp for l in s.lemmas]
     syns_set = Set(syns)
 
 
-    section_url = results[random.randint(0, (len(results) - 1))]['url']
+    # section_url = results[random.randint(0, (len(results) - 1))]['url']
+    section_url = random.choice(list(enumerate(urls)))[1]
+
+    if ".pdf" in section_url or ".doc" in section_url:
+        return -1, section_url
     if url_used:
         while section_url in url_used:
-            section_url = results[random.randint(0, (len(results) - 1))]['url']
+            # section_url = results[random.randint(0, (len(results) - 1))]['url']
+            section_url = random.choice(list(enumerate(urls)))[1]
 
     print section_url
     r = requests.get(section_url)
@@ -51,7 +62,10 @@ def text_find(query_text, queryKeyword, url_used):
     for syn in syns_set:
         # print syn
         syn = syn.replace("_", " ")
+        # syn = stemmer.lemmatize(syn).lower()
+        syn = stemmer.stem(syn)
         snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
+        # print "stemmed syn: ", syn
         if len(snippets) != 0:
             section_text = random.choice(snippets).text
             print section_text
@@ -136,10 +150,11 @@ def gen_thesis(topic):
     #
     #
     #
-    query_text = 'solution to ' + topic
+    query_text = '"i suggest" ' + topic
     for word in thesisKeywords:
         query_text = query_text + ' ' + word
-    queryKeyword = 'solution'
+    queryKeyword = 'suggest'
+    print query_text
     print '\nsolution section'
     used_url = []
     success, solution = text_find(query_text, queryKeyword, used_url)
