@@ -149,7 +149,7 @@ def genThesis(topic):
     # stoppers = stopWords()
 
     keywords = [w for w in title.lower().split() if not w in stopwords.words("english")]
-    print "keywords: ", keywords
+    # print "keywords: ", keywords
     for i in keywords:
         cleaned.append(dePunc(i))
     # print "cleaned: ", cleaned
@@ -222,8 +222,6 @@ def genThesis(topic):
                             # print count
 
     """ form the thesis by taking a random opinion and it's supporting argument """
-    # tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-    # support = ''.join(tokenizer.tokenize(userArg.strip())[0])
     # long_support = userArg
 
     # print data
@@ -245,8 +243,8 @@ def genThesis(topic):
     # 	# return title, thesis
 
     if not data:
-        print "Couldn't find anything - data dictionary"
-        return "", ""
+        # print "Couldn't find anything - data dictionary"
+        return "", "", ""
     else:  #if they aren't empty, do this
         # print 'Top Argument: '+opinions[0]+'\n'
         # topArg = opinions[0].split()
@@ -257,15 +255,57 @@ def genThesis(topic):
         # print thesis
         one = random.choice(data.keys())
         two = data[one]
-        thesis = one + two
+
+        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+        tokens = tokenizer.tokenize(two.strip())
+        # for token in tokens:
+        #     print token, "\n"
+        thesis_len = len(tokens)
+        support = ' '.join(tokenizer.tokenize(two.strip()))
+        while thesis_len > 5:
+            one = random.choice(data.keys())
+            two = data[one]
+            tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+            thesis_len = len(tokenizer.tokenize(two.strip()))
+            support = ' '.join(tokenizer.tokenize(two.strip()))
+        # print "support: ", support
+        if tokens[0] == one:
+            one = ""
+
+        re.sub(r"[^0-9' 'a-zA-Z]$", r".", one)
+        # print one
+
+        thesis = one + " " + support
         print title
-        print 'Thesis: ', thesis
-        return title, thesis
+        # print 'Thesis: ', thesis
+        return title, one, support
+
+
+def introduction(title, one, support):
+    # print "before: ", title
+    # title = title.strip()
+    # re.sub(r"[^0-9' 'a-zA-Z]$", r",", title)
+    # print "after: ", title
+    title = title[0:-1]
+    if one != "" and one[0] != "I":
+        one = one[0].lower() + one[1:] #lower the first character
+        re.sub(r"[^0-9' 'a-zA-Z]$", r".", one) #add period after one
+        thesis = one + " " + support
+    elif one == "":
+        support = support[0].lower() + support[1:]
+        thesis = support
+    temp1 = "When asked " + title[0].lower() + title[1:] + ", the short answer is " + thesis
+    temp2 = "If asked " + title[0].lower() + title[1:] + ", I would say " + thesis
+    temp3 = "When we think " + title[0].lower() + title[1:] + ", some of us will say " + thesis
+    temps = [temp1, temp2, temp3]
+    intro = random.choice(temps)
+    return intro
 
 
 def main():
     topic = raw_input("Enter topic: ")
-    genThesis(topic)
+    title, one, support = genThesis(topic)
+    print introduction(title, one, support)
 
 # while title == "" or thesis == "":
 # 	title, thesis = genThesis(topic)
