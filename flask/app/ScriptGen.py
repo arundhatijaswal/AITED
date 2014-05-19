@@ -80,12 +80,7 @@ def text_find(query_text, queryKeyword, url_used):
 
 
         # print "stemmed syn: ", syn
-<<<<<<< HEAD
-        if len(snippets) != 0:
-            section_text = random.choice(snippets).text
-            print '\n', section_text
-            return 1, section_text
-=======
+
 
         #
         # if len(snippets) != 0:
@@ -94,7 +89,6 @@ def text_find(query_text, queryKeyword, url_used):
         #     return 1, section_text
 
 
->>>>>>> FETCH_HEAD
         # else:
         #     print syn, " not found"
     return -1, section_url
