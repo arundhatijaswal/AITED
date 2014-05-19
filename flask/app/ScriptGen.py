@@ -59,19 +59,35 @@ def text_find(query_text, queryKeyword, url_used):
     print section_url
     r = requests.get(section_url)
     data = r.text
-    soup = BeautifulSoup(data)
+    soup = BeautifulSoup(data, "lxml")
     # print snippets
     for syn in syns_set:
         # print syn
         syn = syn.replace("_", " ")
         # syn = stemmer.lemmatize(syn).lower()
         syn = stemmer.stem(syn)
-        snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
+        # snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
+        body = soup.findAll('p')
+        # print len(body)
+        for i in body:
+            i = i.text
+            if syn in i:
+                section_text = i
+                print section_text
+                return 1, section_text
+
+
+
+
         # print "stemmed syn: ", syn
-        if len(snippets) != 0:
-            section_text = random.choice(snippets).text
-            print section_text
-            return 1, section_text
+
+        #
+        # if len(snippets) != 0:
+        #     section_text = random.choice(snippets).text
+        #     print section_text
+        #     return 1, section_text
+
+
         # else:
         #     print syn, " not found"
     return -1, section_url
@@ -121,6 +137,7 @@ def gen_thesis(topic):
         used_url.append(importance)
         success, importance = text_find(query_text, queryKeyword, used_url)
     section.append(importance)
+    importance = importance.encode('utf8')
 
     response = alchemyapi.concepts('text',importance)
     if response['status'] == 'OK':
@@ -146,6 +163,7 @@ def gen_thesis(topic):
     print '\nchallenge section'
     used_url = []
     success, bottleneck = text_find(query_text, queryKeyword, used_url)
+    bottleneck = bottleneck.encode('utf8')
     while(success == -1):
         used_url.append(bottleneck)
         success, bottleneck = text_find(query_text, queryKeyword, bottleneck)
@@ -193,6 +211,7 @@ def gen_thesis(topic):
     print '\nsolution section'
     used_url = []
     success, solution = text_find(query_text, queryKeyword, used_url)
+    solution = solution.encode('utf8')
     while(success == -1):
         used_url.append(solution)
         success, solution = text_find(query_text, queryKeyword, solution)
@@ -244,6 +263,7 @@ def gen_thesis(topic):
     print '\nimpact section'
     used_url = []
     success, impact = text_find(query_text, queryKeyword, used_url)
+    impact = impact.encode('utf8')
     while(success == -1):
         used_url.append(impact)
         success, impact = text_find(query_text, queryKeyword, impact)
