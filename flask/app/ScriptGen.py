@@ -137,8 +137,8 @@ def gen_thesis(topic):
         used_url.append(importance)
         success, importance = text_find(query_text, queryKeyword, used_url)
     section.append(importance)
-    importance = importance.encode('utf8')
 
+    importance = importance.encode('utf8')
     response = alchemyapi.taxonomy('text',importance)
     if response['status'] == 'OK':
         for category in response['taxonomy']:
@@ -167,12 +167,13 @@ def gen_thesis(topic):
     print '\nchallenge section'
     used_url = []
     success, bottleneck = text_find(query_text, queryKeyword, used_url)
-    bottleneck = bottleneck.encode('utf8')
     while(success == -1):
         used_url.append(bottleneck)
         success, bottleneck = text_find(query_text, queryKeyword, bottleneck)
     section.append(bottleneck)
 
+
+    bottleneck = bottleneck.encode('utf8')
     response = alchemyapi.taxonomy('text',bottleneck)
     if response['status'] == 'OK':
         for category in response['taxonomy']:
@@ -225,6 +226,7 @@ def gen_thesis(topic):
         success, solution = text_find(query_text, queryKeyword, solution)
     section.append(solution)
 
+    solution = solution.encode('utf8')
     response = alchemyapi.taxonomy('text',solution)
     if response['status'] == 'OK':
         for category in response['taxonomy']:
@@ -275,12 +277,12 @@ def gen_thesis(topic):
     print '\nimpact section'
     used_url = []
     success, impact = text_find(query_text, queryKeyword, used_url)
-    impact = impact.encode('utf8')
     while(success == -1):
         used_url.append(impact)
         success, impact = text_find(query_text, queryKeyword, impact)
     section.append(impact)
 
+    impact = impact.encode('utf8')
     response = alchemyapi.taxonomy('text',impact)
     if response['status'] == 'OK':
         for category in response['taxonomy']:
