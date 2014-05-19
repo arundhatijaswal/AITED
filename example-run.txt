@@ -1,0 +1,101 @@
+ python ScriptGen.py
+Enter topic: education
+Should students be allowed to bring electronic devices to school?
+When asked should students be allowed to bring electronic devices to school, the short answer is yes, in general, though the school should be able to restrict when they can be used if they can show a real reason. Having three teenagers in school, each of whom has their own cell phone and tablet, I have great familiarity with the issues surrounding this question. In each of their schools, the administrations have decided to allow the students more and more freedom with the devices, and at one school actively encourage all students to bring them every day, to make internet research easier. However, the rules need to be set by each school, to meet the needs and situations at each school, and sometimes may be different in different classrooms.
+
+importance section
+http://www.debate.org/opinions/should-students-be-allowed-to-use-cell-phones-in-school
+Pretty much everywhere, cell phones are banned because most people say it's distracting. Teachers don't want kids texting in class when they're trying to teach them important things. But the truth about more modern phones is they can be a great learning tool. Students can use calculators (most likely not during math), stopwatches, timers, educational apps, the internet, and more with their mobile phones nowadays. School filters can connect with the wifi and be used to filter specific things that need to be filtered. Also, cell phones should also be used for safety. The employees at a school say you don't need to use your phone to contact people but what if something happens like the school phone line goes dead? Also, if you need a phone number the school doesn't have, it will most likely be under your contacts list. And if students might need to contact a student in another class for something important, they can always contact them. And if a student is sick, they can Facetime or Skype another student during class to watch the lesson and not miss anything important.
+## Concepts ##
+text:  Mobile phone
+relevance:  0.951683
+
+text:  Education
+relevance:  0.69062
+
+text:  Voice over Internet Protocol
+relevance:  0.544901
+
+text:  Internet
+relevance:  0.543691
+
+text:  Telephone
+relevance:  0.5355
+
+text:  Telephone exchange
+relevance:  0.5103
+
+text:  Telephone number
+relevance:  0.454475
+
+text:  Teacher
+relevance:  0.454188
+
+
+challenge section
+http://www.press.uchicago.edu/Misc/Chicago/075125.html
+But owning, or having access to, technology is usually only a first step. Even more important is learning how to use it. This is one of the biggest challenges facing anyone who wishes to use electronic tools, because the knowledge is not always easy to acquire. Many people, of course, are highly skilled in computer technology and know how to teach themselves to do almost anything. But many other people have limited computer skills, are easily intimidated by new and unfamiliar tasks, and tend to avoid doing anything that requires them to learn something very different from the things to which they are accustomed. If you fall in the latter group but wish to expand your ability to use electronic tools, you need to find help. Some institutions offer extensive assistance through their computer centers or their information technology services. Some departments have staff members or graduate student assistants who are hired to handle computer-related problems. There are also many excellent reference works to help you learn about various electronic tools. Just as you must be sure that you have the necessary technology at your disposal before you decide to use electronic tools in your teaching, so you must also make sure that you have access to the necessary help in learning to use it.
+
+## Concepts ##
+text:  Learning
+relevance:  0.974573
+
+text:  Skill
+relevance:  0.901553
+
+text:  Education
+relevance:  0.892511
+
+text:  Information technology
+relevance:  0.684684
+
+text:  Knowledge
+relevance:  0.632967
+
+text:  Computer
+relevance:  0.631344
+
+text:  Electronic engineering
+relevance:  0.606753
+
+text:  Electrical engineering
+relevance:  0.586706
+
+"i suggest" education students allowed bring electronic devices school?
+
+solution section
+http://wiki.answers.com/Q/Are_you_allowed_to_have_cell_phones_in_class_in_middle_school
+
+				google_ad_client = 'ca-gurunet-guides-radlinks_js'; // jwgData.gadclient
+				google_ad_section = 'default';
+				google_ad_output = 'js';
+				google_max_num_ads = 3;
+				google_ad_type = 'text';
+				google_language = 'en';
+				google_encoding = 'utf8';
+				google_safe = 'medium';
+								google_ad_channel = 'Questions_Technology Guides_LU_business'; // jwgData.gadchannel
+				abTest = "19235";
+				google_hints = "mobile phones,telephones,consumer electronics,electronics,technology";
+				
+## Concepts ##
+text:  Mobile phone
+relevance:  0.899564
+
+
+impact section
+http://neatoday.org/2012/07/19/should-schools-embrace-bring-your-own-device/
+Although some BYOD programs have been successful and district officials insist that they are the best and only available option, many teachers and public education advocates are left wondering, where will BYOD lead? As schools across the country lose potentially more funding, are students and their families now supposed to make up the difference? How will the prevalence of these devices affect the classroom?
+## Concepts ##
+text:  Education
+relevance:  0.983508
+
+text:  Teacher
+relevance:  0.79065
+
+text:  School
+relevance:  0.728358
+
+text:  History of education
+relevance:  0.665604
+

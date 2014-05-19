@@ -10,10 +10,12 @@ from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import *
 from google import search
 import thesis2
+from alchemyapi import AlchemyAPI
 
 section = []
 # stemmer = WordNetLemmatizer()
 stemmer = PorterStemmer()
+alchemyapi = AlchemyAPI()
 
 def extract_keywords(myThesis):
     myThesis_temp = myThesis.lower()
@@ -80,12 +82,26 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
-    myTitle, myThesis = thesis2.genThesis(topic)
-    while myTitle == "" or myThesis == "":
-        myTitle, myThesis = thesis2.genThesis(topic)
+    myTitle, myOne, mySupport = thesis2.genThesis(topic)
+    while myTitle == "" or myOne == "" or mySupport == "":
+        myTitle, myOne, mySupport = thesis2.genThesis(topic)
+    myThesis = thesis2.introduction(myTitle, myOne, mySupport)
+    print "\nTitle: ", myTitle
+    print "\nThesis: ", myThesis
     thesisKeywords = extract_keywords(myTitle)
     section.append(myTitle)
     section.append(myThesis)
+
+    Tresponse = alchemyapi.concepts('text',myThesis)
+    if Tresponse['status'] == 'OK':
+        print '## Concepts ##'
+        for concept in Tresponse['concepts']:
+            if float(concept['relevance']) >= 0.70:
+                print 'text: ', concept['text']
+                print 'relevance: ', concept['relevance']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
+
     #
     # return
     #
@@ -106,6 +122,15 @@ def gen_thesis(topic):
         success, importance = text_find(query_text, queryKeyword, used_url)
     section.append(importance)
 
+    response = alchemyapi.concepts('text',importance)
+    if response['status'] == 'OK':
+        print '## Concepts ##'
+        for concept in response['concepts']:
+            if float(concept['relevance']) >= 0.70:
+                print 'text: ', concept['text']
+                print 'relevance: ', concept['relevance']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
 
     #
     #
@@ -125,6 +150,16 @@ def gen_thesis(topic):
         used_url.append(bottleneck)
         success, bottleneck = text_find(query_text, queryKeyword, bottleneck)
     section.append(bottleneck)
+
+    response = alchemyapi.concepts('text',bottleneck)
+    if response['status'] == 'OK':
+        print '## Concepts ##'
+        for concept in response['concepts']:
+            if float(concept['relevance']) >= 0.70:
+                print 'text: ', concept['text']
+                print 'relevance: ', concept['relevance']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
 
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
@@ -150,11 +185,11 @@ def gen_thesis(topic):
     #
     #
     #
-    query_text = '"i suggest" ' + topic
+    query_text = '"i suggest" i suggest ' + topic
     for word in thesisKeywords:
         query_text = query_text + ' ' + word
     queryKeyword = 'suggest'
-    print query_text
+    # print query_text
     print '\nsolution section'
     used_url = []
     success, solution = text_find(query_text, queryKeyword, used_url)
@@ -162,6 +197,17 @@ def gen_thesis(topic):
         used_url.append(solution)
         success, solution = text_find(query_text, queryKeyword, solution)
     section.append(solution)
+
+    response = alchemyapi.concepts('text',solution)
+    if response['status'] == 'OK':
+        print '## Concepts ##'
+        for concept in response['concepts']:
+            if float(concept['relevance']) >= 0.70:
+                print 'text: ', concept['text']
+                print 'relevance: ', concept['relevance']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
+
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
     # json = m_json.loads(response)
@@ -202,6 +248,17 @@ def gen_thesis(topic):
         used_url.append(impact)
         success, impact = text_find(query_text, queryKeyword, impact)
     section.append(impact)
+
+    response = alchemyapi.concepts('text',impact)
+    if response['status'] == 'OK':
+        print '## Concepts ##'
+        for concept in response['concepts']:
+            if float(concept['relevance']) >= 0.70:
+                print 'text: ', concept['text']
+                print 'relevance: ', concept['relevance']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
+
     # query_text = 'impact of ' + topic + " " + keyword
     # for word in mykeywordsstr:
     #     query_text = query_text + ' ' + word
