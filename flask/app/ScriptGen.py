@@ -70,7 +70,7 @@ def text_find(query_text, queryKeyword, url_used):
         # print "stemmed syn: ", syn
         if len(snippets) != 0:
             section_text = random.choice(snippets).text
-            print section_text
+            print '\n', section_text
             return 1, section_text
         # else:
         #     print syn, " not found"
@@ -92,13 +92,12 @@ def gen_thesis(topic):
     section.append(myTitle)
     section.append(myThesis)
 
-    Tresponse = alchemyapi.concepts('text',myThesis)
+    Tresponse = alchemyapi.taxonomy('text',myThesis)
     if Tresponse['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in Tresponse['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
+        for category in Tresponse['taxonomy']:
+            print category['label'], ' : ', category['score']
+            if category.has_key('confident'):
+                print 'confident: ', category['confident']
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
 
@@ -122,13 +121,17 @@ def gen_thesis(topic):
         success, importance = text_find(query_text, queryKeyword, used_url)
     section.append(importance)
 
-    response = alchemyapi.concepts('text',importance)
+    response = alchemyapi.taxonomy('text',importance)
     if response['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in response['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
+        for category in response['taxonomy']:
+            for categ in Tresponse['taxonomy']:
+                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
+                    print 'related\n', category['label'], ' : ', category['score']
+                    if category.has_key('confident'):
+                        print 'confident: ', category['confident']
+                print 'unrelated\n', category['label'], ' : ', category['score']
+                if category.has_key('confident'):
+                    print 'confident: ', category['confident']
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
 
@@ -151,13 +154,17 @@ def gen_thesis(topic):
         success, bottleneck = text_find(query_text, queryKeyword, bottleneck)
     section.append(bottleneck)
 
-    response = alchemyapi.concepts('text',bottleneck)
+    response = alchemyapi.taxonomy('text',bottleneck)
     if response['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in response['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
+        for category in response['taxonomy']:
+            for categ in Tresponse['taxonomy']:
+                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
+                    print 'related\n', category['label'], ' : ', category['score']
+                    if category.has_key('confident'):
+                        print 'confident: ', category['confident']
+                print 'unrelated\n', category['label'], ' : ', category['score']
+                if category.has_key('confident'):
+                    print 'confident: ', category['confident']
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
 
@@ -185,10 +192,10 @@ def gen_thesis(topic):
     #
     #
     #
-    query_text = '"i suggest" i suggest ' + topic
+    query_text = 'remedy for ' + topic
     for word in thesisKeywords:
         query_text = query_text + ' ' + word
-    queryKeyword = 'suggest'
+    queryKeyword = 'remedy'
     # print query_text
     print '\nsolution section'
     used_url = []
@@ -198,13 +205,17 @@ def gen_thesis(topic):
         success, solution = text_find(query_text, queryKeyword, solution)
     section.append(solution)
 
-    response = alchemyapi.concepts('text',solution)
+    response = alchemyapi.taxonomy('text',solution)
     if response['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in response['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
+        for category in response['taxonomy']:
+            for categ in Tresponse['taxonomy']:
+                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
+                    print 'related\n', category['label'], ' : ', category['score']
+                    if category.has_key('confident'):
+                        print 'confident: ', category['confident']
+                print 'unrelated\n', category['label'], ' : ', category['score']
+                if category.has_key('confident'):
+                    print 'confident: ', category['confident']
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
 
@@ -249,13 +260,17 @@ def gen_thesis(topic):
         success, impact = text_find(query_text, queryKeyword, impact)
     section.append(impact)
 
-    response = alchemyapi.concepts('text',impact)
+    response = alchemyapi.taxonomy('text',impact)
     if response['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in response['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
+        for category in response['taxonomy']:
+            for categ in Tresponse['taxonomy']:
+                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
+                    print 'related\n', category['label'], ' : ', category['score']
+                    if category.has_key('confident'):
+                        print 'confident: ', category['confident']
+                print 'unrelated\n', category['label'], ' : ', category['score']
+                if category.has_key('confident'):
+                    print 'confident: ', category['confident']
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
 
