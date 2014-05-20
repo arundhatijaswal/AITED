@@ -30,7 +30,24 @@ def extract_keywords(myThesis):
     # print "Keywordsstr: ", Keywordsstr
     return Keywordsstr
 
-def text_find(query_text, queryKeyword):
+
+def taxonomy_check(thesisTaxonomy, section_text):
+    section_text = section_text.encode('utf8')
+    response = alchemyapi.taxonomy('text',section_text)
+    if response['status'] == 'OK':
+        for category in response['taxonomy']:
+            localCateg = category['label'].split('/')[1]
+            print 'section root taxonomy: ', localCateg
+            for categ in thesisTaxonomy:
+                thesisCateg = categ['label'].split('/')[1]
+                if localCateg == thesisCateg:
+                    return 1
+    else:
+        return -1
+
+
+
+def text_find(query_text, queryKeyword, thesisTaxonomy):
 
     urls = search(query_text, stop=20, pause=2.0)
 
@@ -60,29 +77,17 @@ def text_find(query_text, queryKeyword):
                     section_text = i
                     section_len = len(tokenizer.tokenize(i.strip()))
                     if 2 < section_len < 8:
-                        print section_text
-                        return section_text
+                        related = taxonomy_check(thesisTaxonomy, section_text)
+                        if related == 1:
+                            print section_text
+                            return section_text
+                        else:
+                            pass
                     else:
                         pass
         urls_list.remove(section_url)
         section_url = random.choice(urls_list)
     return -1
-
-
-def taxonomy_check(thesisTaxonomy, section_text):
-    # section_text should already be utf8 encoded
-    response = alchemyapi.taxonomy('text',section_text)
-    if response['status'] == 'OK':
-        for category in response['taxonomy']:
-            localCateg = category['label'].split('/')[1]
-            print 'section root taxonomy: ', localCateg
-            for categ in thesisTaxonomy:
-                thesisCateg = categ['label'].split('/')[1]
-                if localCateg == thesisCateg:
-                    return 1
-    else:
-        return -1
-
 
 
 def gen_thesis(topic):
@@ -122,26 +127,11 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'importance'
     print '\nimportance section'
-    importance = text_find(query_text, queryKeyword)
+    importance = text_find(query_text, queryKeyword, Tresponse['taxonomy'])
     if importance == -1:
         importance = "nothing found for importance"
         print "nothing found for importance"
     section.append(importance)
-
-    importance = importance.encode('utf8')
-    response = alchemyapi.taxonomy('text',importance)
-    if response['status'] == 'OK':
-        for category in response['taxonomy']:
-            for categ in Tresponse['taxonomy']:
-                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
-                    print 'related\n', category['label'], ' : ', category['score']
-                    if category.has_key('confident'):
-                        print 'confident: ', category['confident']
-                print 'unrelated\n', category['label'], ' : ', category['score']
-                if category.has_key('confident'):
-                    print 'confident: ', category['confident']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
 
     #
     #
@@ -155,27 +145,11 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'challenge'
     print '\nchallenge section'
-    bottleneck = text_find(query_text, queryKeyword)
+    bottleneck = text_find(query_text, queryKeyword, Tresponse['taxonomy'])
     if bottleneck == -1:
         bottleneck = 'nothing found for bottlenect'
         print 'nothing found for bottlenect'
     section.append(bottleneck)
-
-
-    bottleneck = bottleneck.encode('utf8')
-    response = alchemyapi.taxonomy('text',bottleneck)
-    if response['status'] == 'OK':
-        for category in response['taxonomy']:
-            for categ in Tresponse['taxonomy']:
-                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
-                    print 'related\n', category['label'], ' : ', category['score']
-                    if category.has_key('confident'):
-                        print 'confident: ', category['confident']
-                print 'unrelated\n', category['label'], ' : ', category['score']
-                if category.has_key('confident'):
-                    print 'confident: ', category['confident']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
 
     #
     #
@@ -190,26 +164,12 @@ def gen_thesis(topic):
     queryKeyword = 'remedy'
     # print query_text
     print '\nsolution section'
-    solution = text_find(query_text, queryKeyword)
+    solution = text_find(query_text, queryKeyword, Tresponse['taxonomy'])
     if solution == -1:
         solution = "nothing found for solution"
         print "nothing found for solution"
     section.append(solution)
-
-    solution = solution.encode('utf8')
-    response = alchemyapi.taxonomy('text',solution)
-    if response['status'] == 'OK':
-        for category in response['taxonomy']:
-            for categ in Tresponse['taxonomy']:
-                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
-                    print 'related\n', category['label'], ' : ', category['score']
-                    if category.has_key('confident'):
-                        print 'confident: ', category['confident']
-                print 'unrelated\n', category['label'], ' : ', category['score']
-                if category.has_key('confident'):
-                    print 'confident: ', category['confident']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
+    
     #
     #
     #
@@ -228,26 +188,11 @@ def gen_thesis(topic):
         # print word
     queryKeyword = 'impact'
     print '\nimpact section'
-    impact = text_find(query_text, queryKeyword)
+    impact = text_find(query_text, queryKeyword, Tresponse['taxonomy'])
     if impact == -1:
         impact = "nothing found for impact"
         print impact
     section.append(impact)
-
-    impact = impact.encode('utf8')
-    response = alchemyapi.taxonomy('text',impact)
-    if response['status'] == 'OK':
-        for category in response['taxonomy']:
-            for categ in Tresponse['taxonomy']:
-                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
-                    print 'related\n', category['label'], ' : ', category['score']
-                    if category.has_key('confident'):
-                        print 'confident: ', category['confident']
-                print 'unrelated\n', category['label'], ' : ', category['score']
-                if category.has_key('confident'):
-                    print 'confident: ', category['confident']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
 
     return section
 # to open the document and read the text

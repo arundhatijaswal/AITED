@@ -1,3 +1,46 @@
+python ScriptGen.py
+Enter topic: education
+Should teachers be fired for being gay?
+
+Title:  Should teachers be fired for being gay?
+
+Thesis:  When asked should teachers be fired for being gay, the short answer is no, a teacher should not be fired for being gay. That is pure discrimination. The sexual orientation of a person has nothing to do with their ability to teach. A teacher does not push his sexuality on their students, and if they do, then, and only then should they be dismissed. I had plenty of teachers whom were gay when I was in high school. They were the best listeners and definitely fun teaching the classes.
+/religion and spirituality  :  0.600307
+/society/racism  :  0.47801
+/law, govt and politics/legal issues/civil rights  :  0.457946
+
+importance section
+http://www.dailymail.co.uk/news/article-2272543/Gove-declares-teachers-wont-fired-opposing-gay-marriage.html
+http://www.huffingtonpost.com/2013/08/13/gay-catholic-teacher-fired_n_3749270.html
+section root taxonomy:  religion and spirituality
+<a href="http://www.huffingtonpost.com/social/vagtsama"><img style="float:left;padding-right:6px !important;" src="http://graph.facebook.com/602710258/picture?type=square" /></a><a href="http://www.huffingtonpost.com/social/vagtsama">vagtsama</a>:<br />The Rev. Jeff R. Johnson was one of the first openly gay seminarians in the Lutheran church (ELCA) and a founder of a Lutheran movement to extraordinarily ordain publicly identified LGBT people. Ordained in 1990, Pastor Johnson currently serves University Lutheran Chapel of Berkeley, CA.
+
+challenge section
+http://en.wikipedia.org/wiki/National_Gay_Task_Force_v._Board_of_Education
+section root taxonomy:  law, govt and politics
+An Oklahoma state law enacted in 1978[1] authorized schools to fire teachers for "[engaging] in public homosexual conduct or activity"; and "[has] been rendered unfit, because of such conduct or activity, to hold a position as a teacher, student teacher or teachers' aide. "[2] The National Gay Task Force filed a facial, class-action challenge to this law on First and Fourteenth Amendment grounds.[3]
+
+solution section
+http://www.theatlantic.com/national/archive/2012/04/should-catholic-schools-be-able-to-fire-teachers-over-fertility-treatments/256427/
+http://www.huffingtonpost.com/2013/08/01/gay-teacher-fired-catholic-school_n_3690516.html
+http://www.debate.org/opinions/should-teachers-be-fired-for-being-gay
+section root taxonomy:  religion and spirituality
+ Teachers are american citizens too! They have every right to be gay as much as everybody else and there is no problem with it! It doesnt affect schooling for children so what does it matter! There's also the first amendment which is freedom of expression! Its in the constitution! Americans are in a free country!
+
+impact section
+http://thelantern.com/2013/02/catholic-archdiocese-of-cincinnati-lacks-perspective-in-firing-teacher-over-gay-marriage-views/
+http://www.laweekly.com/informer/2013/08/02/gay-catholic-school-teacher-fired-after-getting-married
+https://www.commonwealmagazine.org/blog/another-gay-teacher-fired-catholic-school-0
+section root taxonomy:  family and parenting
+section root taxonomy:  education
+section root taxonomy:  family and parenting
+http://www.neontommy.com/news/2014/03/gay-teacher-fired-catholic-school-sues
+http://www.towleroad.com/2014/03/hawaii-catholic-schools-implements-new-contract-gay-teachers-can-be-fired.html
+section root taxonomy:  society
+It amazes me that "religious" institutions are still allowed to get away with this crap.  Cohabitation with someone of either sex is not illegal.  Terminating a pregnancy is not illegal.  Marrying someone of the same sex is not illegal.  None of the "morality" issues they cite have any impact on a teachers qualifications.  This is a giant plate of WTF.
+
+- - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - - x - -
+
  python ScriptGen.py
 Enter topic: education
 Should students be allowed to bring electronic devices to school?
