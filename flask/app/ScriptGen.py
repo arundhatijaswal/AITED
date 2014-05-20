@@ -11,6 +11,7 @@ from nltk.stem.porter import *
 from google import search
 import thesis2
 from alchemyapi import AlchemyAPI
+import nltk.data
 
 section = []
 # stemmer = WordNetLemmatizer()
@@ -31,7 +32,7 @@ def extract_keywords(myThesis):
 
 def text_find(query_text, queryKeyword):
 
-    urls = search(query_text, stop=20, pause=1.0)
+    urls = search(query_text, stop=20, pause=2.0)
 
     syns_tmp = wordnet.synsets(queryKeyword)
     syns = [l.name for s in syns_tmp for l in s.lemmas]
