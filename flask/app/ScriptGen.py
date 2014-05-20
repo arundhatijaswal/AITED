@@ -69,6 +69,8 @@ def text_find(query_text, queryKeyword, url_used):
         syn = stemmer.stem(syn)
         # snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
         body = soup.findAll('p')
+        # print body
+        # print "****************************"
         tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
         # print len(body)
         for i in body:
@@ -76,7 +78,7 @@ def text_find(query_text, queryKeyword, url_used):
             if syn in i:
                 section_text = i
                 section_len = len(tokenizer.tokenize(i.strip()))
-                if 2 < section_len < 7:
+                if 2 < section_len < 8:
                     print section_text
                     return 1, section_text
                 else:
