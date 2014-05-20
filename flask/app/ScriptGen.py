@@ -10,10 +10,13 @@ from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import *
 from google import search
 import thesis2
+from alchemyapi import AlchemyAPI
+import nltk.data
 
 section = []
 # stemmer = WordNetLemmatizer()
 stemmer = PorterStemmer()
+alchemyapi = AlchemyAPI()
 
 def extract_keywords(myThesis):
     myThesis_temp = myThesis.lower()
@@ -52,24 +55,42 @@ def text_find(query_text, queryKeyword, url_used):
     if url_used:
         while section_url in url_used:
             # section_url = results[random.randint(0, (len(results) - 1))]['url']
-            section_url = random.choice(list(enumerate(urls)))[1]
+            section_url = random.choice(list(enumerate(urls)))
 
     print section_url
     r = requests.get(section_url)
     data = r.text
-    soup = BeautifulSoup(data)
+    soup = BeautifulSoup(data, "lxml")
     # print snippets
     for syn in syns_set:
         # print syn
         syn = syn.replace("_", " ")
         # syn = stemmer.lemmatize(syn).lower()
         syn = stemmer.stem(syn)
-        snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
+        # snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
+        body = soup.findAll('p')
+        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+        # print len(body)
+        for i in body:
+            i = i.text
+            if syn in i:
+                section_text = i
+                section_len = len(tokenizer.tokenize(i.strip()))
+                if 2 < section_len < 7:
+                    print section_text
+                    return 1, section_text
+                else:
+                    pass
         # print "stemmed syn: ", syn
-        if len(snippets) != 0:
-            section_text = random.choice(snippets).text
-            print section_text
-            return 1, section_text
+
+
+        #
+        # if len(snippets) != 0:
+        #     section_text = random.choice(snippets).text
+        #     print section_text
+        #     return 1, section_text
+
+
         # else:
         #     print syn, " not found"
     return -1, section_url
@@ -80,12 +101,25 @@ def gen_thesis(topic):
     title of an article based on the selected topic
     and keyword """
 
-    myTitle, myThesis = thesis2.genThesis(topic)
-    while myTitle == "" or myThesis == "":
-        myTitle, myThesis = thesis2.genThesis(topic)
+    myTitle, myOne, mySupport = thesis2.genThesis(topic)
+    while myTitle == "" or myOne == "" or mySupport == "":
+        myTitle, myOne, mySupport = thesis2.genThesis(topic)
+    myThesis = thesis2.introduction(myTitle, myOne, mySupport)
+    print "\nTitle: ", myTitle
+    print "\nThesis: ", myThesis
     thesisKeywords = extract_keywords(myTitle)
     section.append(myTitle)
     section.append(myThesis)
+
+    Tresponse = alchemyapi.taxonomy('text',myThesis)
+    if Tresponse['status'] == 'OK':
+        for category in Tresponse['taxonomy']:
+            print category['label'], ' : ', category['score']
+            if category.has_key('confident'):
+                print 'confident: ', category['confident']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
+
     #
     # return
     #
@@ -106,6 +140,20 @@ def gen_thesis(topic):
         success, importance = text_find(query_text, queryKeyword, used_url)
     section.append(importance)
 
+    importance = importance.encode('utf8')
+    response = alchemyapi.taxonomy('text',importance)
+    if response['status'] == 'OK':
+        for category in response['taxonomy']:
+            for categ in Tresponse['taxonomy']:
+                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
+                    print 'related\n', category['label'], ' : ', category['score']
+                    if category.has_key('confident'):
+                        print 'confident: ', category['confident']
+                print 'unrelated\n', category['label'], ' : ', category['score']
+                if category.has_key('confident'):
+                    print 'confident: ', category['confident']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
 
     #
     #
@@ -125,6 +173,22 @@ def gen_thesis(topic):
         used_url.append(bottleneck)
         success, bottleneck = text_find(query_text, queryKeyword, bottleneck)
     section.append(bottleneck)
+
+
+    bottleneck = bottleneck.encode('utf8')
+    response = alchemyapi.taxonomy('text',bottleneck)
+    if response['status'] == 'OK':
+        for category in response['taxonomy']:
+            for categ in Tresponse['taxonomy']:
+                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
+                    print 'related\n', category['label'], ' : ', category['score']
+                    if category.has_key('confident'):
+                        print 'confident: ', category['confident']
+                print 'unrelated\n', category['label'], ' : ', category['score']
+                if category.has_key('confident'):
+                    print 'confident: ', category['confident']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
 
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
@@ -150,11 +214,11 @@ def gen_thesis(topic):
     #
     #
     #
-    query_text = '"i suggest" ' + topic
+    query_text = 'remedy for ' + topic
     for word in thesisKeywords:
         query_text = query_text + ' ' + word
-    queryKeyword = 'suggest'
-    print query_text
+    queryKeyword = 'remedy'
+    # print query_text
     print '\nsolution section'
     used_url = []
     success, solution = text_find(query_text, queryKeyword, used_url)
@@ -162,6 +226,22 @@ def gen_thesis(topic):
         used_url.append(solution)
         success, solution = text_find(query_text, queryKeyword, solution)
     section.append(solution)
+
+    solution = solution.encode('utf8')
+    response = alchemyapi.taxonomy('text', solution)
+    if response['status'] == 'OK':
+        for category in response['taxonomy']:
+            for categ in Tresponse['taxonomy']:
+                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
+                    print 'related\n', category['label'], ' : ', category['score']
+                    if category.has_key('confident'):
+                        print 'confident: ', category['confident']
+                print 'unrelated\n', category['label'], ' : ', category['score']
+                if category.has_key('confident'):
+                    print 'confident: ', category['confident']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
+
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
     # json = m_json.loads(response)
@@ -202,6 +282,22 @@ def gen_thesis(topic):
         used_url.append(impact)
         success, impact = text_find(query_text, queryKeyword, impact)
     section.append(impact)
+
+    impact = impact.encode('utf8')
+    response = alchemyapi.taxonomy('text', impact)
+    if response['status'] == 'OK':
+        for category in response['taxonomy']:
+            for categ in Tresponse['taxonomy']:
+                if category['label'].rstrip('/') == categ['label'].rstrip('/'):
+                    print 'related\n', category['label'], ' : ', category['score']
+                    if category.has_key('confident'):
+                        print 'confident: ', category['confident']
+                print 'unrelated\n', category['label'], ' : ', category['score']
+                if category.has_key('confident'):
+                    print 'confident: ', category['confident']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
+
     # query_text = 'impact of ' + topic + " " + keyword
     # for word in mykeywordsstr:
     #     query_text = query_text + ' ' + word
