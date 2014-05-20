@@ -11,6 +11,7 @@ from nltk.stem.porter import *
 from google import search
 import thesis2
 from alchemyapi import AlchemyAPI
+import nltk.data
 
 section = []
 # stemmer = WordNetLemmatizer()
@@ -54,7 +55,7 @@ def text_find(query_text, queryKeyword, url_used):
     if url_used:
         while section_url in url_used:
             # section_url = results[random.randint(0, (len(results) - 1))]['url']
-            section_url = random.choice(list(enumerate(urls)))[1]
+            section_url = random.choice(list(enumerate(urls)))
 
     print section_url
     r = requests.get(section_url)
@@ -68,17 +69,18 @@ def text_find(query_text, queryKeyword, url_used):
         syn = stemmer.stem(syn)
         # snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
         body = soup.findAll('p')
+        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
         # print len(body)
         for i in body:
             i = i.text
             if syn in i:
                 section_text = i
-                print section_text
-                return 1, section_text
-
-
-
-
+                section_len = len(tokenizer.tokenize(i.strip()))
+                if 2 < section_len < 7:
+                    print section_text
+                    return 1, section_text
+                else:
+                    pass
         # print "stemmed syn: ", syn
 
 
@@ -220,14 +222,13 @@ def gen_thesis(topic):
     print '\nsolution section'
     used_url = []
     success, solution = text_find(query_text, queryKeyword, used_url)
-    solution = solution.encode('utf8')
     while(success == -1):
         used_url.append(solution)
         success, solution = text_find(query_text, queryKeyword, solution)
     section.append(solution)
 
     solution = solution.encode('utf8')
-    response = alchemyapi.taxonomy('text',solution)
+    response = alchemyapi.taxonomy('text', solution)
     if response['status'] == 'OK':
         for category in response['taxonomy']:
             for categ in Tresponse['taxonomy']:
@@ -283,7 +284,7 @@ def gen_thesis(topic):
     section.append(impact)
 
     impact = impact.encode('utf8')
-    response = alchemyapi.taxonomy('text',impact)
+    response = alchemyapi.taxonomy('text', impact)
     if response['status'] == 'OK':
         for category in response['taxonomy']:
             for categ in Tresponse['taxonomy']:
