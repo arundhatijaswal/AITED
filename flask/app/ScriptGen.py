@@ -36,56 +36,6 @@ def text_find(query_text, queryKeyword):
     syns_tmp = wordnet.synsets(queryKeyword)
     syns = [l.name for s in syns_tmp for l in s.lemmas]
     syns_set = Set(syns)
-<<<<<<< HEAD
-
-
-    # section_url = results[random.randint(0, (len(results) - 1))]['url']
-    section_url = random.choice(list(enumerate(urls)))[1]
-
-    if ".pdf" in section_url or ".doc" in section_url:
-        return -1, section_url
-    if url_used:
-        while section_url in url_used:
-            # section_url = results[random.randint(0, (len(results) - 1))]['url']
-            section_url = random.choice(list(enumerate(urls)))[1]
-
-    print section_url
-    r = requests.get(section_url)
-    data = r.text
-    soup = BeautifulSoup(data, "lxml")
-    # print snippets
-    for syn in syns_set:
-        # print syn
-        syn = syn.replace("_", " ")
-        # syn = stemmer.lemmatize(syn).lower()
-        syn = stemmer.stem(syn)
-        # snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
-        body = soup.findAll('p')
-        # print len(body)
-        for i in body:
-            i = i.text
-            if syn in i:
-                section_text = i
-                print section_text
-                return 1, section_text
-
-
-
-
-        # print "stemmed syn: ", syn
-
-
-        #
-        # if len(snippets) != 0:
-        #     section_text = random.choice(snippets).text
-        #     print section_text
-        #     return 1, section_text
-
-
-        # else:
-        #     print syn, " not found"
-    return -1, section_url
-=======
     urls_dict = list(enumerate(urls))
     urls_list = [link for (num, link) in urls_dict]
 
@@ -116,7 +66,22 @@ def text_find(query_text, queryKeyword):
         urls_list.remove(section_url)
         section_url = random.choice(urls_list)
     return -1
->>>>>>> FETCH_HEAD
+
+
+def taxonomy_check(thesisTaxonomy, section_text):
+    # section_text should already be utf8 encoded
+    response = alchemyapi.taxonomy('text',section_text)
+    if response['status'] == 'OK':
+        for category in response['taxonomy']:
+            localCateg = category['label'].split('/')[1]
+            print 'section root taxonomy: ', localCateg
+            for categ in thesisTaxonomy:
+                thesisCateg = categ['label'].split('/')[1]
+                if localCateg == thesisCateg:
+                    return 1
+    else:
+        return -1
+
 
 
 def gen_thesis(topic):
@@ -224,19 +189,10 @@ def gen_thesis(topic):
     queryKeyword = 'remedy'
     # print query_text
     print '\nsolution section'
-<<<<<<< HEAD
-    used_url = []
-    success, solution = text_find(query_text, queryKeyword, used_url)
-    solution = solution.encode('utf8')
-    while(success == -1):
-        used_url.append(solution)
-        success, solution = text_find(query_text, queryKeyword, solution)
-=======
     solution = text_find(query_text, queryKeyword)
     if solution == -1:
         solution = "nothing found for solution"
         print "nothing found for solution"
->>>>>>> FETCH_HEAD
     section.append(solution)
 
     solution = solution.encode('utf8')
