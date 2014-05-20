@@ -43,8 +43,6 @@ def text_find(query_text, queryKeyword):
     section_url = random.choice(urls_list)
 
     urls_list = [url for url in urls_list if '.pdf' not in url and '.doc' not in url]
-    # if ".pdf" in section_url or ".doc" in section_url:
-    #     urls_list.remove(section_url)
 
     while urls_list:
         print section_url
@@ -109,8 +107,6 @@ def gen_thesis(topic):
     queryKeyword = 'importance'
     print '\nimportance section'
     importance = text_find(query_text, queryKeyword)
-    # while(success == -1):
-    #     success = text_find(query_text, queryKeyword)
     if importance == -1:
         importance = "nothing found for importance"
         print "nothing found for importance"
@@ -143,10 +139,6 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'challenge'
     print '\nchallenge section'
-    # used_url = []
-    # bottleneck = text_find(query_text, queryKeyword)
-    # while(success == -1):
-        # used_url.append(bottleneck)
     bottleneck = text_find(query_text, queryKeyword)
     if bottleneck == -1:
         bottleneck = 'nothing found for bottlenect'
@@ -169,23 +161,6 @@ def gen_thesis(topic):
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
 
-    # query_text = urllib.urlencode({'q': query_text})
-    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
-    # json = m_json.loads(response)
-    # results = json['responseData']['results']
-    # # print query
-    # # print json
-
-    # print 'length of results: ', len(results)
-
-    # syns_tmp = wordnet.synsets('challenge')
-    # syns = [l.name for s in syns_tmp for l in s.lemmas]
-    # syns_set = Set(syns)
-    # for syn in syns_set:
-    #     syn.replace("_", " ")
-    # if text_find(results, syns_set) == -1:
-    #     print "no bottleneck found"
-
     #
     #
     #
@@ -200,8 +175,6 @@ def gen_thesis(topic):
     # print query_text
     print '\nsolution section'
     solution = text_find(query_text, queryKeyword)
-    # while(success == -1):
-    #     success, solution = text_find(query_text, queryKeyword, solution)
     if solution == -1:
         solution = "nothing found for solution"
         print "nothing found for solution"
@@ -221,23 +194,6 @@ def gen_thesis(topic):
                     print 'confident: ', category['confident']
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
-
-    # query_text = urllib.urlencode({'q': query_text})
-    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
-    # json = m_json.loads(response)
-    # results = json['responseData']['results']
-    # # print query
-    # # print json
-
-    # print 'length of results: ', len(results)
-
-    # syns_tmp = wordnet.synsets('solution')
-    # syns = [l.name for s in syns_tmp for l in s.lemmas]
-    # syns_set = Set(syns)
-    # for syn in syns_set:
-    #     syn.replace("_", " ")
-    # if text_find(results, syns_set) == -1:
-    #     print "no solution found"
     #
     #
     #
@@ -257,9 +213,6 @@ def gen_thesis(topic):
     queryKeyword = 'impact'
     print '\nimpact section'
     impact = text_find(query_text, queryKeyword)
-    # while(success == -1):
-    #     used_url.append(impact)
-    #     success, impact = text_find(query_text, queryKeyword, impact)
     if impact == -1:
         impact = "nothing found for impact"
         print impact
@@ -279,27 +232,6 @@ def gen_thesis(topic):
                     print 'confident: ', category['confident']
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
-
-    # query_text = 'impact of ' + topic + " " + keyword
-    # for word in mykeywordsstr:
-    #     query_text = query_text + ' ' + word
-    # query_text = urllib.urlencode({'q': query_text})
-    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
-    # json = m_json.loads(response)
-    # results = json['responseData']['results']
-    # # print query
-    # # print json
-    #
-    # print 'length of results: ', len(results)
-    #
-    # syns_tmp = wordnet.synsets('impact')
-    # syns = [l.name for s in syns_tmp for l in s.lemmas]
-    # syns_set = Set(syns)
-    # for syn in syns_set:
-    #     syn.replace("_", " ")
-    # if textFinder(results, syns_set) == -1:
-    #     print "no impact found"
-    # return thesis_temp, keyword
 
     return section
 # to open the document and read the text
