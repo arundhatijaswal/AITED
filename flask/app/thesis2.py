@@ -255,35 +255,39 @@ def genThesis(topic):
         # print thesis
         one = random.choice(data.keys())
         two = data[one]
-        punct = ['!', '?']
 
-        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-        tokens = tokenizer.tokenize(two.strip())
-        # for token in tokens:
-        #     print token, "\n"
-        thesis_len = len(tokens)
-        support = ' '.join(tokenizer.tokenize(two.strip()))
-        while thesis_len > 5:
-            one = random.choice(data.keys())
-            two = data[one]
+        if two == "":
+            return "", "", ""
+        else:
+            punct = ['!', '?']
+
             tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-            thesis_len = len(tokenizer.tokenize(two.strip()))
+            tokens = tokenizer.tokenize(two.strip())
+            # for token in tokens:
+            #     print token, "\n"
+            thesis_len = len(tokens)
             support = ' '.join(tokenizer.tokenize(two.strip()))
-        # print "support: ", support
-        if tokens[0] == one:
-            one = ""
+            while thesis_len > 5:
+                one = random.choice(data.keys())
+                two = data[one]
+                tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+                thesis_len = len(tokenizer.tokenize(two.strip()))
+                support = ' '.join(tokenizer.tokenize(two.strip()))
+            # print "support: ", support
+            if tokens[0] == one:
+                one = ""
 
-        if one[-1] == '.':
-            one = one
-        elif one[-1] in punct or one[-1] not in punct:
-            one = one + '.'
-        # re.sub(r"[^0-9' 'a-zA-Z]$", r".", one)
-        # print one
+            if one[-1] == '.':
+                one = one
+            elif one[-1] in punct or one[-1] not in punct:
+                one = one + '.'
+            # re.sub(r"[^0-9' 'a-zA-Z]$", r".", one)
+            # print one
 
-        thesis = one + " " + support
-        print title
-        # print 'Thesis: ', thesis
-        return title, one, support
+            thesis = one + " " + support
+            # print title
+            # print 'Thesis: ', thesis
+            return title, one, support
 
 
 def introduction(title, one, support):
@@ -291,6 +295,7 @@ def introduction(title, one, support):
     # title = title.strip()
     # re.sub(r"[^0-9' 'a-zA-Z]$", r",", title)
     # print "after: ", title
+    thesis = ""
     title = title[0:-1]
     if one != "" and one[0] != "I":
         one = one[0].lower() + one[1:] #lower the first character
@@ -310,7 +315,7 @@ def introduction(title, one, support):
 def main():
     topic = raw_input("Enter topic: ")
     title, one, support = genThesis(topic)
-    print introduction(title, one, support)
+    # print introduction(title, one, support)
 
 # while title == "" or thesis == "":
 #   title, thesis = genThesis(topic)
