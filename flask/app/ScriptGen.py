@@ -11,6 +11,7 @@ from nltk.stem.porter import *
 from google import search
 import thesis2
 from alchemyapi import AlchemyAPI
+import nltk.data
 
 section = []
 # stemmer = WordNetLemmatizer()
@@ -29,52 +30,64 @@ def extract_keywords(myThesis):
     # print "Keywordsstr: ", Keywordsstr
     return Keywordsstr
 
-def text_find(query_text, queryKeyword, url_used):
-    #print "query test: ", query_text
 
-    # query_text = urllib.urlencode({'q': query_text})
-    # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
+def taxonomy_check(thesisTaxonomy, section_text):
+    section_text = section_text.encode('utf8')
+    response = alchemyapi.taxonomy('text',section_text)
+    if response['status'] == 'OK':
+        for category in response['taxonomy']:
+            localCateg = category['label'].split('/')[1]
+            print 'section root taxonomy: ', localCateg
+            for categ in thesisTaxonomy:
+                thesisCateg = categ['label'].split('/')[1]
+                if localCateg == thesisCateg:
+                    return 1
+    else:
+        return -1
 
-    urls = search(query_text, stop=10, pause=2.0)
 
-    # json = m_json.loads(response)
-    # results = json['responseData']['results']
 
+def text_find(query_text, queryKeyword, thesisTaxonomy):
+
+    urls = search(query_text, stop=20, pause=2.0)
 
     syns_tmp = wordnet.synsets(queryKeyword)
     syns = [l.name for s in syns_tmp for l in s.lemmas]
     syns_set = Set(syns)
+    urls_dict = list(enumerate(urls))
+    urls_list = [link for (num, link) in urls_dict]
 
+    section_url = random.choice(urls_list)
 
-    # section_url = results[random.randint(0, (len(results) - 1))]['url']
-    section_url = random.choice(list(enumerate(urls)))[1]
+    urls_list = [url for url in urls_list if '.pdf' not in url and '.doc' not in url]
 
-    if ".pdf" in section_url or ".doc" in section_url:
-        return -1, section_url
-    if url_used:
-        while section_url in url_used:
-            # section_url = results[random.randint(0, (len(results) - 1))]['url']
-            section_url = random.choice(list(enumerate(urls)))[1]
-
-    print section_url
-    r = requests.get(section_url)
-    data = r.text
-    soup = BeautifulSoup(data)
-    # print snippets
-    for syn in syns_set:
-        # print syn
-        syn = syn.replace("_", " ")
-        # syn = stemmer.lemmatize(syn).lower()
-        syn = stemmer.stem(syn)
-        snippets = [t.parent for t in soup.findAll(text=re.compile(syn))]
-        # print "stemmed syn: ", syn
-        if len(snippets) != 0:
-            section_text = random.choice(snippets).text
-            print section_text
-            return 1, section_text
-        # else:
-        #     print syn, " not found"
-    return -1, section_url
+    while urls_list:
+        print section_url
+        r = requests.get(section_url)
+        data = r.text
+        soup = BeautifulSoup(data, "lxml")
+        for syn in syns_set:
+            syn = syn.replace("_", " ")
+            syn = stemmer.stem(syn)
+            body = soup.findAll('p')
+            tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+            for i in body:
+                i = i.text
+                if syn in i:
+                    section_text = i
+                    section_len = len(tokenizer.tokenize(i.strip()))
+                    if 2 < section_len < 8:
+                        related = taxonomy_check(thesisTaxonomy, section_text)
+                        if related == 1:
+                            print section_text
+                            return section_text
+                        else:
+                            pass
+                    else:
+                        pass
+        urls_list.remove(section_url)
+        section_url = random.choice(urls_list)
+    return -1
 
 
 def gen_thesis(topic):
@@ -92,6 +105,7 @@ def gen_thesis(topic):
     section.append(myTitle)
     section.append(myThesis)
 
+<<<<<<< HEAD
     # Tresponse = alchemyapi.concepts('text',myThesis)
     # if Tresponse['status'] == 'OK':
     #     print '## Concepts ##'
@@ -101,6 +115,16 @@ def gen_thesis(topic):
     #             print 'relevance: ', concept['relevance']
     # else:
     #     print('Error in concept tagging call: ', response['statusInfo'])
+=======
+    Tresponse = alchemyapi.taxonomy('text',myThesis)
+    if Tresponse['status'] == 'OK':
+        for category in Tresponse['taxonomy']:
+            print category['label'], ' : ', category['score']
+            if category.has_key('confident'):
+                print 'confident: ', category['confident']
+    else:
+        print('Error in concept tagging call: ', response['statusInfo'])
+>>>>>>> FETCH_HEAD
 
     #
     # return
@@ -115,13 +139,13 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'importance'
     print '\nimportance section'
-    used_url = []
-    success, importance = text_find(query_text, queryKeyword, used_url)
-    while(success == -1):
-        used_url.append(importance)
-        success, importance = text_find(query_text, queryKeyword, used_url)
+    importance = text_find(query_text, queryKeyword, Tresponse['taxonomy'])
+    if importance == -1:
+        importance = "nothing found for importance"
+        print "nothing found for importance"
     section.append(importance)
 
+<<<<<<< HEAD
     # response = alchemyapi.concepts('text',importance)
     # if response['status'] == 'OK':
     #     print '## Concepts ##'
@@ -132,6 +156,8 @@ def gen_thesis(topic):
     # else:
     #     print('Error in concept tagging call: ', response['statusInfo'])
 
+=======
+>>>>>>> FETCH_HEAD
     #
     #
     #
@@ -144,13 +170,13 @@ def gen_thesis(topic):
         query_text = query_text + ' ' + word
     queryKeyword = 'challenge'
     print '\nchallenge section'
-    used_url = []
-    success, bottleneck = text_find(query_text, queryKeyword, used_url)
-    while(success == -1):
-        used_url.append(bottleneck)
-        success, bottleneck = text_find(query_text, queryKeyword, bottleneck)
+    bottleneck = text_find(query_text, queryKeyword, Tresponse['taxonomy'])
+    if bottleneck == -1:
+        bottleneck = 'nothing found for bottlenect'
+        print 'nothing found for bottlenect'
     section.append(bottleneck)
 
+<<<<<<< HEAD
     # response = alchemyapi.concepts('text',bottleneck)
     # if response['status'] == 'OK':
     #     print '## Concepts ##'
@@ -178,6 +204,8 @@ def gen_thesis(topic):
     # if text_find(results, syns_set) == -1:
     #     print "no bottleneck found"
 
+=======
+>>>>>>> FETCH_HEAD
     #
     #
     #
@@ -185,18 +213,18 @@ def gen_thesis(topic):
     #
     #
     #
-    query_text = '"i suggest" i suggest ' + topic
+    query_text = 'remedy for ' + topic
     for word in thesisKeywords:
         query_text = query_text + ' ' + word
-    queryKeyword = 'suggest'
+    queryKeyword = 'remedy'
     # print query_text
     print '\nsolution section'
-    used_url = []
-    success, solution = text_find(query_text, queryKeyword, used_url)
-    while(success == -1):
-        used_url.append(solution)
-        success, solution = text_find(query_text, queryKeyword, solution)
+    solution = text_find(query_text, queryKeyword, Tresponse['taxonomy'])
+    if solution == -1:
+        solution = "nothing found for solution"
+        print "nothing found for solution"
     section.append(solution)
+<<<<<<< HEAD
 
     # response = alchemyapi.concepts('text',solution)
     # if response['status'] == 'OK':
@@ -224,6 +252,9 @@ def gen_thesis(topic):
     #     syn.replace("_", " ")
     # if text_find(results, syns_set) == -1:
     #     print "no solution found"
+=======
+    
+>>>>>>> FETCH_HEAD
     #
     #
     #
@@ -242,13 +273,13 @@ def gen_thesis(topic):
         # print word
     queryKeyword = 'impact'
     print '\nimpact section'
-    used_url = []
-    success, impact = text_find(query_text, queryKeyword, used_url)
-    while(success == -1):
-        used_url.append(impact)
-        success, impact = text_find(query_text, queryKeyword, impact)
+    impact = text_find(query_text, queryKeyword, Tresponse['taxonomy'])
+    if impact == -1:
+        impact = "nothing found for impact"
+        print impact
     section.append(impact)
 
+<<<<<<< HEAD
     # response = alchemyapi.concepts('text',impact)
     # if response['status'] == 'OK':
     #     print '## Concepts ##'
@@ -280,6 +311,8 @@ def gen_thesis(topic):
     #     print "no impact found"
     # return thesis_temp, keyword
 
+=======
+>>>>>>> FETCH_HEAD
     return section
 # to open the document and read the text
 
