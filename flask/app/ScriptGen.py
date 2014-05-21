@@ -92,15 +92,15 @@ def gen_thesis(topic):
     section.append(myTitle)
     section.append(myThesis)
 
-    Tresponse = alchemyapi.concepts('text',myThesis)
-    if Tresponse['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in Tresponse['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
+    # Tresponse = alchemyapi.concepts('text',myThesis)
+    # if Tresponse['status'] == 'OK':
+    #     print '## Concepts ##'
+    #     for concept in Tresponse['concepts']:
+    #         if float(concept['relevance']) >= 0.70:
+    #             print 'text: ', concept['text']
+    #             print 'relevance: ', concept['relevance']
+    # else:
+    #     print('Error in concept tagging call: ', response['statusInfo'])
 
     #
     # return
@@ -122,15 +122,15 @@ def gen_thesis(topic):
         success, importance = text_find(query_text, queryKeyword, used_url)
     section.append(importance)
 
-    response = alchemyapi.concepts('text',importance)
-    if response['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in response['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
+    # response = alchemyapi.concepts('text',importance)
+    # if response['status'] == 'OK':
+    #     print '## Concepts ##'
+    #     for concept in response['concepts']:
+    #         if float(concept['relevance']) >= 0.70:
+    #             print 'text: ', concept['text']
+    #             print 'relevance: ', concept['relevance']
+    # else:
+    #     print('Error in concept tagging call: ', response['statusInfo'])
 
     #
     #
@@ -151,15 +151,15 @@ def gen_thesis(topic):
         success, bottleneck = text_find(query_text, queryKeyword, bottleneck)
     section.append(bottleneck)
 
-    response = alchemyapi.concepts('text',bottleneck)
-    if response['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in response['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
+    # response = alchemyapi.concepts('text',bottleneck)
+    # if response['status'] == 'OK':
+    #     print '## Concepts ##'
+    #     for concept in response['concepts']:
+    #         if float(concept['relevance']) >= 0.70:
+    #             print 'text: ', concept['text']
+    #             print 'relevance: ', concept['relevance']
+    # else:
+    #     print('Error in concept tagging call: ', response['statusInfo'])
 
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
@@ -198,15 +198,15 @@ def gen_thesis(topic):
         success, solution = text_find(query_text, queryKeyword, solution)
     section.append(solution)
 
-    response = alchemyapi.concepts('text',solution)
-    if response['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in response['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
+    # response = alchemyapi.concepts('text',solution)
+    # if response['status'] == 'OK':
+    #     print '## Concepts ##'
+    #     for concept in response['concepts']:
+    #         if float(concept['relevance']) >= 0.70:
+    #             print 'text: ', concept['text']
+    #             print 'relevance: ', concept['relevance']
+    # else:
+    #     print('Error in concept tagging call: ', response['statusInfo'])
 
     # query_text = urllib.urlencode({'q': query_text})
     # response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query_text).read()
@@ -249,15 +249,15 @@ def gen_thesis(topic):
         success, impact = text_find(query_text, queryKeyword, impact)
     section.append(impact)
 
-    response = alchemyapi.concepts('text',impact)
-    if response['status'] == 'OK':
-        print '## Concepts ##'
-        for concept in response['concepts']:
-            if float(concept['relevance']) >= 0.70:
-                print 'text: ', concept['text']
-                print 'relevance: ', concept['relevance']
-    else:
-        print('Error in concept tagging call: ', response['statusInfo'])
+    # response = alchemyapi.concepts('text',impact)
+    # if response['status'] == 'OK':
+    #     print '## Concepts ##'
+    #     for concept in response['concepts']:
+    #         if float(concept['relevance']) >= 0.70:
+    #             print 'text: ', concept['text']
+    #             print 'relevance: ', concept['relevance']
+    # else:
+    #     print('Error in concept tagging call: ', response['statusInfo'])
 
     # query_text = 'impact of ' + topic + " " + keyword
     # for word in mykeywordsstr:

@@ -14,7 +14,7 @@ app.secret_key = 'F34TF$($e34D'
 def form():
     return render_template('index.html')
 
-@app.route('/results/', methods=['POST'])
+@app.route('/results', methods=['POST'])
 def results():
     # form = topicsForm()
     # if request.method == 'POST':
@@ -27,15 +27,26 @@ def results():
     elif topic == 'Entertainment': topic == random.choice(others)
     elif topic == 'Wildcard': topic == 'Society'
 
-    title, thesis = thesis2.genThesis(topic)
-    # contents = ScriptGen.gen_thesis(topic)
-    # title = contents[0]
-    # thesis = contents[1]
-    # importance = contents[2]
-    # challenge = contents[3]
-    # solution = contents[4]
-    # impact = contents[5]
-    return render_template('results.html', topic=topic, title=title.encode('utf8'), thesis=thesis.encode('utf8'))
+    contents = []
+
+    # title, thesis = thesis2.genThesis(topic)
+    contents = ScriptGen.gen_thesis(topic)
+    title = contents[0]
+    thesis = contents[1]
+    importance = contents[2]
+    challenge = contents[3]
+    solution = contents[4]
+    impact = contents[5]
+    taxonomy = "religion and spirituality"
+    return render_template('results.html', 
+                            topic = topic, 
+                            title = title.encode('utf8'), 
+                            thesis = thesis.encode('utf8'), 
+                            importance = importance, 
+                            challenge = challenge, 
+                            solution = solution, 
+                            impact = impact,
+                            taxonomy = taxonomy )
 
     # try:
         

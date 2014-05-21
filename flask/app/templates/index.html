@@ -31,7 +31,46 @@
                 <input type="submit" id="submit" />
             </div>
         </form>
-    </div>       
-</div>
+    </div>
+
+    <!-- <div id="container">
+        <div id="talk-hover"></div>
+        <div id="talk-main">
+            <div id="ted-info"></div>
+        </div>
+    </div>
+
+    <div id="container2">
+        <div id="news-hover"></div>
+        <div id="news-main">
+            <div id="articles"></div>
+        </div>
+    </div> -->
+</div>      
+
+<!-- loader -->
+<div id="loader">
+    <section class="main">
+        <div class="wrapper">
+            <div class="inner">
+                <span>L</span>
+                <span>o</span>
+                <span>a</span>
+                <span>d</span>
+                <span>i</span>
+                <span>n</span>
+                <span>g</span>
+            </div>
+        </div>
+    </section>
+</div> 
+
+<script type="text/javascript">
+    $('#loader').hide();
+    $( "#submit" ).click(function() {
+        $('#loader').show();
+        $('#front').css({'opacity':'0.1'});
+    });
+</script>
 
 {% endblock %}

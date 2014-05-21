@@ -15,10 +15,10 @@ folder = ""
 # filename = os.listdir("app")
 
 # for i in filename:
-# 	if i == "stopwords.txt":
-# 		stoplist = os.path.join("app", filename[i])
-# 	elif i == "nltk_data":
-# 		folder = os.path.join("app", filename[i])
+#   if i == "stopwords.txt":
+#       stoplist = os.path.join("app", filename[i])
+#   elif i == "nltk_data":
+#       folder = os.path.join("app", filename[i])
 
 nltk.data.path.append(folder)
 
@@ -31,7 +31,7 @@ stemmer = WordNetLemmatizer()
 
 def genTopic(category):
     """ web scraper that returns the title and url from
-	debate.org. This will form the thesis of our script """
+    debate.org. This will form the thesis of our script """
 
     """ first, take the topic and navigate to the debates.org website """
     # category = raw_input ( '\nEnter Topic: ' )
@@ -52,7 +52,7 @@ def genTopic(category):
         tmps = temp.split()
 
         """ for each title, make sure it's appropriate length and get the url
-			then, add title and url to dictionary """
+            then, add title and url to dictionary """
         if len(tmps) > 5 and len(tmps) < 20:
             title = ' '.join(tmps)
             url = 'http://www.debate.org' + results[i].find("a").get('href') + '?nsort=3&ysort=3'
@@ -84,10 +84,10 @@ def stopWords():
 
 def improvements(title, data):
     """ this functions improves the thesis generator in 3 ways:
-	1.) fix the topArg by removing yes or no statements
-	2.) include punctuations
-	3.) make sure top argument isn't repeated in the support part
-	"""
+    1.) fix the topArg by removing yes or no statements
+    2.) include punctuations
+    3.) make sure top argument isn't repeated in the support part
+    """
 
     print '\n'
     print title
@@ -117,22 +117,22 @@ def improvements(title, data):
 
     # # clean top argument
     # if "Yes." or "No." in topArg[0]:
-    # 	sent = topArg[1:]
-    # 	print sent
+    #   sent = topArg[1:]
+    #   print sent
     # # print topArg
     return
 
 
 def genThesis(topic):
     """
-	in order to generate the thesis, we need the following:
-		- title
-		- url
-		- rating = opinion
-		- thesis: the bold text for the yes or no section 
-			** the thesis has to contain some keywords from the title
-		- support: the sentence following the yes or no bold statement
-	"""
+    in order to generate the thesis, we need the following:
+        - title
+        - url
+        - rating = opinion
+        - thesis: the bold text for the yes or no section 
+            ** the thesis has to contain some keywords from the title
+        - support: the sentence following the yes or no bold statement
+    """
 
     title, url, category = genTopic(topic)
 
@@ -167,7 +167,7 @@ def genThesis(topic):
     data = {}
 
     """ for each top argument, check if it is long enough and contains more than one word from
-	the list of title keywords. """
+    the list of title keywords. """
     if rating > 50:
         # vote is " No"
         args = soup.find('div', attrs={'id': 'no-arguments'}).find_all("li", "hasData")
@@ -227,20 +227,20 @@ def genThesis(topic):
     # print data
 
     # if not opinions: #checking if opinions is empty
-    # 	print "Couldn't find anything - opinions"
-    # 	# return "", ""
+    #   print "Couldn't find anything - opinions"
+    #   # return "", ""
     # elif not userArg: #checking if userArgs is empty
-    # 	print "Couldn't find anything - arguments"
-    # 	# return "", ""
+    #   print "Couldn't find anything - arguments"
+    #   # return "", ""
     # else: #if they aren't empty, do this
-    # 	# print 'Top Argument: '+opinions[0]+'\n'
-    # 	# topArg = opinions[0].split()
-    # 	""" send the thesis and userArgs off to the function to be strengthened """
-    # 	# thesis = opinions[0]+' '+long_support
-    # 	thesis_stmt = thesis(arg, long_support)
-    # 	print "Thesis: "
-    # 	print thesis
-    # 	# return title, thesis
+    #   # print 'Top Argument: '+opinions[0]+'\n'
+    #   # topArg = opinions[0].split()
+    #   """ send the thesis and userArgs off to the function to be strengthened """
+    #   # thesis = opinions[0]+' '+long_support
+    #   thesis_stmt = thesis(arg, long_support)
+    #   print "Thesis: "
+    #   print thesis
+    #   # return title, thesis
 
     if not data:
         # print "Couldn't find anything - data dictionary"
@@ -255,6 +255,7 @@ def genThesis(topic):
         # print thesis
         one = random.choice(data.keys())
         two = data[one]
+        punct = ['!', '?']
 
         tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
         tokens = tokenizer.tokenize(two.strip())
@@ -272,7 +273,11 @@ def genThesis(topic):
         if tokens[0] == one:
             one = ""
 
-        re.sub(r"[^0-9' 'a-zA-Z]$", r".", one)
+        if one[-1] == '.':
+            one = one
+        elif one[-1] in punct or one[-1] not in punct:
+            one = one + '.'
+        # re.sub(r"[^0-9' 'a-zA-Z]$", r".", one)
         # print one
 
         thesis = one + " " + support
@@ -289,7 +294,7 @@ def introduction(title, one, support):
     title = title[0:-1]
     if one != "" and one[0] != "I":
         one = one[0].lower() + one[1:] #lower the first character
-        re.sub(r"[^0-9' 'a-zA-Z]$", r".", one) #add period after one
+        # re.sub(r"[^0-9' 'a-zA-Z]$", r".", one) #add period after one
         thesis = one + " " + support
     elif one == "":
         support = support[0].lower() + support[1:]
@@ -308,7 +313,7 @@ def main():
     print introduction(title, one, support)
 
 # while title == "" or thesis == "":
-# 	title, thesis = genThesis(topic)
+#   title, thesis = genThesis(topic)
 # print "Thesis: "
 # print thesis
 
