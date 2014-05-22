@@ -12,36 +12,36 @@ def stripTags(data):
     return p.sub('', str(data))
 
 # Get a query using topic and keywords
-def getQuery(topic, keywords):    
+def getQuery(topic, keywords, debug):    
     site = "http://www.nytimes.com/roomfordebate/"
     query = "%s %s site:%s" % (topic, keywords, site)
-    #print "Query: %s\n" % query
+    if debug: print "Query: %s\n" % query
     return query
 
 # Get a random debate url
-def getDebateURLRoot(query):
+def getDebateURLRoot(query, debug):
     urls =  search(query, stop=20, pause=0.5)
+    debate_url_root = choice(list(enumerate(urls)))[1]
     try:
-        debate_url_root = choice(list(enumerate(urls)))[1]
         while ( "topics" in debate_url_root): # avoid the topics page
-            getDebateURLRoot(query)
+            getDebateURLRoot(query, debug)
         int(debate_url_root.split('/')[-2]) # see if url is debate root
     except:
         # get debate root
-        debate_url_root = '/'.join(debate_url_root.split('/')[:-1]) + '/' 
-    #print "Debate url root: %s\n" % debate_url_root
+        debate_url_root = '/'.join(debate_url_root.split('/')[:-1]) + '/'
+    if debug: print"Debate url root: %s\n" % debate_url_root
     return debate_url_root
 
-def getDebateURL(query, debate_url_root):
+def getDebateURL(query, debate_url_root, debug):
     html = urllib2.urlopen(debate_url_root).read()
     soup = BeautifulSoup(html)
     try:
         debate_url = "http://www.nytimes.com" + \
                      soup.find("a", { "class" : "nytint-enter-discussion"})['href']
     except:
-        debate_url_root = getDebateURLRoot(query)
-        getDebateURL(query, debate_url_root)
-    #print "Debate url: %s\n" % debate_url
+        debate_url_root = getDebateURLRoot(query, debug)
+        getDebateURL(query, debate_url_root, debug)
+    if debug: print "Debate url: %s\n" % debate_url
     return debate_url
 
 # Get html from debate_url and make a soup
@@ -53,31 +53,33 @@ def getSoup(debate_url):
 # Print title
 def getTitle(soup):
     title = stripTags(soup.title)[:-14]
-    #print "Title: %s\n" % title
     return title
 
 # Print quote
 def getQuote(soup):
     quote = stripTags(soup.blockquote)
-    #print "Quote: %s\n" % quote
     return quote
 
 # Print paragraphs
 def getParas(soup):
     div_tags = soup.findAll("div", { "class" : "nytint-post" })
-    #print "Paragraphs: \n"
     seen = ''
     paras = []
     for p_tag in div_tags[0].findAll('p'):
-        if ( (not '<em>' in str(p_tag)) and (str(p_tag) not in seen) ): # ignore the blockquote in the end
-            seen = str(p_tag) # avoid duplicates
-            para = stripTags(str(p_tag))
+        p_tag = str(p_tag)
+        # filter results
+        if ( '<em>' not in p_tag \
+             and 'Room for Debate' not in p_tag \
+             and p_tag not in seen ): 
+            seen = p_tag # avoid duplicates
+            para = stripTags(p_tag)
             if (len(para) > 5): paras.append(para)
     return paras
 
 def getLine(para, line_num):
     if len(para) > 5: # check for empty paras
-        para_lines = para.replace('.','.<').split('<')[:-1]
+        para_lines = para.replace('.','.<').split('<')
+        para_lines = [line for line in para_lines if line !=''] # check for empty lines
         return para_lines[line_num]
     return ''
 
@@ -87,7 +89,6 @@ def getLinks(soup, debate_url):
     a_tags = soup.findAll("a", { "class" : "nytint-rfd-headline"} )
     for a_tag in a_tags[2:]:
         links.append("http://www.nytimes.com" + a_tag['href'])
-    #print "%d links to different argumens \n" % len(links)
     return links
 
 
@@ -111,24 +112,25 @@ class argument:
     def getParaLine(self, paraNum, lineNum):
         return getLine(self.paras[paraNum], lineNum)
     
-
-""" ---------------------- Fill Debate Class ----------------------"""
-
-query = getQuery('technology', '')
-debate_url_root = getDebateURLRoot(query)
-debate_url = getDebateURL(query, debate_url_root)
-soup = getSoup(debate_url)
-links = getLinks(soup, debate_url)
-
-myDebate = debate()
-for link in links:
-    debate_url = link
+def getDebate(topic, keywords, debug=False):
+    myDebate = debate()
+    query = getQuery(topic, keywords, debug)
+    #debate_url_root = getDebateURLRoot(query, debug)
+    #debate_url = getDebateURL(query, debate_url_root, debug)
+    debate_url = "http://www.nytimes.com/roomfordebate/2014/05/12/teaching-code-in-the-classroom/teach-coding-as-early-as-possible"
     soup = getSoup(debate_url)
-    title = getTitle(soup)
-    quote = getQuote(soup)
-    paras = getParas(soup)
-    myArg = argument( title, quote, paras )
-    myDebate.addArgument( myArg )
+    links = getLinks(soup, debate_url)
+    myDebate.numLinks = len(links)
+    
+    for link in links:
+        debate_url = link
+        soup = getSoup(debate_url)
+        title = getTitle(soup)
+        quote = getQuote(soup)
+        paras = getParas(soup)
+        myArg = argument( title, quote, paras )
+        myDebate.addArgument( myArg )
+    return myDebate
 
 
 """ ---------------------- Script Gen Functions --------------------"""
@@ -144,18 +146,25 @@ def problem():
     return s
 
 def solution():
-    s = "I think Diane Ravitch had the right idea. He said %s So I make the argument that %s \n" % (myDebate.getArgument(2).quote, \
-                     myDebate.getArgument(2).getParaLine(-1,-1))
-    if len(links)>5: s += "%s" % myDebate.getArgument(4).getParaLine(-1,-1)
+    s = "I think Diane Ravitch had the right idea. He said %s So I make the argument that %s \n" \
+        % (myDebate.getArgument(2).quote, \
+           myDebate.getArgument(2).getParaLine(-1,-1))
+    if myDebate.numLinks > 5: s += "%s" % myDebate.getArgument(4).getParaLine(-1,-1)
     return s
 
 """ ---------------------- Templates ----------------------"""
 
-print "Title: %s \n" % myDebate.getArgument(0).title
+topic = 'education'
+keywords = 'computer'
+myDebate = getDebate(topic, keywords, debug=True)
 
+print "Title: %s \n" % myDebate.getArgument(0).title
 print importance()
 print problem()
 print solution()
+
+print
+#print myDebate.getArgument(2).quote
 
 
 
