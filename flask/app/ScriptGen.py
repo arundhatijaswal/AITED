@@ -96,19 +96,19 @@ def gen_thesis(topic):
     and keyword """
 
     section = []
-    """
+    
     myTitle, myOne, mySupport = thesis2.genThesis(topic)
     while myTitle == "" or myOne == "" or mySupport == "":
         myTitle, myOne, mySupport = thesis2.genThesis(topic)
     
 
     myThesis = thesis2.introduction(myTitle, myOne, mySupport)
-    """
     
-    keywords = 'coding'
-    myDebate = debate_content.getDebate(topic, keywords, debug=True)
-    myTitle = myDebate.getArgument(0).title + ". " + myDebate.getArgument(0).quote
-    myThesis = debate_content.importance(myDebate)
+    
+    # keywords = 'coding'
+    # myDebate = debate_content.getDebate(topic, keywords, debug=True)
+    # myTitle = myDebate.getArgument(0).title + ". " + myDebate.getArgument(0).quote
+    # myThesis = debate_content.importance(myDebate)
     
     print "\nTitle: ", myTitle
     print "\nThesis: "
