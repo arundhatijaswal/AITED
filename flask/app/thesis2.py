@@ -315,7 +315,10 @@ def introduction(title, one, support):
 def main():
     topic = raw_input("Enter topic: ")
     title, one, support = genThesis(topic)
-    # print introduction(title, one, support)
+    print title
+    print one
+    print support
+    #print introduction(title, one, support)
 
 # while title == "" or thesis == "":
 #   title, thesis = genThesis(topic)

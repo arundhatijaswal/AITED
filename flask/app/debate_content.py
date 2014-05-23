@@ -40,7 +40,7 @@ def getDebateURL(query, debate_url_root, debug):
                      soup.find("a", { "class" : "nytint-enter-discussion"})['href']
     except:
         debate_url_root = getDebateURLRoot(query, debug)
-        getDebateURL(query, debate_url_root, debug)
+        debate_url = getDebateURL(query, debate_url_root, debug)
     if debug: print "Debate url: %s\n" % debate_url
     return debate_url
 
@@ -115,9 +115,8 @@ class argument:
 def getDebate(topic, keywords, debug=False):
     myDebate = debate()
     query = getQuery(topic, keywords, debug)
-    #debate_url_root = getDebateURLRoot(query, debug)
-    #debate_url = getDebateURL(query, debate_url_root, debug)
-    debate_url = "http://www.nytimes.com/roomfordebate/2014/05/12/teaching-code-in-the-classroom/teach-coding-as-early-as-possible"
+    debate_url_root = getDebateURLRoot(query, debug)
+    debate_url = getDebateURL(query, debate_url_root, debug)
     soup = getSoup(debate_url)
     links = getLinks(soup, debate_url)
     myDebate.numLinks = len(links)
@@ -134,18 +133,18 @@ def getDebate(topic, keywords, debug=False):
 
 
 """ ---------------------- Script Gen Functions --------------------"""
-def importance():
+def importance(myDebate):
     s = "%s %s \n" % (myDebate.getArgument(0).getPara(0), \
                      myDebate.getArgument(0).quote)
     return s
 
-def problem():
+def problem(myDebate):
     s = "The problem is that some people think that %s And this to me is sad. It's sad because %s \n" % \
       (myDebate.getArgument(1).quote, \
        myDebate.getArgument(0).getParaLine(-1,-1))
     return s
 
-def solution():
+def solution(myDebate):
     s = "I think Diane Ravitch had the right idea. He said %s So I make the argument that %s \n" \
         % (myDebate.getArgument(2).quote, \
            myDebate.getArgument(2).getParaLine(-1,-1))
@@ -154,17 +153,17 @@ def solution():
 
 """ ---------------------- Templates ----------------------"""
 
+"""
 topic = 'education'
-keywords = 'computer'
+keywords = ''
 myDebate = getDebate(topic, keywords, debug=True)
 
 print "Title: %s \n" % myDebate.getArgument(0).title
-print importance()
-print problem()
-print solution()
-
-print
-#print myDebate.getArgument(2).quote
+print "Quote: %s \n" % myDebate.getArgument(0).quote
+print importance(myDebate)
+print problem(myDebate)
+print solution(myDebate)
+"""
 
 
 

@@ -10,6 +10,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import *
 from google import search
 import thesis2
+import debate_content
 from alchemyapi import AlchemyAPI
 import nltk.data
 
@@ -84,7 +85,7 @@ def text_find(query_text, queryKeyword, thesisTaxonomy):
                             pass
                     else:
                         pass
-        urls_list.remove(section_url)
+        if section_url in urls_list: urls_list.remove(section_url)
         section_url = random.choice(urls_list)
     return -1
 
@@ -95,13 +96,20 @@ def gen_thesis(topic):
     and keyword """
 
     section = []
-
+    """
     myTitle, myOne, mySupport = thesis2.genThesis(topic)
     while myTitle == "" or myOne == "" or mySupport == "":
         myTitle, myOne, mySupport = thesis2.genThesis(topic)
+    
 
     myThesis = thesis2.introduction(myTitle, myOne, mySupport)
-
+    """
+    
+    keywords = 'coding'
+    myDebate = debate_content.getDebate(topic, keywords, debug=True)
+    myTitle = myDebate.getArgument(0).title + ". " + myDebate.getArgument(0).quote
+    myThesis = debate_content.importance(myDebate)
+    
     print "\nTitle: ", myTitle
     print "\nThesis: "
     print "================================================="
