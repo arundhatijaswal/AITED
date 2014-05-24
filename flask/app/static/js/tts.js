@@ -1,26 +1,27 @@
 // animating boxes
 $(function() {
-	$('#talk-hover').click(function() {
-	    talkSearch();
-	});
+	// $('#talk-hover').click(function() {
+	//     talkSearch();
+	// });
 	
-	$('body').on('click','#talk-hover',function(){
-	    $('#talk-hover').animate({
-	        left: '340px'
+	$('body').on('click','#tts-hover',function(){
+	    $('#tts-hover').animate({
+	        right: '0px'
 	    },250);
-	    $('#talk-main').animate({
-	        left: '0px'
+	    $('#tts-main').animate({
+	        right: '50px'
 	    },250);
-	    talkSearch();
+	    $('#tts-main').addClass('focus');
 	});
 
-	$('body').on('mouseleave','#container',function(){
-	    $('#talk-hover').animate({
-	        left: '0px'
+	$('body').on('mouseleave','#container4',function(){
+	    $('#tts-hover').animate({
+	        right: '0px'
 	    },250);
-	    $('#talk-main').animate({
-	        left: '-340px'
+	    $('#tts-main').animate({
+	        right: '-290px'
 	    },250);
+	    $('#tts-main').removeClass('focus');
 	});
 });
 

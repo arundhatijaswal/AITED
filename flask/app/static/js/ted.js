@@ -14,27 +14,28 @@ $( document ).ready(function() {
 
 // animating boxes
 $(function() {
-	$('#talk-hover').click(function() {
-	    talkSearch();
-	});
+	// $('#talk-hover').click(function() {
+	//     talkSearch();
+	// });
 	
 	$('body').on('click','#talk-hover',function(){
 	    $('#talk-hover').animate({
-	        left: '340px'
+	        right: '0px'
 	    },250);
 	    $('#talk-main').animate({
-	        left: '0px'
+	        right: '50px'
 	    },250);
-	    talkSearch();
+	    $('#talk-main').addClass('focus');
 	});
 
 	$('body').on('mouseleave','#container',function(){
 	    $('#talk-hover').animate({
-	        left: '0px'
+	        right: '0px'
 	    },250);
 	    $('#talk-main').animate({
-	        left: '-340px'
+	        right: '-290px'
 	    },250);
+	    $('#talk-main').removeClass('focus');
 	});
 });
 
@@ -61,7 +62,7 @@ function handleRequest(data) {
 		var one = "<div class='result'><h3 class='name'>";
 		var two = "</h3><p class='description mini'>";
 		var three = "</p><a href='";
-		var four = "' target='_blank'>Click Here to View</a></div>";
+		var four = "' target='_blank' class='link'>Click Here to View</a></div>";
 		var output = one+name+two+description+three+url+four;
 		document.getElementById('ted-info').innerHTML += output;
 	}
@@ -74,18 +75,19 @@ function handleRequest(data) {
 
 // animating boxes
 $(function() {
-	$('#news-hover').click(function() {
-	    newsSearch();
-	});
+	// $('#news-hover').click(function() {
+	//     newsSearch();
+	// });
 	
 	$('body').on('click','#news-hover',function(){
+	    
 	    $('#news-hover').animate({
-	        right: '340px'
-	    },250);
-	    $('#news-main').animate({
 	        right: '0px'
 	    },250);
-	    newsSearch();
+	    $('#news-main').animate({
+	        right: '50px'
+	    },250);
+	    $('#news-main').addClass('focus');
 	});
 
 	$('body').on('mouseleave','#container2',function(){
@@ -93,8 +95,9 @@ $(function() {
 	        right: '0px'
 	    },250);
 	    $('#news-main').animate({
-	        right: '-340px'
+	        right: '-290px'
 	    },250);
+	    $('#news-main').removeClass('focus');
 	});
 });
 
