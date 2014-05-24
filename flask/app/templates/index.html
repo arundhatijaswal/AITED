@@ -31,21 +31,82 @@
                 <input type="submit" id="submit" />
             </div>
         </form>
+
+        <p style="width:50%; margin:0 auto;" id="sample">With Bootstrap 2, we added optional mobile friendly styles for key aspects of the framework. With Bootstrap 3, we've rewritten the project to be mobile friendly from the start. Instead of adding on optional mobile styles, they're baked right into the core. In fact, Bootstrap is mobile first. Mobile first styles can be found throughout the entire library instead of in separate files.</p>
+
+        <p style="width:50%; margin:0 auto;" id="output"></p>
     </div>
 
-    <!-- <div id="container">
-        <div id="talk-hover"></div>
+    <div id="container">
+        <div id="talk-hover">TED</div>
         <div id="talk-main">
+            <div class="box-header">
+                <h3 class="top-head">Related TED Talks</h3>
+                <p class="box-mini">scroll below and check out relevant TED talks</p>
+            </div>
             <div id="ted-info"></div>
         </div>
     </div>
 
     <div id="container2">
-        <div id="news-hover"></div>
+        <div id="news-hover"><p class="info">news</p></div>
         <div id="news-main">
+            <div class="box-header">
+                <h3 class="top-head">Related News Articles</h3>
+                <p class="box-mini">scroll below and check out relevant news articles, courtesy of Bing News</p>
+            </div>
             <div id="articles"></div>
         </div>
-    </div> -->
+    </div>
+
+    <div id="container3">
+        <div id="dict-hover"><p class="info">dictionary</p></div>
+        <div id="dict-main">
+            <div class="box-header">
+                <h3 class="top-head">Toggle Reading Mode</h3>
+                <p class="box-mini">Turn on (or off) the in-app dictionary and thesaurus</p>
+            </div>
+            <div id="dict-start">
+                <label class="radio-inline">
+                    <input type="radio" id="display" name="readmode" value="display" checked> <small>Read Mode OFF</small>
+                </label>
+
+                <label class="radio-inline">
+                    <input type="radio" id="hide" name="readmode" value="hide"> <small>Read Mode ON</small>
+                </label>
+
+                <div id="instructions" style="display:none;">
+                    <small>To use the dictionary + thesaurus
+                    <ol>
+                        <li>Click on a word to highlight it</li>
+                        <li>The words definition and synonym will appear in the box below</li>
+                    </ol>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container4">
+        <div id="tts-hover"><p class="info">play</p></div>
+        <div id="tts-main">
+            <div id="play"></div>
+        </div>
+    </div>
+
+    <div id="dict-wrapper" style="display:none;">
+        <div id="show-panel" class="down"></div>
+        <div id="dict-results">
+            <div id="dictionary">
+                <h3 class="tag">Dictionary</h3>
+                <div id="d-data"></div>
+            </div>
+            <div id="thesaurus">
+                <h3 class="tag">Thesaurus</h3>
+                <div id="t-data"></div>
+            </div>
+        </div>
+    </div>
 </div>      
 
 <!-- loader -->
@@ -70,6 +131,10 @@
     $( "#submit" ).click(function() {
         $('#loader').show();
         $('#front').css({'opacity':'0.1'});
+    });
+
+    $('.words').click(function() {
+        $(this).addClass('highlighter');
     });
 </script>
 

@@ -16,6 +16,15 @@ body {
 	font-style: normal;
 }
 
+.focus {
+	border-color: rgba(255,0,0,.8);
+	outline: 0;
+	outline: thin dotted \9;
+	-moz-box-shadow: 0 0 15px rgba(255,0,0,.6);
+	box-shadow: 0 0 15px rgba(255,0,0,.6);
+}
+
+
 /* ------------------------ home page ------------------------ */
 /* =========================================================== */
 
@@ -171,23 +180,36 @@ form {
 /* ----------------------------- extras ---------------------------- */
 /* ================================================================= */
 
-/*ted talks*/
-#talk-hover{
+
+#talk-hover, #news-hover, #dict-hover, #tts-hover{
     position: fixed;
     text-align: center;
-    top: 150px;
-    left: 0px;
+    right: 0px;
     width: 50px;
     height: 50px;
     background: #3C3C3C;
-    z-index: 100;
+    z-index: 200;
 	background-position: center;
 	background-repeat: no-repeat;
 	cursor: pointer;
 }
 
-#talk-hover:before {
-	content: "\e602";
+#talk-hover:hover, 
+#news-hover:hover, 
+#dict-hover:hover, 
+#tts-hover:hover{
+    background: red;
+	transition: 0.3s;
+	-moz-transition: 0.3s;
+	-webkit-transition: 0.3s;
+	-o-transition: 0.3s;
+}
+
+#talk-hover:before, 
+#news-hover:before, 
+#dict-hover:before, 
+#tts-hover:before, 
+#show-panel:before {
 	font-size: 35px;
 	text-align: center;
 	color: white;
@@ -201,16 +223,73 @@ form {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-#talk-main{
+.smaller:before {
+	font-size: 27px !important;
+	transition: 0.3s;
+	-moz-transition: 0.3s;
+	-webkit-transition: 0.3s;
+	-o-transition: 0.3s;
+}
+
+.info {
+	opacity: 0;
+	text-transform: uppercase;
+	font-size: 0.6em;
+	bottom: 0;
+	color: white;
+	text-align: center;
+}
+
+#talk-main, #news-main, #dict-main, #tts-main{
     position: fixed;
-    top: 150px;
-    left: -340px;
-    width: 340px;
-    height: 340px;
-    background: #ccc;
-    z-index: 100;
-	border-radius: 4px;
+    right: -290px;
+    width: 290px;
+    height: 250px;
+    background: white;
+    z-index: 100;/*
+	border-radius: 4px;*/
 	overflow-x: scroll;
+}
+
+.box-header {
+	text-align: center;
+	width: inherit;
+	-webkit-box-shadow: 0 8px 6px -6px rgb(145, 145, 145);
+	   -moz-box-shadow: 0 8px 6px -6px rgb(145, 145, 145);
+	        box-shadow: 0 8px 6px -6px rgb(145, 145, 145);
+	background-color: #f1f1f1;
+	position: fixed;
+}
+
+.top-head {
+	font-size: 1.3em;
+	font-weight: 700;
+	padding: 0;
+	margin: 0;
+	padding-top: 10px;
+}
+
+.box-mini {
+	font-size: 0.75em;
+	letter-spacing: 1px;	
+}
+
+/*ted talks*/
+/*===============================*/
+#talk-hover {
+    top: 100px;
+    font-weight: 700;
+    color: white;
+    font-size: 26px;
+    line-height: 2;
+}
+
+#talk-main{
+    top: 100px;
+}
+
+#ted-info, #articles {
+	margin-top: 75px;
 }
 
 .result {
@@ -228,48 +307,155 @@ form {
 .description {
 	font-size: 0.85em;
 	letter-spacing: 0.5px;
-	color: white;
+	color: #525252;
+}
+
+.result > a {
+	color: black !important;
+	text-transform: none;
+	text-decoration: none;
+}
+
+.result > a:hover {
+	color: red !important;
+	transition: 1s;
+	-moz-transition: 1s;
+	-webkit-transition: 1s;
+	-o-transition: 1s;
 }
 
 
 /*news*/
+/*===============================*/
 #news-hover{
-    position: fixed;
-    text-align: center;
-    top: 230px;
-    right: 0px;
-    width: 50px;
-    height: 50px;
-    background: #3C3C3C;
-    z-index: 100;
-	background-position: center;
-	background-repeat: no-repeat;
-	cursor: pointer;
+    top: 180px;
 }
 
 #news-hover:before {
 	content: "\e600";
-	font-size: 35px;
-	text-align: center;
-	color: white;
-	font-family: 'icomoon';
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 }
 
 #news-main{
-    position: fixed;
-    top: 230px;
-    right: -340px;
-    width: 340px;
-    height: 340px;
-    background: #ccc;
-    z-index: 100;
-	border-radius: 4px;
-	overflow-x: scroll;
+    top: 180px;
 }
+
+
+/*tts*/
+/*===============================*/
+#tts-hover{
+    top: 340px;
+}
+
+#tts-hover:before {
+	content: "\e601";
+}
+
+#tts-main{
+    top: 340px;
+}
+
+
+/*dictionary*/
+/*===============================*/
+#dict-hover{
+    top: 260px;
+}
+
+#dict-hover:before {
+	content: "\e604";
+}
+
+#dict-main{
+    top: 260px;
+    height: auto !important;
+}
+
+#dict-start {
+	margin: 90px 20px 19px 20px;
+}
+
+
+#dict-wrapper {
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	color: #222;
+	border-radius: 7px 7px 0 0;
+}
+
+#show-panel {
+	position: fixed;
+	cursor: pointer;
+	bottom: 0;
+	padding: 0px 25px 0px 25px;
+	background: #eee;
+	z-index: 200;
+	border-radius: 7px 7px 0 0;
+	text-transform: none;
+	text-decoration: none;
+	color: #444 !important;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0, 0.1), inset 0 -11px 20px rgba(0,0,0, 0.1), inset 0 0 1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0, 0.1), inset 0 -11px 20px rgba(0,0,0, 0.1), inset 0 0 1px rgba(0,0,0,0.2);
+	box-shadow: 0 1px 2px rgba(0,0,0, 0.1), inset 0 -11px 20px rgba(0,0,0, 0.1), inset 0 0 1px rgba(0,0,0,0.2);	
+}
+
+.down:before {
+	content: "\e606";
+	color: #444 !important;
+}
+
+.up:before {
+	content: "\e605";
+	color: #444 !important;
+}
+
+#dict-results {
+	position: fixed;
+	left: 21% !important;
+	bottom: -150px;
+	width: 60%;
+	height: 150px;
+	background-color: whitesmoke;
+	z-index: 100;
+	overflow-x: scroll;
+	-webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.23);
+	-moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.23);
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.23);
+}
+
+#dictionary {
+	float: left;
+	height:inherit;
+	border-right: 1px solid #444;
+	width: 50%;
+	text-align: center;
+}
+
+#thesaurus {
+	float: right;
+	height:inherit;
+	width: 50%;
+	text-align: center;
+}
+
+.tag {
+	font-family: 'Gloria Hallelujah', cursive;
+	color: #444;
+	font-size: 2.1em;
+}
+
+.highlighter {
+	background-color: #7FFF00;
+	padding: 2px;
+	border-radius: 4px;
+}
+
+.words {
+	margin-left: 3px;
+	word-wrap: break-word;
+	cursor: pointer;
+}
+
+
+
+

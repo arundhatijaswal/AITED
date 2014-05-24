@@ -104,12 +104,21 @@ def gen_thesis(topic):
 
     myThesis = thesis2.introduction(myTitle, myOne, mySupport)
     
+<<<<<<< HEAD
     """
     keywords = 'coding'
     myDebate = debate_content.getDebate(topic, keywords, debug=True)
     myTitle = myDebate.getArgument(0).title + ". " + myDebate.getArgument(0).quote
     myThesis = debate_content.importance(myDebate)
     """
+=======
+    
+    # keywords = 'coding'
+    # myDebate = debate_content.getDebate(topic, keywords, debug=True)
+    # myTitle = myDebate.getArgument(0).title + ". " + myDebate.getArgument(0).quote
+    # myThesis = debate_content.importance(myDebate)
+    
+>>>>>>> FETCH_HEAD
     print "\nTitle: ", myTitle
     print "\nThesis: "
     print "================================================="
