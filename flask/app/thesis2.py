@@ -124,7 +124,9 @@ def genThesis(topic):
                             count += 1
                             if count > 1:
                                 # opinions.append(' '.join(tmps))
-                                data[str(temp).encode('utf8')] = str(userArg).encode('utf8')
+                                # data[str(temp).encode('utf8')] = str(userArg).encode('utf8')
+
+                                data[u' '.join(temp).encode('utf-8')] = u' '.join(userArg).encode('utf-8') #try to solve ASCII error
                             # print count
     else:
         # vote is " Yes"
@@ -214,7 +216,6 @@ def genThesis(topic):
                 one = one
             elif one[-1] in punct or one[-1] not in punct:
                 one = one + '.'
-            # re.sub(r"[^0-9' 'a-zA-Z]$", r".", one)
             # print one
 
             thesis = one + " " + support
@@ -224,19 +225,19 @@ def genThesis(topic):
 
 
 def introduction(title, one, support):
-    # print "before: ", title
-    # title = title.strip()
-    # re.sub(r"[^0-9' 'a-zA-Z]$", r",", title)
-    # print "after: ", title
+
     thesis = ""
-    title = title[0:-1]
+    exclude = set(string.punctuation)
+    if title[-1] in exclude:
+         title = title[0:-1]
     if one != "" and one[0] != "I":
         one = one[0].lower() + one[1:] #lower the first character
-        # re.sub(r"[^0-9' 'a-zA-Z]$", r".", one) #add period after one
         thesis = one + " " + support
-    elif one == "":
+    elif one == "" or one == support[0:len(one)]:
         support = support[0].lower() + support[1:]
         thesis = support
+    else:
+        thesis = one + " " + support
     temp1 = "When asked " + title[0].lower() + title[1:] + ", the short answer is " + thesis
     temp2 = "If asked " + title[0].lower() + title[1:] + ", I would say " + thesis
     temp3 = "When we think " + title[0].lower() + title[1:] + ", some of us will say " + thesis
@@ -248,15 +249,17 @@ def introduction(title, one, support):
 def main():
     topic = raw_input("Enter topic: ")
     title, one, support = genThesis(topic)
+    # print "%s %s %s" % ("="*30, "title", "="*30)
     # print title
+    #
+    # print "%s %s %s" % ("="*30, "one", "="*30)
     # print one
+    #
+    # print "%s %s %s" % ("="*30, "support", "="*30)
     # print support
-    #print introduction(title, one, support)
-
-# while title == "" or thesis == "":
-#   title, thesis = genThesis(topic)
-# print "Thesis: "
-# print thesis
+    #
+    print "%s %s %s" % ("="*30, "intro", "="*30)
+    print introduction(title, one, support)
 
 if __name__ == "__main__":
     main()
