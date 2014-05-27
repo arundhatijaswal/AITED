@@ -188,21 +188,21 @@ def getSpeakerPara(debate, speaker_num, para_num):
 """ ------------------------   main   ----------------------------"""
 
 topic = 'education'
-keywords = ''
-debate = getDebate(topic, keywords, debug=False)
+keywords = 'school waste time?'
+debate = getDebate(topic, keywords, debug=True)
 #print "Debate Title: %s \n" % debate.debateTitle
 
 
 # -------------------- Usage 1 - Use these functions -----------------
-"""
+#"""
 print "Importance: %s \n" % importance(debate)
 print "Problem: %s \n" % problem(debate)
 print "Solution: %s \n" % solution(debate)
-"""
+#"""
 
 
 # ------------ Usage 2 - Look at a summary and choose  ---------------
-for speaker in range(debate.numLinks): getSpeechSummary(debate, speaker)
+#for speaker in range(debate.numLinks): getSpeechSummary(debate, speaker)
 
 
 
