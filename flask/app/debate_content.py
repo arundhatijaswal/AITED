@@ -6,12 +6,10 @@ from google import search
 from os.path import basename
 
 """ ------------------------- Functions ---------------------------"""
-# Remove tags
 def stripTags(data):
     p = re.compile(r'<.*?>')
     return p.sub('', str(data))
 
-# Get a query using topic and keywords
 def getQuery(topic, keywords, debug):    
     site = "http://www.nytimes.com/roomfordebate/"
     query = "%s %s site:%s" % (topic, keywords, site)
@@ -24,7 +22,7 @@ def getDebateURLRoot(query, debug):
     debate_url_root = choice(list(enumerate(urls)))[1]
     try:
         while ( "topics" in debate_url_root): # avoid the topics page
-            getDebateURLRoot(query, debug)
+            debate_url_root = getDebateURLRoot(query, debug)
         int(debate_url_root.split('/')[-2]) # see if url is debate root
     except:
         # get debate root
@@ -50,40 +48,13 @@ def getSoup(debate_url):
     soup = BeautifulSoup(html)
     return soup
 
-# Print title
-def getTitle(soup):
-    title = stripTags(soup.title)[:-14]
-    return title
+def getDebateTitle(soup):
+    parent_tag = soup.find("div", { "class" : "nytint-discussion-overview"} )
+    title = stripTags(parent_tag.find('a'))
+    overview = stripTags(parent_tag.find('p'))[:-23]
+    return '%s. %s \n' % (title, overview)
 
-# Print quote
-def getQuote(soup):
-    quote = stripTags(soup.blockquote)
-    return quote
-
-# Print paragraphs
-def getParas(soup):
-    div_tags = soup.findAll("div", { "class" : "nytint-post" })
-    seen = ''
-    paras = []
-    for p_tag in div_tags[0].findAll('p'):
-        p_tag = str(p_tag)
-        # filter results
-        if ( '<em>' not in p_tag \
-             and 'Room for Debate' not in p_tag \
-             and p_tag not in seen ): 
-            seen = p_tag # avoid duplicates
-            para = stripTags(p_tag)
-            if (len(para) > 5): paras.append(para)
-    return paras
-
-def getLine(para, line_num):
-    if len(para) > 5: # check for empty paras
-        para_lines = para.replace('.','.<').split('<')
-        para_lines = [line for line in para_lines if line !=''] # check for empty lines
-        return para_lines[line_num]
-    return ''
-
-# Get links to different arguments
+# Get links to different speakers
 def getLinks(soup, debate_url):
     links = [debate_url]
     a_tags = soup.findAll("a", { "class" : "nytint-rfd-headline"} )
@@ -91,80 +62,150 @@ def getLinks(soup, debate_url):
         links.append("http://www.nytimes.com" + a_tag['href'])
     return links
 
+def getTitle(soup):
+    title = stripTags(soup.title)[:-14]
+    return title
+
+def getQuote(soup):
+    quote = stripTags(soup.blockquote)
+    return quote
+
+def getAuthor(soup):
+    parent_tag = soup.find("p", { "class" : "nytint-post-leadin"} )
+    author = stripTags(parent_tag.find('a'))
+    return author
+
+def getAuthorList(soup):
+    authors = []
+    tags = soup.findAll("p", { "class" : "nytint-bylines"} )
+    for tag in tags:
+        authors.append(stripTags(tag).strip())
+    return authors
+
+def getParasList(soup):
+    div_tags = soup.findAll("div", { "class" : "nytint-post" })
+    seen = ''
+    paras = []
+    for p_tag in div_tags[0].findAll('p'):
+        p_tag = str(p_tag)
+        # filter results
+        filters = ['<em>', 'Room for Debate']
+        if ( not any(word in p_tag for word in filters) \
+             and p_tag not in seen ):
+            seen = p_tag # avoid duplicates
+            para = stripTags(p_tag)
+            if(len(para)): paras.append(para) # check for empty paras
+    return paras
 
 """ ------------------------- Debate Class -------------------------"""
-class debate:
-    arguments = []
-    def addArgument(self, argument):
-        self.arguments.append(argument)
-    def getArgument(self, num):
-        return self.arguments[num]
+class Debate:
+    def __init__(self, debate_url):
+        soup = getSoup(debate_url)
+        self.debateTitle = getDebateTitle(soup)
+        self.speakers = []
+        self.authorList = getAuthorList(soup)
+        self.links = getLinks(soup , debate_url)
+        self.numLinks = len(self.links)
         
-class argument:
-    def __init__(self, title, quote, paras):
+    def addSpeaker(self, speaker):
+        self.speakers.append(speaker)
+        
+    def getSpeaker(self, num):
+        return self.speakers[num]
+        
+class Speaker:
+    def __init__(self, title, author, quote, paras):
         self.title = title
-        self.quote = quote
+        self.author = author
+        self.authorFirstName = ''.join(author.split()[0])
+        self.quote = quote if len(quote)>5 else title
         self.paras = paras
         
     def getPara(self, num):
         return self.paras[num]
     
-    def getParaLine(self, paraNum, lineNum):
-        return getLine(self.paras[paraNum], lineNum)
+    def getParaLine(self, para_num, line_num):
+        para = self.getPara(para_num)
+        para_lines = re.compile('[.]\\s').split(para)
+        para_lines = [line for line in para_lines if bool(line.strip())] # check for empty lines
+        return para_lines[line_num]
     
-def getDebate(topic, keywords, debug=False):
-    myDebate = debate()
+def getDebate(topic, keywords, debug=False):   
     query = getQuery(topic, keywords, debug)
     debate_url_root = getDebateURLRoot(query, debug)
     debate_url = getDebateURL(query, debate_url_root, debug)
-    soup = getSoup(debate_url)
-    links = getLinks(soup, debate_url)
-    myDebate.numLinks = len(links)
+    #debate_url = "http://www.nytimes.com/roomfordebate/2013/10/08/what-federal-spending-are-we-better-off-without/the-sequester-and-the-shutdown-provide-a-lesson-in-nothing"
+    debate = Debate(debate_url)
     
-    for link in links:
+    for link in debate.links:
         debate_url = link
         soup = getSoup(debate_url)
         title = getTitle(soup)
+        author = getAuthor(soup)
         quote = getQuote(soup)
-        paras = getParas(soup)
-        myArg = argument( title, quote, paras )
-        myDebate.addArgument( myArg )
-    return myDebate
+        paras = getParasList(soup)
+        speaker = Speaker( title, author, quote, paras )
+        debate.addSpeaker( speaker )
+    return debate
 
 
 """ ---------------------- Script Gen Functions --------------------"""
-def importance(myDebate):
-    s = "%s %s \n" % (myDebate.getArgument(0).getPara(0), \
-                     myDebate.getArgument(0).quote)
+def importance(debate):
+    speaker0 = debate.getSpeaker(0)
+    s = "%s %s \n" % (speaker0.getPara(0), speaker0.quote)
     return s
 
-def problem(myDebate):
+def problem(debate):
+    speaker0 = debate.getSpeaker(0)
+    speaker1 = debate.getSpeaker(1)
     s = "The problem is that some people think that %s And this to me is sad. It's sad because %s \n" % \
-      (myDebate.getArgument(1).quote, \
-       myDebate.getArgument(0).getParaLine(-1,-1))
+      (speaker1.quote, speaker0.getParaLine(-1,-1))
     return s
 
-def solution(myDebate):
-    s = "I think Diane Ravitch had the right idea. He said %s So I make the argument that %s \n" \
-        % (myDebate.getArgument(2).quote, \
-           myDebate.getArgument(2).getParaLine(-1,-1))
-    if myDebate.numLinks > 5: s += "%s" % myDebate.getArgument(4).getParaLine(-1,-1)
+def solution(debate):
+    speaker2 = debate.getSpeaker(2)
+    s = "I think %s had the right idea. %s said %s So I make the argument that %s \n" % \
+        (speaker2.author, speaker2.authorFirstName, speaker2.quote, speaker2.getParaLine(-1,-1))
     return s
 
-""" ---------------------- Templates ----------------------"""
+def getSpeechSummary(debate, speaker_num):
+    speaker = debate.getSpeaker(speaker_num)
+    print "-"*60
+    print "Speaker %d's Title: %s \n" % (speaker_num, speaker.title)
+    print "Quote: %s - %s \n" % (speaker.quote, debate.authorList[speaker_num])
+    print "Main argument: %s \n" % speaker.getPara(0)
+    print "Concluding statement: %s \n" % speaker.getParaLine(-1, -1)
+    #print "Paragraphs:"
+    #for para in speaker.paras: print para,'\n'
+    print "-"*60
 
-"""
+def getSpeakerPara(debate, speaker_num, para_num):
+    speaker = debate.getSpeaker(speaker_num)
+    para = speaker.getPara(para_num)
+    return para
+
+
+""" ------------------------   main   ----------------------------"""
+
 topic = 'education'
 keywords = ''
-myDebate = getDebate(topic, keywords, debug=True)
-
-print "Title: %s \n" % myDebate.getArgument(0).title
-print "Quote: %s \n" % myDebate.getArgument(0).quote
-print importance(myDebate)
-print problem(myDebate)
-print solution(myDebate)
-"""
+debate = getDebate(topic, keywords, debug=False)
+print "Debate Title: %s \n" % debate.debateTitle
 
 
+# -------------------- Usage 1 - Use these functions -----------------
+#"""
+print "Importance: %s \n" % importance(debate)
+print "Problem: %s \n" % problem(debate)
+print "Solution: %s \n" % solution(debate)
+#"""
 
 
+# ------------ Usage 2 - Look at a summary and choose  ---------------
+#for speaker in range(debate.numLinks): getSpeechSummary(debate, speaker)
+
+
+
+# ------------ Usage 3 - Get any para from any speaker  ---------------
+speaker_num, para_num = 0, 1
+print "Speaker %d, Para %d: %s" % (speaker_num, para_num, getSpeakerPara(debate, speaker_num, para_num))
