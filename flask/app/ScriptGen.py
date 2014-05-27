@@ -74,7 +74,7 @@ def make_section(section_name, topic, title_keywords):
     
 def text_urls(query_text, query_keyword):
     # get urls from query
-    result_urls = search(query_text, stop=20, pause=2.0)
+    result_urls = search(query_text, stop=30, pause=1.0)
     urls_list = [link for (num, link) in list(enumerate(result_urls))]
                  
     # filter urls by type of link
