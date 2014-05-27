@@ -40,13 +40,95 @@
         <h1 class="category">{{topic}}</h1>
         <p class="taxonomy">{{taxonomy}}</p>
         <h3 class="title">{{title}}</h3>
+
         <p class="part1">{{thesis}}</p>
+        <p class="d-thesis"></p>
+
         <p class="part2">{{importance}}</p>
+        <p class="d-import"></p>
+
         <p class="part3">{{challenge}}</p>
+        <p class="d-chal"></p>
+
         <p class="part4">{{solution}}</p>
+        <p class="d-soln"></p>
+
         <p class="part5">{{impact}}</p>
+        <p class="d-impact"></p>
     </div>
     
+    <!-- EXTRAS -->
+    <div id="container">
+        <div id="talk-hover">TED</div>
+        <div id="talk-main">
+            <div class="box-header">
+                <h3 class="top-head">Related TED Talks</h3>
+                <p class="box-mini">scroll below and check out relevant TED talks</p>
+            </div>
+            <div id="ted-info"></div>
+        </div>
+    </div>
+
+    <div id="container2">
+        <div id="news-hover"><p class="info">news</p></div>
+        <div id="news-main">
+            <div class="box-header">
+                <h3 class="top-head">Related News Articles</h3>
+                <p class="box-mini">scroll below and check out relevant news articles, courtesy of Bing News</p>
+            </div>
+            <div id="articles"></div>
+        </div>
+    </div>
+
+    <div id="container3">
+        <div id="dict-hover"><p class="info">dictionary</p></div>
+        <div id="dict-main">
+            <div class="box-header">
+                <h3 class="top-head">Toggle Reading Mode</h3>
+                <p class="box-mini">Turn on (or off) the in-app dictionary and thesaurus</p>
+            </div>
+            <div id="dict-start">
+                <label class="radio-inline">
+                    <input type="radio" id="display" name="readmode" value="display" checked> <small>Read Mode OFF</small>
+                </label>
+
+                <label class="radio-inline">
+                    <input type="radio" id="hide" name="readmode" value="hide"> <small>Read Mode ON</small>
+                </label>
+
+                <div id="instructions" style="display:none;">
+                    <small>To use the dictionary + thesaurus
+                    <ol>
+                        <li>Click on a word to highlight it</li>
+                        <li>The words definition and synonym will appear in the box below</li>
+                    </ol>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container4">
+        <div id="tts-hover"><p class="info">play</p></div>
+        <div id="tts-main">
+            <div id="play"></div>
+        </div>
+    </div>
+
+    <div id="dict-wrapper" style="display:none;">
+        <div id="show-panel" class="down"></div>
+        <div id="dict-results">
+            <div id="dictionary">
+                <h3 class="tag">Dictionary</h3>
+                <div id="d-data"></div>
+            </div>
+            <div id="thesaurus">
+                <h3 class="tag">Thesaurus</h3>
+                <div id="t-data"></div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
         var value = $('.category').text();
         console.log(value);

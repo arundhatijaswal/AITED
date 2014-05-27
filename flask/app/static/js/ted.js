@@ -14,9 +14,9 @@ $( document ).ready(function() {
 
 // animating boxes
 $(function() {
-	// $('#talk-hover').click(function() {
-	//     talkSearch();
-	// });
+	$('#talk-hover').click(function() {
+	    talkSearch();
+	});
 	
 	$('body').on('click','#talk-hover',function(){
 	    $('#talk-hover').animate({
@@ -42,8 +42,10 @@ $(function() {
 
 function talkSearch() {
 	var key = "d8gwb3us8jfcwbv85bm7qyj9";
-	// var query = $('.taxonomy').text();
-	var query = "religion and spirituality";
+	var query = $('.taxonomy').text();
+	var x = query.toLowerCase().replace(/[^a-z0-9\s]/gi, ' ');
+	var q = x.substr(1, x.length);
+	console.log("taxonomy ", q);
 	var replaced = query.split(' ').join('+');
 	var category = "talks";
 	var url = "https://api.ted.com/v1/search.json?";
@@ -75,9 +77,9 @@ function handleRequest(data) {
 
 // animating boxes
 $(function() {
-	// $('#news-hover').click(function() {
-	//     newsSearch();
-	// });
+	$('#news-hover').click(function() {
+	    newsSearch();
+	});
 	
 	$('body').on('click','#news-hover',function(){
 	    
@@ -106,10 +108,12 @@ var key = "boX7CdYBW+zsr99xjmIB9Dt4W7vhViJu65816FiBPjg";
 function newsSearch() {
 	//Build up the URL for the request
 	var maxresults = 15;
-	// var query = $('.taxonomy').text();
-	var query = "religion and spirituality";
-	var l = query.length;
-	var uri = encodeURI(query.slice(1, (l-1))).replace("%20", "+");
+	var query = $('.taxonomy').text();
+	var x = query.toLowerCase().replace(/[^a-z0-9\s]/gi, ' ');
+	var q = x.substr(1, x.length);
+	console.log("taxonomy ", q);
+	var l = q.length;
+	var uri = encodeURI(q.slice(1, (l-1))).replace("%20", "+");
 	var url = "https://api.datamarket.azure.com/Bing/Search/News?";
 	var requestStr = url+"Query=%27"+uri+"%27&$top="+maxresults+"&$format=json&Adult=%27Moderate%27&NewsSortBy=%27Date%27";
 	

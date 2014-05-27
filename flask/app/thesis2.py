@@ -8,20 +8,6 @@ import nltk.data
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
 
-filename = ""
-stoplist = ""
-folder = ""
-
-# filename = os.listdir("app")
-
-# for i in filename:
-#   if i == "stopwords.txt":
-#       stoplist = os.path.join("app", filename[i])
-#   elif i == "nltk_data":
-#       folder = os.path.join("app", filename[i])
-
-nltk.data.path.append(folder)
-
 
 # Global variables
 issues = {}
@@ -68,59 +54,6 @@ def dePunc(rawword):
     L = [c for c in rawword if 'A' <= c <= 'Z' or 'a' <= c <= 'z']
     word = ''.join(L)
     return word
-
-
-def stopWords():
-    swlist = []
-    f = open(stoplist, 'r')
-    line = f.readline()
-    while line:
-        word = line.strip()
-        swlist.append(word)
-        line = f.readline()
-    f.close()
-    return swlist
-
-
-def improvements(title, data):
-    """ this functions improves the thesis generator in 3 ways:
-    1.) fix the topArg by removing yes or no statements
-    2.) include punctuations
-    3.) make sure top argument isn't repeated in the support part
-    """
-
-    print '\n'
-    print title
-    print '========================================================'
-    print '\n'
-    # print data
-
-    arg = random.choice(data.keys())
-    support = data[arg]
-
-    """ clean up the argument """
-    print "Argument: ", arg
-    print "support: ", support
-    keys = arg.split()
-
-    # print keys
-
-    if "yes" or "Yes" or "no" or "No" in keys[0]:
-        print keys[1:]
-    else:
-        print keys
-
-    """ clean up the support """
-
-
-    # temp = topArg.lower()
-
-    # # clean top argument
-    # if "Yes." or "No." in topArg[0]:
-    #   sent = topArg[1:]
-    #   print sent
-    # # print topArg
-    return
 
 
 def genThesis(topic):
@@ -315,9 +248,9 @@ def introduction(title, one, support):
 def main():
     topic = raw_input("Enter topic: ")
     title, one, support = genThesis(topic)
-    print title
-    print one
-    print support
+    # print title
+    # print one
+    # print support
     #print introduction(title, one, support)
 
 # while title == "" or thesis == "":

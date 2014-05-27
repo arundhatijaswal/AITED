@@ -63,8 +63,18 @@ $(function() {
 		// console.log('changed');
 		$('#instructions').hide('slow');
 		$('#dict-wrapper').hide();
-		$('#output').hide();
-		$('#sample').show();
+		
+		$('.d-thesis').hide();
+		$('.d-import').hide();
+		$('.d-chal').hide();
+		$('.d-soln').hide();
+		$('.d-impact').hide();
+
+		$('.part1').show();
+		$('.part2').show();
+		$('.part3').show();
+		$('.part4').show();
+		$('.part5').show();
 	});
 
 	$('#hide').on('change', function(e) {
@@ -96,15 +106,50 @@ $(function() {
 
 //FOR DICTIONARY
 // to grab and split the text
-function splitText() {
-	var textString = $('#sample').text();
-	console.log(textString);
-	var splitString = textString.split(" ");
-	$('#output').empty();
-	$('#sample').hide();
-	$('#output').show();
-	for (var i = 0; i < splitString.length; i++) {
-		$('#output').append(space(splitString[i]));	
+function splitText(text) {
+	var one = $('.part1').text().split(" ");
+	var two = $('.part2').text().split(" ");
+	var three = $('.part3').text().split(" ");
+	var four = $('.part4').text().split(" ");
+	var five = $('.part5').text().split(" ");
+	console.log(one);
+
+	$('.d-thesis').empty();
+	$('.d-import').empty();
+	$('.d-chal').empty();
+	$('.d-soln').empty();
+	$('.d-impact').empty();
+
+	$('.part1').hide();
+	$('.part2').hide();
+	$('.part3').hide();
+	$('.part4').hide();
+	$('.part5').hide();
+
+	$('.d-thesis').show();
+	$('.d-import').show();
+	$('.d-chal').show();
+	$('.d-soln').show();
+	$('.d-impact').show();
+
+	for (var i = 0; i < one.length; i++) {
+		$('.d-thesis').append(space(one[i]));	
+	}
+
+	for (var i = 0; i < two.length; i++) {
+		$('.d-import').append(space(two[i]));	
+	}
+
+	for (var i = 0; i < three.length; i++) {
+		$('.d-chal').append(space(three[i]));	
+	}
+
+	for (var i = 0; i < four.length; i++) {
+		$('.d-soln').append(space(four[i]));	
+	}
+
+	for (var i = 0; i < five.length; i++) {
+		$('.d-impact').append(space(five[i]));	
 	}
 }
 
@@ -115,18 +160,23 @@ function space(word) {
 
 // call the two search functions
 function doubleTrouble(query) {
+	$(this).addClass('highlighter');
+	$('.words').click(function() {
+		$('.words').removeClass('highlighter');
+		$(this).addClass('highlighter');
+		var words = $(this).text();
+		console.log(words);
+		doubleTrouble(words);
+	});
+
 	if ($("#dict-results").css("bottom") == "-150px") {
     	$("#dict-results").animate({ bottom: "0px" }, 250);
     	$("#show-panel").animate({ bottom: '150px' }, 250);
     	$('#show-panel').addClass('up');
     	$('#show-panel').removeClass('down');
     }
-    $('.words').click(function() {
-    	$('.words').removeClass('highlighter');
-		$(this).addClass('highlighter');
-		search(query);
-		search2(query);
-	});
+    search(query);
+	search2(query);
 }
 
 // make definition request to Google Dictionary

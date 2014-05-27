@@ -119,14 +119,22 @@ def gen_thesis(topic):
     section.append(myTitle)
     section.append(myThesis)
 
+    tax = []
+
     Tresponse = alchemyapi.taxonomy('text',myThesis)
     if Tresponse['status'] == 'OK':
         for category in Tresponse['taxonomy']:
             print category['label'], ' : ', category['score']
+            tax.append(category['label'])
             if category.has_key('confident'):
                 print 'confident: ', category['confident']
     else:
         print('Error in concept tagging call: ', response['statusInfo'])
+
+    section.append(tax[0])
+    print "\nTaxonomy: "
+    print "================================================="
+    print tax[0]
 
     #
     # return
