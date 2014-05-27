@@ -97,7 +97,6 @@ def text_find(urls_list, query_keyword, title_keywords):
             urls_list.remove(url)
     print "URL tried: %s" % url
 
-<<<<<<< HEAD
     myThesis = thesis2.introduction(myTitle, myOne, mySupport)
     
     
@@ -190,11 +189,11 @@ def text_find(urls_list, query_keyword, title_keywords):
         solution = "nothing found for solution"
         print "nothing found for solution"
     section.append(solution)
-=======
+
     # get all paragraphs
     soup = BeautifulSoup(html)
     tags = soup.findAll('p')
->>>>>>> FETCH_HEAD
+
 
     # filter para by matching keyword and length
     for para in tags:
