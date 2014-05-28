@@ -37,7 +37,7 @@ def gen_quotes(category, title):
                 contents = results[0]['content'].split("...")
                 contents = filter(None, contents)
                 h = HTMLParser.HTMLParser()
-                target_content = h.unescape(contents[len(contents) - 1])
+                target_content = h.unescape(contents[1])
             except Exception:
                 print "-----broke"
                 del keywords[-1]
