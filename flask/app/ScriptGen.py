@@ -165,16 +165,10 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
 
 
 
-<<<<<<< HEAD
 def main(topic):
     # topic = 'education'
     # topic = raw_input("Enter topic: ")
 
-=======
-def main():
-    category = 'education'
-    
->>>>>>> FETCH_HEAD
     # form thesis and query
     title, my_thesis, title_keywords, talk_url = gen_thesis(category)
     talk_url = talk_url[:-15]
@@ -206,19 +200,13 @@ def main():
 
     #"""
 
-<<<<<<< HEAD
+
     print talk
     return talk
     # print "%s Final Talk %s" % ("="*30, "="*30)
     # for para in talk:
     #     print "\n%s" % para
-=======
-    # print talk
-    print "%s Final Talk %s" % ("="*30, "="*30)
-    for para in talk:
-        print "\n%s" % para
-    return talk
->>>>>>> FETCH_HEAD
+
 
 if __name__ == "__main__":
     main()
