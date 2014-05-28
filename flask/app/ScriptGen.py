@@ -81,10 +81,10 @@ def extract_keywords(string):
 
 def filter_para(para, query_keyword, title_keywords, thesis_taxonomy):
     if query_keyword in para and 300<len(para)<900:
-        section_taxonomy = para_taxonomy(para)
-        common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
-        if common_taxonomy >=0: return para
-        #return para
+        #section_taxonomy = para_taxonomy(para)
+        #common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
+        #if common_taxonomy >=0: return para
+        return para
     return None
 
 
