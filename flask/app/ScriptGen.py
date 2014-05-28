@@ -22,7 +22,9 @@ def google_results(query):
     urls_list = []
     for link in links:
         urls_list.append(link.find("a")["href"])
-    if 'procon' in urls_list[0]: print "%s Wrong Debate %s" % ("="*30, "="*30)
+    if 'www.procon.org/debate-topics.php' in urls_list[0]:
+        print "%s Wrong Debate %s" % ("="*30, "="*30)
+        return -1
     return urls_list
 
 def get_HTML(url):
@@ -112,8 +114,9 @@ def make_section(section_name, topic, title_keywords, thesis_taxonomy):
     # get urls and relevent para
     #urls_list = text_urls(query_text, query_keyword)
     urls_list = google_results(query_text)
+    if urls_list == -1: return -1
     para = text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy)
-    para = "\n%s \n " % para.replace('\n',' ').replace('\r',' ').replace('  ','') # clean para
+    para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('  ','') # clean para
     print para
     return para
 
@@ -162,12 +165,18 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
 
 
 
+<<<<<<< HEAD
 def main(topic):
     # topic = 'education'
     # topic = raw_input("Enter topic: ")
 
+=======
+def main():
+    category = 'education'
+    
+>>>>>>> FETCH_HEAD
     # form thesis and query
-    title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
+    title, my_thesis, title_keywords, talk_url = gen_thesis(category)
     talk_url = talk_url[:-15]
     #title, my_thesis, talk_url = gen_thesis_NYT(topic)
 
@@ -184,22 +193,32 @@ def main(topic):
     
     # print sections
     talk = [title, my_thesis]
+    sections = ['importance', 'problem', 'solution', 'should']
     #"""
-    talk.append(make_section('importance', topic, title_keywords, thesis_taxonomy))
-    talk.append(make_section('problem', topic, title_keywords, thesis_taxonomy))
-    talk.append(make_section('solution', topic, title_keywords, thesis_taxonomy))
-    talk.append(make_section('', topic, title_keywords, thesis_taxonomy))
-    #quote, author = quoteTest.gen_quotes(topic, title)
+    for section in sections:
+        para = make_section(section, topic, title_keywords, thesis_taxonomy)
+        if para == -1: return main()
+        talk.append(para)
+  
+    #quote, author = quoteTest.gen_quotes(category, title)
     #print '"',quote, '"'
     #print "--", author
 
     #"""
 
+<<<<<<< HEAD
     print talk
     return talk
     # print "%s Final Talk %s" % ("="*30, "="*30)
     # for para in talk:
     #     print "\n%s" % para
+=======
+    # print talk
+    print "%s Final Talk %s" % ("="*30, "="*30)
+    for para in talk:
+        print "\n%s" % para
+    return talk
+>>>>>>> FETCH_HEAD
 
 if __name__ == "__main__":
     main()
