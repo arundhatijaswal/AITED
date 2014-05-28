@@ -187,18 +187,18 @@ def getSpeakerPara(debate, speaker_num, para_num):
 
 """ ------------------------   main   ----------------------------"""
 
-topic = 'education'
-keywords = 'school waste time?'
-debate = getDebate(topic, keywords, debug=True)
+#topic = 'education'
+#keywords = 'school waste time?'
+#debate = getDebate(topic, keywords, debug=True)
 #print "Debate Title: %s \n" % debate.debateTitle
 
 
 # -------------------- Usage 1 - Use these functions -----------------
-#"""
+"""
 print "Importance: %s \n" % importance(debate)
 print "Problem: %s \n" % problem(debate)
 print "Solution: %s \n" % solution(debate)
-#"""
+"""
 
 
 # ------------ Usage 2 - Look at a summary and choose  ---------------
@@ -207,5 +207,5 @@ print "Solution: %s \n" % solution(debate)
 
 
 # ------------ Usage 3 - Get any para from any speaker  ---------------
-speaker_num, para_num = 0, 1
+#speaker_num, para_num = 0, 1
 #print "Speaker %d, Para %d: %s" % (speaker_num, para_num, getSpeakerPara(debate, speaker_num, para_num))

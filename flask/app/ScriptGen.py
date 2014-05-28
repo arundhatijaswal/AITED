@@ -1,4 +1,4 @@
-import urllib2, thesis2
+import urllib2, thesis2, cookielib
 from google import search
 from bs4 import BeautifulSoup
 from random import choice
@@ -9,7 +9,30 @@ from contextlib import contextmanager
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from alchemyapi import AlchemyAPI
-#import debate_content
+import debate_content
+
+
+def google_results(query):
+    query = "https://www.google.com/search?q=" + query + "&num=20"
+    print "Query: %s \n " % query
+    html = get_HTML(query)
+    soup = BeautifulSoup(html)
+    links = soup.findAll("h3", { "class" : "r"} )
+    urls_list = []
+    for link in links:
+        urls_list.append(link.find("a")["href"])
+    if 'procon' in urls_list[0]: print "%s Wrong Debate %s" % ("="*30, "="*30)
+    return urls_list
+
+def get_HTML(url):
+    hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',}
+    req = urllib2.Request(url, headers=hdr)
+    try:
+        page = urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        print 'Could not open HTML'
+    return page.read()
 
 
 class TimeoutException(Exception): pass
@@ -55,42 +78,52 @@ def extract_keywords(string):
 
 def filter_para(para, query_keyword, title_keywords, thesis_taxonomy):
     if query_keyword in para and 300<len(para)<900:
-        section_taxonomy = para_taxonomy(para)
-        common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
-        if common_taxonomy >0: return para
+        #section_taxonomy = para_taxonomy(para)
+        #common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
+        #if common_taxonomy >0: return para
+        return para
     return None
 
 
 def gen_thesis(topic):    
-    title, main_point, support = thesis2.genThesis(topic)
+    title, main_point, support, talk_url = thesis2.genThesis(topic)
     while not bool( title and main_point and support): # check if either is empty
-        title, main_point, support = thesis2.genThesis(topic)
+        title, main_point, support, talk_url = thesis2.genThesis(topic)
         
     my_thesis = thesis2.introduction(title, main_point, support)
     title_keywords = extract_keywords(title)
-    return title, my_thesis, title_keywords
+    return title, my_thesis, title_keywords, talk_url
 
+def gen_thesis_NYT(topic):
+    keywords = ''
+    myDebate = debate_content.getDebate(topic, keywords, debug=False)
+    myTitle = myDebate.getSpeaker(0).title + ". " + myDebate.getSpeaker(0).quote
+    myThesis = debate_content.importance(myDebate)
+    url = myDebate.links[0]
+    return myTitle, myThesis, url
+    
 
 def make_section(section_name, topic, title_keywords, thesis_taxonomy):
     print "%s %s %s" % ("="*30, section_name, "="*30) 
-    query_text = "%s %s %s" % (section_name, topic, title_keywords)
+    query_text = "%s+%s" % (topic, section_name)
     query_keyword = PorterStemmer().stem(section_name)
-    print "Query: %s \n " % query_text
-
+    
     # get urls and relevent para
-    urls_list = text_urls(query_text, query_keyword)
+    #urls_list = text_urls(query_text, query_keyword)
+    urls_list = google_results(query_text)
     para = text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy)
-    para = para.replace('\n',' ').replace('\r',' ').replace('  ','') # clean para
-    print "\n%s \n " % para
+    para = "\n%s \n " % para.replace('\n',' ').replace('\r',' ').replace('  ','') # clean para
+    print para
+    return para
 
     
 def text_urls(query_text, query_keyword):
     # get urls from query
-    result_urls = search(query_text, stop=30, pause=1.0)
+    result_urls = search(query_text, stop=30, pause=2.0)
     urls_list = [link for (num, link) in list(enumerate(result_urls))]
                  
     # filter urls by type of link
-    filters = ['.pdf', '.doc', 'debate.org']
+    filters = ['.pdf', '.doc']
     urls_list = [url for url in urls_list if not any(word in url for word in filters)]
     return urls_list
 
@@ -98,7 +131,7 @@ def text_urls(query_text, query_keyword):
 def get_paras(url):
     # get all paras from a url
     try:
-        html = urllib2.urlopen(url).read()
+        html = get_HTML(url)
         soup = BeautifulSoup(html)
         tags = soup.findAll('p')
         print "URL tried: %s" % url
@@ -112,7 +145,9 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
     if not urls_list: return 'Nothing found'
 
     # try a random url
+    global num
     url = choice(urls_list)
+    #num += 1
     urls_list.remove(url)
     tags = timeout(get_paras, 2, url) # try another url if timed out
     if not tags: return text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy)
@@ -128,21 +163,36 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
 
 def main():
     topic = 'education'
+    
     # form thesis and query
-    title, my_thesis, title_keywords = gen_thesis(topic)
+    title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
+    talk_url = talk_url[:-15]
+    #title, my_thesis, talk_url = gen_thesis_NYT(topic)
+
     print "\nTitle: %s \n " % title
     print "Thesis: \n%s \n " % my_thesis
 
-    # thesis taxonomy
+    # add related
+    topic = "related:%s" % (talk_url)
+
+    #thesis taxonomy
     thesis_taxonomy = para_taxonomy(my_thesis)
+    #thesis_taxonomy = ''
+    title_keywords = ''
     
     # print sections
+    talk = "%s\n" % my_thesis
     #"""
-    make_section('importance', topic, title_keywords, thesis_taxonomy)
-    make_section('problem', topic, title_keywords, thesis_taxonomy)
-    make_section('solution', topic, title_keywords, thesis_taxonomy)
-    make_section('impact', topic, title_keywords, thesis_taxonomy)
+    talk += make_section('importance', topic, title_keywords, thesis_taxonomy)
+    talk += make_section('problem', topic, title_keywords, thesis_taxonomy)
+    talk += make_section('could', topic, title_keywords, thesis_taxonomy)
+    talk += make_section('should', topic, title_keywords, thesis_taxonomy)
     #"""
+
+    # print talk
+    print "%s Final Talk %s" % ("="*30, "="*30)
+    print "\nTitle: %s \n " % title
+    print talk
 
 if __name__ == "__main__":
     main()

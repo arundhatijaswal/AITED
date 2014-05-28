@@ -126,7 +126,7 @@ def genThesis(topic):
                                 # opinions.append(' '.join(tmps))
                                 # data[str(temp).encode('utf8')] = str(userArg).encode('utf8')
 
-                                data[u' '.join(temp).encode('utf-8')] = u' '.join(userArg).encode('utf-8') #try to solve ASCII error
+                                data[u''.join(temp).encode('utf-8')] = u''.join(userArg).encode('utf-8') #try to solve ASCII error
                             # print count
     else:
         # vote is " Yes"
@@ -221,7 +221,7 @@ def genThesis(topic):
             thesis = one + " " + support
             # print title
             # print 'Thesis: ', thesis
-            return title, one, support
+            return title, one, support, url
 
 
 def introduction(title, one, support):
@@ -248,7 +248,7 @@ def introduction(title, one, support):
 
 def main():
     topic = raw_input("Enter topic: ")
-    title, one, support = genThesis(topic)
+    title, one, support, url = genThesis(topic)
     # print "%s %s %s" % ("="*30, "title", "="*30)
     # print title
     #
