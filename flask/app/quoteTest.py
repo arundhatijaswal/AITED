@@ -1,19 +1,19 @@
 from bs4 import BeautifulSoup
 import json as m_json
-import requests, random, re, string, random
+import requests
 import urllib2
 import urllib
-import sys
-from TestCodeThesis import gen_thesis
+import thesis2
 
-topic, keyword = gen_thesis()
+# topic, keyword = gen_thesis()
+title, one, support = thesis2.genThesis()
 # print thesis
 query1 = topic + " " + keyword + " site:brainyquote.com"
 # print query1
-query2 = urllib.urlencode ( { 'q' : query1 } )
-response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query2 ).read()
-json = m_json.loads ( response )
-results = json [ 'responseData' ] [ 'results' ]
+query2 = urllib.urlencode({'q': query1})
+response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query2).read()
+json = m_json.loads(response)
+results = json['responseData']['results']
 # print 'length of results: ', len(results)
 
 
