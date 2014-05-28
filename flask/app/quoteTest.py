@@ -41,6 +41,7 @@ def gen_quotes(category, title):
             except Exception:
                 print "-----broke"
                 del keywords[-1]
+                target_content = category
         except Exception:
             result_urls = search(query1, num=20, pause=2.0)
             urls_list = [link for (num, link) in list(enumerate(result_urls))]
@@ -84,7 +85,7 @@ def gen_quotes(category, title):
             break
     if quote == "":
         quote = quotes_in_link[0].find("span", {"class": "bqQuoteLink"}).text
-        author = quotes_in_link[0].find("span", {"class": "bq-aut"}).text
+        author = quotes_in_link[0].find("div", {"class": "bq-aut"}).text
     print "%s %s %s" % ("="*30, "quotes", "="*30)
     return quote, author
 

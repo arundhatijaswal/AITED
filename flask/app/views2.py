@@ -45,10 +45,11 @@ def results():
                             taxonomy = taxonomy,
                             title = title.encode('utf8'), 
                             thesis = thesis.encode('utf8'), 
-                            importance = importance,
-                            challenge = challenge,
-                            solution = solution, 
-                            impact = impact)
+                            importance = importance.encode('utf8'),
+                            challenge = challenge.encode('utf8'),
+                            solution = solution.encode('utf8'), 
+                            impact = impact.encode('utf8')
+                            )
 
     # try:
         

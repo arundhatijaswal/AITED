@@ -81,10 +81,10 @@ def extract_keywords(string):
 
 def filter_para(para, query_keyword, title_keywords, thesis_taxonomy):
     if query_keyword in para and 300<len(para)<900:
-        section_taxonomy = para_taxonomy(para)
-        common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
-        if common_taxonomy >=0: return para
-        #return para
+        #section_taxonomy = para_taxonomy(para)
+        #common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
+        #if common_taxonomy >=0: return para
+        return para
     return None
 
 
@@ -170,7 +170,12 @@ def main(topic):
     # topic = raw_input("Enter topic: ")
 
     # form thesis and query
+<<<<<<< HEAD
+    title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
+=======
+    category = topic
     title, my_thesis, title_keywords, talk_url = gen_thesis(category)
+>>>>>>> FETCH_HEAD
     talk_url = talk_url[:-15]
     #title, my_thesis, talk_url = gen_thesis_NYT(topic)
 
@@ -191,12 +196,13 @@ def main(topic):
     #"""
     for section in sections:
         para = make_section(section, topic, title_keywords, thesis_taxonomy)
-        if para == -1: return main()
+        if para == -1: return main(topic)
         talk.append(para)
   
-    #quote, author = quoteTest.gen_quotes(category, title)
-    #print '"',quote, '"'
-    #print "--", author
+    quote, author = quoteTest.gen_quotes(category, title)
+    talk.append('"' + quote + '"' + "--" + author)
+    # print '"',quote, '"'
+    # print "--", author
 
     #"""
 
