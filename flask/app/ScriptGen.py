@@ -166,10 +166,10 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
 
 
 def main():
-    topic = 'education'
+    category = 'education'
     
     # form thesis and query
-    title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
+    title, my_thesis, title_keywords, talk_url = gen_thesis(category)
     talk_url = talk_url[:-15]
     #title, my_thesis, talk_url = gen_thesis_NYT(topic)
 
@@ -193,7 +193,7 @@ def main():
         if para == -1: return main()
         talk.append(para)
   
-    #quote, author = quoteTest.gen_quotes(topic, title)
+    #quote, author = quoteTest.gen_quotes(category, title)
     #print '"',quote, '"'
     #print "--", author
 
