@@ -170,15 +170,8 @@ def main(topic):
     # topic = raw_input("Enter topic: ")
 
     # form thesis and query
-<<<<<<< HEAD
-<<<<<<< HEAD
     title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
-=======
-=======
->>>>>>> FETCH_HEAD
-    category = topic
-    title, my_thesis, title_keywords, talk_url = gen_thesis(category)
->>>>>>> FETCH_HEAD
+    
     talk_url = talk_url[:-15]
     #title, my_thesis, talk_url = gen_thesis_NYT(topic)
 
