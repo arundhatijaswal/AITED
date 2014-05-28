@@ -187,10 +187,10 @@ def main():
     talk.append(make_section('importance', topic, title_keywords, thesis_taxonomy))
     talk.append(make_section('problem', topic, title_keywords, thesis_taxonomy))
     talk.append(make_section('solution', topic, title_keywords, thesis_taxonomy))
-    talk.append(make_section('impact', topic, title_keywords, thesis_taxonomy))
+    talk.append(make_section('', topic, title_keywords, thesis_taxonomy))
     quote, author = quoteTest.gen_quotes(topic, title)
-    print '"',quote, '"'
-    print "--", author
+    #print '"',quote, '"'
+    #print "--", author
 
     #"""
 
