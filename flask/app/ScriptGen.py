@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from random import choice
 
 import signal
+import quoteTest
 from contextlib import contextmanager
 
 from nltk.corpus import stopwords
@@ -142,6 +143,9 @@ def main():
     make_section('problem', topic, title_keywords, thesis_taxonomy)
     make_section('solution', topic, title_keywords, thesis_taxonomy)
     make_section('impact', topic, title_keywords, thesis_taxonomy)
+    quote, author = quoteTest.gen_quotes(topic, title)
+    print '"',quote, '"'
+    print "--", author
     #"""
 
 if __name__ == "__main__":

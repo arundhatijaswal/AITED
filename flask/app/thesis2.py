@@ -126,7 +126,7 @@ def genThesis(topic):
                                 # opinions.append(' '.join(tmps))
                                 # data[str(temp).encode('utf8')] = str(userArg).encode('utf8')
 
-                                data[u' '.join(temp).encode('utf-8')] = u' '.join(userArg).encode('utf-8') #try to solve ASCII error
+                                data[u''.join(temp).encode('utf-8')] = u''.join(userArg).encode('utf-8') #try to solve ASCII error
                             # print count
     else:
         # vote is " Yes"

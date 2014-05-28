@@ -74,7 +74,7 @@ def gen_quotes(category, title):
 
     soup = BeautifulSoup(data)
     quotes_in_link = soup.find_all("div", {"class": "masonryitem"})
-    print len(quotes_in_link)
+    # print len(quotes_in_link)
     quote = ""
     author = ""
     for q in quotes_in_link:
@@ -85,7 +85,7 @@ def gen_quotes(category, title):
     if quote == "":
         quote = quotes_in_link[0].find("span", {"class": "bqQuoteLink"}).text
         author = quotes_in_link[0].find("span", {"class": "bq-aut"}).text
-
+    print "%s %s %s" % ("="*30, "quotes", "="*30)
     return quote, author
 
 
