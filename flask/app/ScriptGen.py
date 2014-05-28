@@ -194,9 +194,10 @@ def main(topic):
         if para == -1: return main()
         talk.append(para)
   
-    #quote, author = quoteTest.gen_quotes(category, title)
-    #print '"',quote, '"'
-    #print "--", author
+    quote, author = quoteTest.gen_quotes(category, title)
+    talk.append('"' + quote + '"' + "--" + author)
+    # print '"',quote, '"'
+    # print "--", author
 
     #"""
 
