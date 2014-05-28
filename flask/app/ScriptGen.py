@@ -79,10 +79,10 @@ def extract_keywords(string):
 
 def filter_para(para, query_keyword, title_keywords, thesis_taxonomy):
     if query_keyword in para and 300<len(para)<900:
-        #section_taxonomy = para_taxonomy(para)
-        #common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
-        #if common_taxonomy >0: return para
-        return para
+        section_taxonomy = para_taxonomy(para)
+        common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
+        if common_taxonomy >=2: return para
+        #return para
     return None
 
 
@@ -174,29 +174,29 @@ def main():
     print "Thesis: \n%s \n " % my_thesis
 
     # add related
-    topic = "related:%s" % (talk_url)
+    #topic = "related:%s" % (talk_url)
 
     #thesis taxonomy
     thesis_taxonomy = para_taxonomy(my_thesis)
     #thesis_taxonomy = ''
-    title_keywords = ''
+    #title_keywords = ''
     
     # print sections
-    talk = "%s\n" % my_thesis
+    talk = [title, my_thesis]
     #"""
-    make_section('importance', topic, title_keywords, thesis_taxonomy)
-    make_section('problem', topic, title_keywords, thesis_taxonomy)
-    make_section('solution', topic, title_keywords, thesis_taxonomy)
-    make_section('impact', topic, title_keywords, thesis_taxonomy)
-    quote, author = quoteTest.gen_quotes(topic, title)
-    print '"',quote, '"'
-    print "--", author
+    talk.append(make_section('importance', topic, title_keywords, thesis_taxonomy))
+    talk.append(make_section('problem', topic, title_keywords, thesis_taxonomy))
+    talk.append(make_section('solution', topic, title_keywords, thesis_taxonomy))
+    talk.append(make_section('impact', topic, title_keywords, thesis_taxonomy))
+    #quote, author = quoteTest.gen_quotes(topic, title)
+    #print '"',quote, '"'
+    #print "--", author
     #"""
 
     # print talk
     print "%s Final Talk %s" % ("="*30, "="*30)
-    print "\nTitle: %s \n " % title
-    print talk
+    for para in talk:
+        print "\n%s" % para
 
 if __name__ == "__main__":
     main()
