@@ -12,31 +12,31 @@ results = []
 
 
 def genTopic(category):
-	""" web scraper that returns the title and url from 
-	debate.org. This will form the thesis of our script """ 
+	""" web scraper that returns the title and url from
+	debate.org. This will form the thesis of our script """
 
 	# first, take the topic and navigate to the debates.org website
 	# search = raw_input ( '\nEnter Topic: ' )
-	websites = ['http://www.debate.org/opinions/'+category+'/?sort=popular', 
+	websites = ['http://www.debate.org/opinions/'+category+'/?sort=popular',
 		   'http://www.debate.org/opinions/'+category+'/?p=2&sort=popular',
 		   'http://www.debate.org/opinions/'+category+'/?p=3&sort=popular']
-	
+
 	web = random.choice(websites)
 	r = requests.get(web)
 	data = r.text
 	soup = BeautifulSoup(data)
 	# print soup.prettify()
 
-	results = soup.find_all("p", "l-name") 
+	results = soup.find_all("p", "l-name")
 	for i in range(0, len(results)):
-		
+
 		# get the titles
 		temp = results[i].find("span", "q-title").text
 		tmps = temp.split()
 
 		# for each title, make sure it's appropriate length and get the url
 		# then, add title and url to dictionary
-		if len(tmps) > 5 and len(tmps) < 20: 
+		if len(tmps) > 5 and len(tmps) < 20:
 			title = ' '.join(tmps)
 			url = 'http://www.debate.org'+results[i].find("a").get('href')+'?nsort=3&ysort=3'
 			issues[str(title)] = str(url)
@@ -47,7 +47,7 @@ def genTopic(category):
 
 
 def genThesis(topic):
-	""" 
+	"""
 	in order to generate the thesis, we need the following:
 		- title
 		- url
@@ -70,7 +70,7 @@ def genThesis(topic):
 	# remove stopwords using nltk stop list and print the keywords
 	keywords = [w for w in title.lower().split() if not w in stopwords.words('english')]
 	keys = ' '.join(keywords)
-	
+
 	vote = soup.find("span", "no-text").text
 	strings = str(vote).split()
 	rating = int(strings[0][:-1]) # this is the 'no' rating
@@ -87,7 +87,7 @@ def genThesis(topic):
 			temp = args[i].find("h2").text
 			userArg = args[i].find("p").text
 			tmps = temp.split()
-			if len(tmps) > 3: 
+			if len(tmps) > 3:
 				count = 0
 				for i in tmps:
 					for j in keywords:
@@ -106,7 +106,7 @@ def genThesis(topic):
 			temp = args[i].find("h2").text
 			userArg = args[i].find("p").text
 			tmps = temp.split()
-			if len(tmps) > 3: 
+			if len(tmps) > 3:
 				count = 0
 				for i in tmps:
 					for j in keywords:
@@ -139,11 +139,11 @@ def stemmer(word):
     vowels = 'aeiou'
     consonants = 'bcdfghjklmnpqrstvwxyz'
 
-    if len(word) > 3 and word[len(word)-1] == endings[0]:       # If it ends in 's'  
+    if len(word) > 3 and word[len(word)-1] == endings[0]:       # If it ends in 's'
         if word[len(word)-2:len(word)] == endings[2]:           # If it ends in 'es'
             if word[len(word)-4:len(word)-2] in ['ch', 'sh'] \
                or word[len(word)-3] in ['x','s'] \
-               or word[len(word)-3] == 'o' and word[len(word)-4] in consonants: # If singular ends in an 'o' 
+               or word[len(word)-3] == 'o' and word[len(word)-4] in consonants: # If singular ends in an 'o'
                                                                                 # preceded by a consonant
                 return word[0:len(word)-2]                      # get rid of 'es'
 
@@ -155,29 +155,29 @@ def stemmer(word):
 
                                                            # Otherwise, get rid of 's'
         return word[0:len(word)-1]
-        
+
 
     # Handles words that end in 'ed' applied -> apply, mapped -> map
     elif len(word) > 3 and word[len(word)-2:len(word)] == endings[1]:     # Words that end in 'ed'
-        
+
         if word[-3] == 'i':
-            
+
             if word in ['tied', 'lied', 'died']: # Y doesn't change in these words
                 return word[0:len(word)]
             else:
                 return word[0:len(word)-3] + 'y' # Y does change in these words
-            
+
         elif word[-3] == word[-4]:               # Ends in 'ed' and has a double consonant
-            
+
             if word[-4:-2] == 'ss':             # If that double consonant is 'ss'
                 return word[0:len(word)-2]
-            
+
             else:                               # If it's not 'ss'
                 return word[0:len(word)-3]
-            
+
         elif word[-3] != word[-4]:              # Words without double consonants
-            return word[0:len(word)-2]              
-        
+            return word[0:len(word)-2]
+
 
     # Handles words that end in 'ly' gladly -> glad, merrily -> merry
     elif len(word) > 3 and word[-2:len(word)] == endings[3]:
@@ -185,7 +185,7 @@ def stemmer(word):
             return word[0:len(word)-3] + 'y'
         else:
             return word[0:len(word)-2]
-        
+
     # 'ing' playing -> play
     elif len(word) > 3 and word[-3:len(word)] == endings[4]:
         if word[-3] == word[-4]:
@@ -199,7 +199,7 @@ def stemmer(word):
             return word[0:len(word)-3]
         elif word[-3] != word[-4]:
             return word[0:len(word)-4]
-    
+
     # If word not inflected, return as-is.
     else:
         return word
@@ -213,7 +213,7 @@ def stemmer(word):
 
 
 	# # use the keywords to do a search for a topic
-	# websites = ['cnn.com', 
+	# websites = ['cnn.com',
 	# 			'huffingtonpost.com',
 	# 			'businessinsider.com',
 	# 			'www.nytimes.com'
@@ -222,7 +222,7 @@ def stemmer(word):
 	# web = random.choice(websites)
 	# query = 'reason why ' + title + ' site:' + web
 
-	
+
 
 	# if len(results) > 0:
 	# 	thesisURL = results[random.randint(0, (len(results) - 1))]['url']
