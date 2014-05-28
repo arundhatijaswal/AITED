@@ -171,8 +171,11 @@ def main(topic):
 
     # form thesis and query
 <<<<<<< HEAD
+<<<<<<< HEAD
     title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
 =======
+=======
+>>>>>>> FETCH_HEAD
     category = topic
     title, my_thesis, title_keywords, talk_url = gen_thesis(category)
 >>>>>>> FETCH_HEAD
