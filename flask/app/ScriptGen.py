@@ -150,7 +150,7 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
     url = choice(urls_list)
     #num += 1
     urls_list.remove(url)
-    tags = timeout(get_paras, 2, url) # try another url if timed out
+    tags = get_paras(url) # try another url if timed out
     if not tags: return text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy)
     
     # filter para by matching keyword and length
@@ -162,9 +162,10 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
 
 
 
-def main():
-    topic = 'education'
-    
+def main(topic):
+    # topic = 'education'
+    # topic = raw_input("Enter topic: ")
+
     # form thesis and query
     title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
     talk_url = talk_url[:-15]
@@ -194,10 +195,11 @@ def main():
 
     #"""
 
-    # print talk
-    print "%s Final Talk %s" % ("="*30, "="*30)
-    for para in talk:
-        print "\n%s" % para
+    print talk
+    return talk
+    # print "%s Final Talk %s" % ("="*30, "="*30)
+    # for para in talk:
+    #     print "\n%s" % para
 
 if __name__ == "__main__":
     main()

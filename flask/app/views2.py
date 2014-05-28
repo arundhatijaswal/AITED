@@ -30,24 +30,25 @@ def results():
     contents = []
 
     # title, thesis = thesis2.genThesis(topic)
-    contents = ScriptGen.gen_thesis(topic)
+    contents = ScriptGen.main(topic)
+    taxonomy = topic
     title = contents[0]
     thesis = contents[1]
     importance = contents[2]
     challenge = contents[3]
-    # solution = contents[4]
-    # impact = contents[5]
-    # taxonomy = topic
+    solution = contents[4]
+    impact = contents[5]
+    
     
     return render_template('results.html', 
                             topic = topic, 
+                            taxonomy = taxonomy,
                             title = title.encode('utf8'), 
                             thesis = thesis.encode('utf8'), 
-                            importance = importance) 
-                            # challenge = challenge, 
-                            # solution = solution, 
-                            # impact = impact,
-                            # taxonomy = taxonomy )
+                            importance = importance,
+                            challenge = challenge,
+                            solution = solution, 
+                            impact = impact)
 
     # try:
         
