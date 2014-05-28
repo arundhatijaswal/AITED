@@ -14,7 +14,7 @@ import debate_content
 
 
 def google_results(query):
-    query = "https://www.google.com/search?q=" + query + "&num=20"
+    query = "https://www.google.com/search?q=" + query + "&num=30"
     print "Query: %s \n " % query
     html = get_HTML(query)
     soup = BeautifulSoup(html)
@@ -81,7 +81,7 @@ def filter_para(para, query_keyword, title_keywords, thesis_taxonomy):
     if query_keyword in para and 300<len(para)<900:
         section_taxonomy = para_taxonomy(para)
         common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
-        if common_taxonomy >=2: return para
+        if common_taxonomy >=0: return para
         #return para
     return None
 
@@ -174,11 +174,11 @@ def main():
     print "Thesis: \n%s \n " % my_thesis
 
     # add related
-    #topic = "related:%s" % (talk_url)
+    topic = "related:%s" % (talk_url)
 
     #thesis taxonomy
-    thesis_taxonomy = para_taxonomy(my_thesis)
-    #thesis_taxonomy = ''
+    #thesis_taxonomy = para_taxonomy(my_thesis)
+    thesis_taxonomy = ''
     #title_keywords = ''
     
     # print sections
@@ -187,7 +187,7 @@ def main():
     talk.append(make_section('importance', topic, title_keywords, thesis_taxonomy))
     talk.append(make_section('problem', topic, title_keywords, thesis_taxonomy))
     talk.append(make_section('solution', topic, title_keywords, thesis_taxonomy))
-    talk.append(make_section('impact', topic, title_keywords, thesis_taxonomy))
+    talk.append(make_section('', topic, title_keywords, thesis_taxonomy))
     #quote, author = quoteTest.gen_quotes(topic, title)
     #print '"',quote, '"'
     #print "--", author
