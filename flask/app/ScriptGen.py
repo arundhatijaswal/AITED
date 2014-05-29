@@ -170,6 +170,7 @@ def main(topic):
     # topic = raw_input("Enter topic: ")
 
     # form thesis and query
+    category = topic
     title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
     
     talk_url = talk_url[:-15]
@@ -192,7 +193,8 @@ def main(topic):
     #"""
     for section in sections:
         para = make_section(section, topic, title_keywords, thesis_taxonomy)
-        if para == -1: return main(topic)
+        # if para == -1:
+        #     return main()
         talk.append(para)
   
     quote, author = quoteTest.gen_quotes(category, title)
@@ -211,4 +213,4 @@ def main(topic):
 
 
 if __name__ == "__main__":
-    main()
+    main('education')
