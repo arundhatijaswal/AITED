@@ -172,13 +172,8 @@ def main(topic):
     # topic = raw_input("Enter topic: ")
     category = topic
     # form thesis and query
-<<<<<<< HEAD
-    title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
-=======
     category = topic
     title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
-    
->>>>>>> FETCH_HEAD
     talk_url = talk_url[:-15]
     #title, my_thesis, talk_url = gen_thesis_NYT(topic)
 
@@ -199,33 +194,19 @@ def main(topic):
     #"""
     for section in sections:
         para = make_section(section, topic, title_keywords, thesis_taxonomy)
-<<<<<<< HEAD
         if para == -1: return main(category)
-        talk.append(para)
-=======
-        # if para == -1:
-        #     return main()
         talk.append(para)
   
     quote, author = quoteTest.gen_quotes(category, title)
     talk.append('"' + quote + '"' + "--" + author)
     # print '"',quote, '"'
     # print "--", author
->>>>>>> FETCH_HEAD
-
-    #"""
 
     print "%s Final Talk %s" % ("="*30, "="*30)
     for para in talk:
         print "\n%s" % para
 
     return talk
-
-    """
-    quote, author = quoteTest.gen_quotes(category, title)
-    print '"',quote, '"'
-    print "--", author
-    """
     
 
 
