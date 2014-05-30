@@ -1,4 +1,4 @@
-import urllib2, thesis2, cookielib
+import urllib2, thesis2, cookielib, urllib
 from google import search
 from bs4 import BeautifulSoup
 from random import choice
@@ -27,6 +27,7 @@ def google_results(query):
         return -1
     return urls_list
 
+
 def get_HTML(url):
     hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',}
@@ -36,6 +37,7 @@ def get_HTML(url):
     except urllib2.HTTPError, e:
         print 'Could not open HTML'
     return page.read()
+
 
 
 class TimeoutException(Exception): pass
@@ -153,7 +155,7 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
     url = choice(urls_list)
     #num += 1
     urls_list.remove(url)
-    tags = get_paras(url) # try another url if timed out
+    tags = timeout(get_paras, 2, url) # try another url if timed out
     if not tags: return text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy)
     
     # filter para by matching keyword and length
@@ -166,11 +168,11 @@ def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
 
 
 def main(topic):
-    # topic = 'education'
+    #topic = 'education'
     # topic = raw_input("Enter topic: ")
-
+    category = topic
     # form thesis and query
-    title, my_thesis, title_keywords, talk_url = gen_thesis(category)
+    title, my_thesis, title_keywords, talk_url = gen_thesis(topic)
     talk_url = talk_url[:-15]
     #title, my_thesis, talk_url = gen_thesis_NYT(topic)
 
@@ -191,22 +193,24 @@ def main(topic):
     #"""
     for section in sections:
         para = make_section(section, topic, title_keywords, thesis_taxonomy)
-        if para == -1: return main()
+        if para == -1: return main(category)
         talk.append(para)
-  
-    #quote, author = quoteTest.gen_quotes(category, title)
-    #print '"',quote, '"'
-    #print "--", author
 
     #"""
 
+    print "%s Final Talk %s" % ("="*30, "="*30)
+    for para in talk:
+        print "\n%s" % para
 
-    print talk
     return talk
-    # print "%s Final Talk %s" % ("="*30, "="*30)
-    # for para in talk:
-    #     print "\n%s" % para
+
+    """
+    quote, author = quoteTest.gen_quotes(category, title)
+    print '"',quote, '"'
+    print "--", author
+    """
+    
 
 
 if __name__ == "__main__":
-    main()
+    main('education')
