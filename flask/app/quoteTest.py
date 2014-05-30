@@ -28,8 +28,10 @@ def gen_quotes(category, title):
         query2 = urllib.urlencode({'q': query1})
         response = urllib.urlopen('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&' + query2).read()
         json = m_json.loads(response)
+        '''in case we hit the limit of searching'''
         try:
             results = json['responseData']['results']
+            '''too many keywords for finding a good result'''
             try:
                 print "Query tried: ", query1
                 web_url = results[0]["url"]
@@ -38,9 +40,13 @@ def gen_quotes(category, title):
                 contents = filter(None, contents)
                 h = HTMLParser.HTMLParser()
                 target_content = h.unescape(contents[1])
+                target_content = BeautifulSoup(target_content).text
+                target_content = " ".join(target_content.split())
             except Exception:
                 print "-----broke"
                 del keywords[-1]
+                '''lower the quality of target_content in except'''
+                target_content = category
         except Exception:
             result_urls = search(query1, num=20, pause=2.0)
             urls_list = [link for (num, link) in list(enumerate(result_urls))]
@@ -48,9 +54,6 @@ def gen_quotes(category, title):
             print web_url
             target_content = category
 
-
-    target_content = BeautifulSoup(target_content).text
-    target_content = " ".join(target_content.split())
     print "target_content:" + target_content
 
     '''start to fetch quotes from the right link'''
@@ -69,12 +72,10 @@ def gen_quotes(category, title):
     while len(line) != 0:
         data = data + line
         line = response.readline()
-    # except Exception:
-    #     data = urllib2.urlopen(web_url).read()
 
     soup = BeautifulSoup(data)
     quotes_in_link = soup.find_all("div", {"class": "masonryitem"})
-    print len(quotes_in_link)
+    # print len(quotes_in_link)
     quote = ""
     author = ""
     for q in quotes_in_link:
@@ -82,9 +83,10 @@ def gen_quotes(category, title):
             quote = q.find("span", { "class": "bqQuoteLink"}).text
             author = q.find("div", {"class": "bq-aut"}).text
             break
+    '''if can't find one quote with target_content which happens rarely, pick the first one in the page'''
     if quote == "":
         quote = quotes_in_link[0].find("span", {"class": "bqQuoteLink"}).text
-        author = quotes_in_link[0].find("span", {"class": "bq-aut"}).text
+        author = quotes_in_link[0].find("div", {"class": "bq-aut"}).text
     print "%s %s %s" % ("="*30, "quotes", "="*30)
     return quote, author
 
@@ -98,7 +100,7 @@ def main():
     print "%s %s %s" % ("="*30, "quote", "="*30)
     # print "title: ", title
     quote, author = gen_quotes(category, title)
-    print quote
+    print '"' + quote + '"'
     print " - " + author
 
 if __name__ == "__main__":
