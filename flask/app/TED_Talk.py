@@ -19,6 +19,8 @@ from contextlib import contextmanager
 from random import choice
 
 
+"""============================== Thesis Class =========================="""
+
 class Thesis:
     def __init__(self, topic, source=True):   
         title, main_point, support, url = thesis2.genThesis(topic)
@@ -38,6 +40,9 @@ class Thesis:
         attr_str = ''.join(['\n'+x+':\n%s\n' for x in attr])
         s += attr_str % (self.title, self.thesis, self.keywords, self.url)
         return s
+
+
+"""============================== Scraper Class =========================="""
 
 class Scraper:
     def __init__(self, thesis_obj, section_keywords, wait=(0,2), debug=True):
@@ -126,7 +131,10 @@ class Scraper:
             s += "URL list:\n%s\n\n" % "\n".join(['#%d: %s'%(num, url) for (num, url) in enumerated_urls])
             s += "Broken URLs:\n%s\n\n" % "\n".join(self.broken_urls)
         return s
+
+
         
+"""============================== TextFind Class =========================="""
 
 class TextFinder:
     def __init__(self, scraper, keywords_match = 2, taxonomy=0, random_pick=True, debug=True):
@@ -192,6 +200,9 @@ class TextFinder:
         s += "URLs Tried:\n%s\n\n" % "\n".join(['#%d: %s'%(num, url) for (num, url) in enumerated_urls_tried])
         s += "URLs Broken:\n%s\n\n" % "\n".join(['#%d: %s'%(num, url) for (num, url) in enumerated_urls_broken])
         return s
+
+
+"""================================ Main  ============================"""
 
 def main():
     my_thesis = Thesis('education')
