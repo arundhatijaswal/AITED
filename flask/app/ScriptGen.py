@@ -2,6 +2,7 @@ import urllib2, thesis2, cookielib, urllib
 from google import search
 from bs4 import BeautifulSoup
 from random import choice
+from time import sleep
 
 import signal
 import quoteTest
@@ -29,6 +30,8 @@ def google_results(query):
 
 
 def get_HTML(url):
+    wt = choice(range(2,5))
+    sleep(wt) # Time in seconds.
     hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',}
     req = urllib2.Request(url, headers=hdr)
@@ -80,14 +83,6 @@ def extract_keywords(string):
     keywords = ' '.join([word for word in string.lower().split() if word not in stopwords.words('english')])
     return keywords
 
-
-def filter_para(para, query_keyword, title_keywords, thesis_taxonomy):
-    if query_keyword in para and 300<len(para)<900:
-        #section_taxonomy = para_taxonomy(para)
-        #common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
-        #if common_taxonomy >=0: return para
-        return para
-    return None
 
 
 def gen_thesis(topic):    
@@ -146,16 +141,24 @@ def get_paras(url):
         print "URL broke: %s" % url
         return None
 
+
+def filter_para(para, query_keyword, title_keywords, thesis_taxonomy):
+    if query_keyword in para and 300<len(para)<900:
+        section_taxonomy = para_taxonomy(para)
+        common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
+        if common_taxonomy >=1: return para
+        #return para
+    return None
+
    
 def text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy):
     if not urls_list: return 'Nothing found'
 
     # try a random url
-    global num
     url = choice(urls_list)
     #num += 1
     urls_list.remove(url)
-    tags = timeout(get_paras, 2, url) # try another url if timed out
+    tags = timeout(get_paras, 7, url) # try another url if timed out
     if not tags: return text_find(urls_list, query_keyword, title_keywords, thesis_taxonomy)
     
     # filter para by matching keyword and length
@@ -204,7 +207,7 @@ def main(topic):
 
     print "%s Final Talk %s" % ("="*30, "="*30)
     for para in talk:
-        print "\n%s" % para
+        print "\n%s" % str(para)
 
     return talk
     
