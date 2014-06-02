@@ -8,6 +8,7 @@ import signal
 import quoteTest
 from contextlib import contextmanager
 
+import nltk.data
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from alchemyapi import AlchemyAPI
@@ -143,6 +144,11 @@ def get_paras(url):
 
 
 def filter_para(para, query_keyword, title_keywords, thesis_taxonomy):
+    if para[-1] == ':':
+        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+        tokens = tokenizer.tokenize(para.strip())
+        del tokens[-1]
+        para = ' '.join(token for token in tokens)
     if query_keyword in para and 300<len(para)<900:
         section_taxonomy = para_taxonomy(para)
         common_taxonomy = sum([category in section_taxonomy for category in thesis_taxonomy])
