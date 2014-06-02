@@ -62,7 +62,7 @@ class Scraper:
         self.query = "%s%s+%s%s" % (search, related, words, num_pages)
         return self.query
 
-    def get_html(self, url, debug=True):
+    def get_html(self, url, debug):
         wt = choice(range(self.wait[0], self.wait[1]))
         sleep(wt) # be polite!
         hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
@@ -192,7 +192,7 @@ class TextFinder:
             scraper.urls.remove(url)
             self.urls_tried.append(url)
 
-            html = scraper.get_html(url)
+            html = scraper.get_html(url, self.debug)
             #html = scraper.timeout(scraper.get_html, scraper.wait[1]+2, url, self.debug)
             if not html:
                 print "%s%s%s" % ("-"*20, "html timed out", "-"*20)
@@ -230,18 +230,18 @@ def run(topic, debug):
 
     # generate thesis
     my_thesis = Thesis(topic)
-    talk = [my_thesis.thesis]
+    talk = [my_thesis.title, my_thesis.thesis]
     if debug: print my_thesis
 
     # generate sections
     for section_name in section_names:
         # make a scraper that returns url links
         section = Scraper(my_thesis, section_name, debug=False)
-        if not section.run(): return main()
+        if not section.run(): return run(topic, debug)
         if debug: print section
 
         # find the text from the urls with approriate filters
-        text_find = TextFinder(section, title_match=0, section_match=1, debug=True)
+        text_find = TextFinder(section, title_match=2, section_match=0, debug=debug)
         talk.append(text_find.run())
 
         # printing
@@ -256,6 +256,6 @@ def run(topic, debug):
     return talk
 
 
-def main(topic): return run(topic, debug=False)
+def main(topic): return run(topic, debug=True)
 
 if __name__ == "__main__": main("education")
