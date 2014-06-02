@@ -27,16 +27,17 @@ class Thesis:
         title, main_point, support, url = thesis2.genThesis(topic)
         self.title = title
         self.url = url[:-15] if source else url
-        self.thesis = thesis2.introduction(title, main_point, support)
+        self.thesis = thesis2.introduction(title, main_point, support).encode('utf-8')
         self.keywords = self.extract_keywords(title) # keywords from title        
         return
 
     def extract_keywords(self, s):
+        s = s[:-1] if s[-1]=='?' or s[-1]=='.' else s
         keywords = ' '.join([word for word in s.lower().split() if word not in stopwords.words('english')])
         return keywords
 
     def __repr__(self):
-        s = "%s Thesis Class %s" % ("="*30, "="*30)
+        s = "%s Thesis Class %s" % ("="*25, "="*25)
         attr = ['Title', 'Thesis', 'Keywords', 'Thesis URL']
         attr_str = ''.join(['\n'+x+':\n%s\n' for x in attr])
         s += attr_str % (self.title, self.thesis, self.keywords, self.url)
@@ -90,7 +91,7 @@ class Scraper:
 
         # check for poor results
         if 'www.procon.org/debate-topics.php' in urls[0]:
-            print "%s Poor Results %s" % ("="*30, "="*30)
+            print "%s Poor Results %s" % ("="*25, "="*25)
             return None
         
         # filter urls by type of link
@@ -120,7 +121,7 @@ class Scraper:
         query = self.google_query(self.section_keywords, self.thesis_obj)
         html = self.get_html(query, self.debug)
         if not html:
-            print "%s%s%s\n" % ("-"*30, "Cannot open html", "-"*30)
+            print "%s%s%s\n" % ("-"*25, "Cannot open html", "-"*25)
             return None
         tags = self.find_tags(html, 'h3', 'r')
         urls = self.google_urls(tags)
@@ -128,7 +129,7 @@ class Scraper:
         return urls
 
     def __repr__(self):
-        s = "\n%s Scrapper Class %s\n" % ("="*30, "="*30)
+        s = "\n%s %s %s\n" % ("="*25, self.section_keywords[0], "="*25)
         s += "Section keywords: %s\n\n" % " ".join(self.section_keywords)
         s += "Query:\n%s\n\n" % self.query
         if self.debug:
@@ -142,13 +143,14 @@ class Scraper:
 """============================== TextFind Class =========================="""
 
 class TextFinder:
-    def __init__(self, scraper, title_match, section_match, taxonomy=0, random_pick=True, debug=True):
+    def __init__(self, scraper, talk, title_match, section_match, taxonomy=0, random_pick=True, debug=True):
         self.scraper = scraper
         self.random_pick = random_pick # urls picked randomly or in order
         self.taxonomy = taxonomy
         self.urls_tried = []
         self.title_match = title_match
         self.section_match = section_match
+        self.talk = talk
         self.debug = debug
         if taxonomy!=0: self.thesis_taxonomy = self.taxonomy(scraper.thesis_obj.thesis)
     
@@ -166,7 +168,8 @@ class TextFinder:
         # filters - 1) common words from title, 2) common words from section keywords, 3) length
         if len(self.common_title_keywords) >= self.title_match \
            and len(self.common_section_keywords) >= self.section_match \
-           and self.filter_length(para):
+           and self.filter_length(para) \
+           and para not in self.talk:
             if self.taxonomy==0: return para
             else: return self.filter_common_words(self.taxonomy(para), self.thesis_taxonomy, self.taxonomy)
 
@@ -201,15 +204,16 @@ class TextFinder:
 
             # filter para
             for para in paras:
+                # clean para
                 para = para.text.encode('utf-8')
+                para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('   ','')
                 if self.apply_filters(para):
-                    para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('   ','') # clean para
                     self.text = para
                     return para
         return "Nothing Found"
 
     def __repr__(self):
-        s = "\n%s TextFind Class %s\n" % ("="*30, "="*30)
+        s = "\n%s TextFind Class %s\n" % ("="*25, "="*25)
         enumerated_urls_tried = [(num, str(url)) for (num, url) in enumerate(self.urls_tried)]
         enumerated_urls_broken = [(num, str(url)) for (num, url) in enumerate(self.scraper.urls_broken)]
         s += "Text found: \n%s\n\n" % self.text
@@ -226,12 +230,17 @@ class TextFinder:
 """=========================== Main functions =========================="""
 
 def run(topic, debug):
+    # write to file
+    f = open('talk.txt', 'w+')
+    f.truncate()
+    
     # section names to be used for search
     section_names  = [["importance"], ["problem"], ["solution"], ["should"]]
 
     # generate thesis
     my_thesis = Thesis(topic)
     talk = [my_thesis.title, my_thesis.thesis]
+    f.write("%s\n\n%s" % (my_thesis.title, my_thesis.thesis))
     if debug: print my_thesis
 
     # generate sections
@@ -242,25 +251,27 @@ def run(topic, debug):
         if debug: print section
 
         # find the text from the urls with approriate filters
-        text_find = TextFinder(section, title_match=0, section_match=0, debug=debug)
+        text_find = TextFinder(section, talk, title_match=2, section_match=0, debug=debug)
         talk.append(text_find.run())
+        f.write("\n\n%s" % text_find.text)
 
         # printing
-        if debug:
-            print"\n%s%s%s" % ("-"*20, section_name[0], "-"*20)
-            print text_find
+        if debug: print text_find
 
     # add quote
     quote, author = quoteTest.gen_quotes(topic, my_thesis.title)
-    talk.append('"' + quote + '"' + "--" + author)
-    
-    # combine talk
+    quote = '"' + quote + '"' + "--" + author
+    talk.append(quote)
+    f.write("\n\n%s" % quote)
+
+    print "\n\n%s%s%s" % ("="*25, "Final Talk", "="*25)
     for section in talk:
         print "\n%s" % section
-
+    
+    f.close()
     return talk
 
 
-def main(topic): return run(topic, debug=True)
+def main(topic): return run(topic, debug=False)
 
 if __name__ == "__main__": main("education")

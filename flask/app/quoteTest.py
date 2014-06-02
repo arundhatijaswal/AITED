@@ -11,6 +11,7 @@ from alchemyapi import AlchemyAPI
 
 
 def gen_quotes(category, title):
+    print "%s %s %s" % ("=" * 30, "quotes", "=" * 30)
     keyword = ""
 
     '''delete punctuation in title'''
@@ -83,7 +84,6 @@ def gen_quotes(category, title):
         success, quote, author = get_quote(quote_url, target_content)
         #second case: pick the first quote
 
-    print "%s %s %s" % ("=" * 30, "quotes", "=" * 30)
     return quote, author
 
 
@@ -150,8 +150,5 @@ def main():
     print '"' + quote + '"'
     print " - " + author
 
-
-if __name__ == "__main__":
-    main()
 
 
