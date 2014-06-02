@@ -35,10 +35,23 @@
 </div>
 <div id="back">
 
+    <!-- MODES -->
+    <div id="modes">
+        <div id="mode-select">
+            <label class="radio-inline">
+                <input type="radio" id="display" name="displaymode" value="present" checked> <small>Presentation Mode</small>
+            </label>
+
+            <label class="radio-inline">
+                <input type="radio" id="hide" name="displaymode" value="annotate"> <small>Annotation Mode</small>
+            </label>
+        </div>
+    </div>
+
     <!-- CONTENT TO BE DISPLAYED -->
     <div id="content">
         <h1 class="category">{{topic}}</h1>
-        <p class="taxonomy">{{taxonomy}}</p>
+
         <h3 class="title">{{title}}</h3>
 
         <p class="part1">{{thesis}}</p>
@@ -58,7 +71,7 @@
     </div>
     
     <!-- EXTRAS -->
-    <!-- <div id="container">
+    <div id="container">
         <div id="talk-hover">TED</div>
         <div id="talk-main">
             <div class="box-header">
@@ -127,11 +140,11 @@
                 <div id="t-data"></div>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <script type="text/javascript">
         var value = $('.category').text();
-        console.log(value);
+        // console.log(value);
         $("#topics").val(value);
         setTimeout( "jQuery('.header').addClass('header-shrink');", 900 );
         setTimeout( "jQuery('#front').addClass('transitioned shadow').css({'padding':'0'});", 800 );

@@ -33,6 +33,10 @@
         </form>
     </div>
 
+    <!-- sample -->
+    <p style="margin: 30px 10% 0 10%; text-align: center;" id="sample">The cost of it all? The service is provided for free as a community project with the aim to provide the best TTS service on the market. The service is free, but we hope that you report any errors encountered so that we can continue to improve this project. Enjoy! Enjoying our service? Feel free to add a "Powered by TTS-API.COM" link on your site.</p>
+
+    <div id="link"></div>
 </div>      
 
 <!-- loader -->
@@ -56,8 +60,25 @@
     $('#loader').hide();
     $( "#submit" ).click(function() {
         $('#loader').show();
-        $('#front').css({'opacity':'0.1'});
+        $('.header').css({'opacity':'0.1'});
+        $('.sub-header').css({'opacity':'0.1'});
+        $('#wrapper_form').css({'opacity':'0.1'});
     });
+
+
+    var text = $('#sample').text().split(' ').join('+');
+    console.log(text);
+    var url = "http://tts-api.com/tts.mp3?q="+text+".&callback=?";
+    $.getJSON(url, handle);
+
+    function handle(data) {
+        $('#link').append(data);
+    }
+   
+    
+
 </script>
+
+<script language="JavaScript" type="text/javascript" src="http://vhss-d.oddcast.com/vhost_embed_functions_v2.php?acc=4514086&js=1"></script><script language="JavaScript" type="text/javascript">AC_VHost_Embed(4514086,300,400,'',1,1, 2370590, 0,1,0,'a37a2d9ecef14c5dadde5631e5b81910',9);</script>
 
 {% endblock %}

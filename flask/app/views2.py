@@ -31,7 +31,6 @@ def results():
 
     # title, thesis = thesis2.genThesis(topic)
     contents = ScriptGen.main(topic)
-    taxonomy = topic
     title = contents[0]
     thesis = contents[1]
     importance = contents[2]
@@ -41,14 +40,13 @@ def results():
     
     
     return render_template('results.html', 
-                            topic = topic, 
-                            taxonomy = taxonomy,
-                            title = title.encode('utf8'), 
-                            thesis = thesis.encode('utf8'), 
-                            importance = importance.encode('utf8'),
-                            challenge = challenge.encode('utf8'),
-                            solution = solution.encode('utf8'), 
-                            impact = impact.encode('utf8')
+                            topic = topic,
+                            title = str(title), 
+                            thesis = str(thesis), 
+                            importance = str(importance),
+                            challenge = str(challenge),
+                            solution = str(solution), 
+                            impact = str(impact)
                             )
 
     # try:

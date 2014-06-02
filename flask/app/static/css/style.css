@@ -180,6 +180,17 @@ form {
 /* ----------------------------- extras ---------------------------- */
 /* ================================================================= */
 
+/*mode select*/
+
+#modes {
+	position: fixed;
+	top: 0;
+	background: black;
+	opacity: 0.5;
+	color: white;
+}
+
+
 
 #talk-hover, #news-hover, #dict-hover, #tts-hover{
     position: fixed;
