@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # scraping
 import urllib2
 from bs4 import BeautifulSoup
@@ -61,12 +62,13 @@ class Scraper:
         self.query = "%s%s+%s%s" % (search, related, words, num_pages)
         return self.query
 
-    def get_html(self, url, debug=False):
+    def get_html(self, url, debug=True):
         wt = choice(range(self.wait[0], self.wait[1]))
         sleep(wt) # be polite!
         hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',}
         req = urllib2.Request(url, headers=hdr)
+        html = None
         try:
             html = urllib2.urlopen(req).read()
             if debug: print "URL tried: %s" % url
@@ -117,6 +119,9 @@ class Scraper:
     def run(self):
         query = self.google_query(self.section_keywords, self.thesis_obj)
         html = self.get_html(query, self.debug)
+        if not html:
+            print "%s%s%s\n" % ("-"*30, "Cannot open html", "-"*30)
+            return None
         tags = self.find_tags(html, 'h3', 'r')
         urls = self.google_urls(tags)
         if not urls: return None
@@ -129,7 +134,7 @@ class Scraper:
         if self.debug:
             enumerated_urls = [(num, str(url)) for (num, url) in enumerate(self.urls)]
             s += "URL list:\n%s\n\n" % "\n".join(['#%d: %s'%(num, url) for (num, url) in enumerated_urls])
-            s += "Broken URLs:\n%s\n\n" % "\n".join(self.broken_urls)
+            s += "Broken URLs:\n%s\n\n" % "\n".join(self.urls_broken)
         return s
 
 
@@ -137,24 +142,33 @@ class Scraper:
 """============================== TextFind Class =========================="""
 
 class TextFinder:
-    def __init__(self, scraper, keywords_match = 2, taxonomy=0, random_pick=True, debug=True):
+    def __init__(self, scraper, title_match, section_match, taxonomy=0, random_pick=True, debug=True):
         self.scraper = scraper
         self.random_pick = random_pick # urls picked randomly or in order
         self.taxonomy = taxonomy
         self.urls_tried = []
-        self.keywords_match = keywords_match
+        self.title_match = title_match
+        self.section_match = section_match
         self.debug = debug
         if taxonomy!=0: self.thesis_taxonomy = self.taxonomy(scraper.thesis_obj.thesis)
-        
-    def filter_para(self, para):
-        if sum([word in para for word in self.scraper.section_keywords]) >= self.keywords_match \
-           and 300<len(para)<900:
-            if self.debug: print "\nCommon words: ", [word for word in self.scraper.section_keywords if word in para]
+    
+    def filter_common_words(self, para, keywords):
+        """ returns True if number of common words in para and keywords >= num """
+        return [word for word in keywords if word in para]
+
+    def filter_length(self, para): return 300<len(para)<900
+    
+    def apply_filters(self, para):
+        title_keywords = self.scraper.thesis_obj.keywords.split()
+        section_keywords = self.scraper.section_keywords
+        self.common_title_keywords = self.filter_common_words(para, title_keywords)
+        self.common_section_keywords = self.filter_common_words(para, section_keywords)
+        # filters - 1) common words from title, 2) common words from section keywords, 3) length
+        if len(self.common_title_keywords) >= self.title_match \
+           and len(self.common_section_keywords) >= self.section_match \
+           and self.filter_length(para):
             if self.taxonomy==0: return para
-            section_taxonomy = self.taxonomy(para)
-            common_taxonomy = sum([category in section_taxonomy for category in self.thesis_taxonomy])
-            if common_taxonomy >= self.taxonomy: return True
-        return False
+            else: return self.filter_common_words(self.taxonomy(para), self.thesis_taxonomy, self.taxonomy)
 
     def taxonomy(self, para):
         response = AlchemyAPI().taxonomy('text', para)
@@ -177,44 +191,71 @@ class TextFinder:
             if self.random_pick: url = choice(scraper.urls)
             scraper.urls.remove(url)
             self.urls_tried.append(url)
-            
-            html = scraper.timeout(scraper.get_html, scraper.wait[1]+2, url, self.debug)
-            if not html: continue
+
+            html = scraper.get_html(url)
+            #html = scraper.timeout(scraper.get_html, scraper.wait[1]+2, url, self.debug)
+            if not html:
+                print "%s%s%s" % ("-"*20, "html timed out", "-"*20)
+                continue
             paras = scraper.find_tags(html, 'p')
 
             # filter para
             for para in paras:
                 para = para.text.encode('utf-8')
-                if self.filter_para(para):
+                if self.apply_filters(para):
                     self.text = para
                     return para
-        return None
+        return "Nothing Found"
 
     def __repr__(self):
         s = "\n%s TextFind Class %s\n" % ("="*30, "="*30)
         enumerated_urls_tried = [(num, str(url)) for (num, url) in enumerate(self.urls_tried)]
         enumerated_urls_broken = [(num, str(url)) for (num, url) in enumerate(self.scraper.urls_broken)]
         s += "Text found: \n%s\n\n" % self.text
-        s += "Random_pick: %s\n\n" % self.random_pick
-        s += "Taxonomy: %s\n\n" % self.taxonomy
-        s += "URLs Tried:\n%s\n\n" % "\n".join(['#%d: %s'%(num, url) for (num, url) in enumerated_urls_tried])
-        s += "URLs Broken:\n%s\n\n" % "\n".join(['#%d: %s'%(num, url) for (num, url) in enumerated_urls_broken])
+        if self.debug:
+            s += "Random_pick: %s\n\n" % self.random_pick
+            s += "Taxonomy: %s\n\n" % self.taxonomy
+            s += "Common title keywords: %s\n\n" % str(self.common_title_keywords)
+            s += "Common section keywords: %s\n\n" % str(self.common_section_keywords)
+            s += "URLs Tried:\n%s\n\n" % "\n".join(['#%d: %s'%(num, url) for (num, url) in enumerated_urls_tried])
+            s += "URLs Broken:\n%s\n\n" % "\n".join(['#%d: %s'%(num, url) for (num, url) in enumerated_urls_broken])
         return s
 
 
-"""================================ Main  ============================"""
+"""=========================== Main functions =========================="""
 
-def main():
-    my_thesis = Thesis('education')
-    print my_thesis
-                                                    
-    section = Scraper(my_thesis, my_thesis.keywords.split(), debug=False)
-    if not section.run(): return main()
-    print section
+def run(topic, debug):
+    # section names to be used for search
+    section_names  = [["importance"], ["problem"]]
 
-    text_find = TextFinder(section, debug=True)
-    text_find.run()
-    print text_find
-    return text_find
+    # generate thesis
+    my_thesis = Thesis(topic)
+    talk = [my_thesis.thesis]
+    if debug: print my_thesis
 
-if __name__ == "__main__": main()
+    # generate sections
+    for section_name in section_names:
+        # make a scraper that returns url links
+        section = Scraper(my_thesis, section_name, debug=False)
+        if not section.run(): return main()
+        if debug: print section
+
+        # find the text from the urls with approriate filters
+        text_find = TextFinder(section, title_match=0, section_match=1, debug=True)
+        talk.append(text_find.run())
+
+        # printing
+        if debug:
+            print"\n%s%s%s" % ("-"*20, section_name[0], "-"*20)
+            print text_find
+
+    # combine talk
+    for section in talk:
+        print "\n\n%s" % section
+
+    return talk
+
+
+def main(topic): return run(topic, debug=False)
+
+if __name__ == "__main__": main("education")

@@ -179,7 +179,7 @@ def genThesis(topic):
 
     if not data:
         # print "Couldn't find anything - data dictionary"
-        return "", "", ""
+        return "", "", "", ""
     else:  #if they aren't empty, do this
         # print 'Top Argument: '+opinions[0]+'\n'
         # topArg = opinions[0].split()
@@ -192,7 +192,7 @@ def genThesis(topic):
         two = data[one]
 
         if two == "":
-            return "", "", ""
+            return "", "", "", ""
         else:
             punct = ['!', '?']
 
