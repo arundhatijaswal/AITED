@@ -159,6 +159,7 @@ class TextFinder:
     def filter_length(self, para): return 300<len(para)<900
     
     def apply_filters(self, para):
+        para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('   ','') # clean para
         title_keywords = self.scraper.thesis_obj.keywords.split()
         section_keywords = self.scraper.section_keywords
         self.common_title_keywords = self.filter_common_words(para, title_keywords)
@@ -226,7 +227,7 @@ class TextFinder:
 
 def run(topic, debug):
     # section names to be used for search
-    section_names  = [["importance"], ["problem"]]
+    section_names  = [["importance"], ["problem"], ["solution"], ["should"]]
 
     # generate thesis
     my_thesis = Thesis(topic)
@@ -241,7 +242,7 @@ def run(topic, debug):
         if debug: print section
 
         # find the text from the urls with approriate filters
-        text_find = TextFinder(section, title_match=2, section_match=0, debug=debug)
+        text_find = TextFinder(section, title_match=0, section_match=0, debug=debug)
         talk.append(text_find.run())
 
         # printing
@@ -249,9 +250,13 @@ def run(topic, debug):
             print"\n%s%s%s" % ("-"*20, section_name[0], "-"*20)
             print text_find
 
+    # add quote
+    quote, author = quoteTest.gen_quotes(category, title)
+    talk.append('"' + quote + '"' + "--" + author)
+    
     # combine talk
     for section in talk:
-        print "\n\n%s" % section
+        print "\n%s" % section
 
     return talk
 
