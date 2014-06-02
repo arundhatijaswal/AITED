@@ -159,7 +159,6 @@ class TextFinder:
     def filter_length(self, para): return 300<len(para)<900
     
     def apply_filters(self, para):
-        para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('   ','') # clean para
         title_keywords = self.scraper.thesis_obj.keywords.split()
         section_keywords = self.scraper.section_keywords
         self.common_title_keywords = self.filter_common_words(para, title_keywords)
@@ -204,6 +203,7 @@ class TextFinder:
             for para in paras:
                 para = para.text.encode('utf-8')
                 if self.apply_filters(para):
+                    para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('   ','') # clean para
                     self.text = para
                     return para
         return "Nothing Found"
@@ -251,7 +251,7 @@ def run(topic, debug):
             print text_find
 
     # add quote
-    quote, author = quoteTest.gen_quotes(category, title)
+    quote, author = quoteTest.gen_quotes(topic, my_thesis.title)
     talk.append('"' + quote + '"' + "--" + author)
     
     # combine talk
