@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from time import sleep
 
 # TED talk
-import thesis2, quoteTest
+import thesis2, quoteTest, debate_content
 
 # NLP
 from nltk.corpus import stopwords
@@ -23,24 +23,45 @@ from random import choice
 """============================== Thesis Class =========================="""
 
 class Thesis:
-    def __init__(self, topic, source=True):   
-        title, main_point, support, url = thesis2.genThesis(topic)
+    def __init__(self, topic, source="debate.org"):
+        if source=="debate.org":
+            title, thesis, url = self.thesis_debate_org(topic)
+        else:
+            title, thesis, url = self.thesis_NYT(topic)
+        keywords = self.extract_keywords(title) # keywords from title
         self.title = title
-        self.url = url[:-15] if source else url
-        self.thesis = thesis2.introduction(title, main_point, support).encode('utf-8')
-        self.keywords = self.extract_keywords(title) # keywords from title        
+        self.thesis = thesis
+        self.url = url
+        self.keywords = keywords
         return
+
+    def thesis_debate_org(self, topic):
+        title, main_point, support, url = thesis2.genThesis(topic)
+        thesis = thesis2.introduction(title, main_point, support)
+        url = url[:-15]
+        return title, thesis, url
+
+    def thesis_NYT(self, topic):
+        keywords = ''
+        myDebate = debate_content.getDebate(topic, keywords, debug=False)
+        title = myDebate.getSpeaker(0).title
+        thesis = debate_content.importance(myDebate)
+        url = myDebate.links[0]
+        return title, thesis, url
 
     def extract_keywords(self, s):
         s = s[:-1] if s[-1]=='?' or s[-1]=='.' else s
-        keywords = ' '.join([word for word in s.lower().split() if word not in stopwords.words('english')])
+        keywords = [word for word in s.lower().split() if word not in stopwords.words('english')]
+        keywords = " ".join(list(set(keywords)))
         return keywords
 
     def __repr__(self):
         s = "%s Thesis Class %s" % ("="*25, "="*25)
         attr = ['Title', 'Thesis', 'Keywords', 'Thesis URL']
         attr_str = ''.join(['\n'+x+':\n%s\n' for x in attr])
-        s += attr_str % (self.title, self.thesis, self.keywords, self.url)
+        try:
+            s += attr_str % (self.title, self.thesis, self.keywords, self.url)
+        except: print self.title, self.thesis, self.keywords, self.url
         return s
 
 
@@ -90,7 +111,7 @@ class Scraper:
             urls.append(link.find("a")["href"])
 
         # check for poor results
-        if 'www.procon.org/debate-topics.php' in urls[0]:
+        if urls and 'www.procon.org/debate-topics.php' in urls[0]:
             print "%s Poor Results %s" % ("="*25, "="*25)
             return None
         
@@ -120,11 +141,15 @@ class Scraper:
     def run(self):
         query = self.google_query(self.section_keywords, self.thesis_obj)
         html = self.get_html(query, self.debug)
-        if not html:
+        if html:
+            tags = self.find_tags(html, 'h3', 'r')
+            urls = self.google_urls(tags)            
+        else: # use fallback option
             print "%s%s%s\n" % ("-"*25, "Cannot open html", "-"*25)
-            return None
-        tags = self.find_tags(html, 'h3', 'r')
-        urls = self.google_urls(tags)
+            query = "%s %s" % (self.section_keywords, self.thesis_obj.keywords)
+            result_urls = search(query, stop=30, pause=2.0)
+            urls = [link for (num, link) in list(enumerate(result_urls))]
+            
         if not urls: return None
         return urls
 
@@ -161,15 +186,16 @@ class TextFinder:
     def filter_length(self, para): return 300<len(para)<900
     
     def apply_filters(self, para):
+        filter_words = ["www.", "[", "{"]
         title_keywords = self.scraper.thesis_obj.keywords.split()
         section_keywords = self.scraper.section_keywords
         self.common_title_keywords = self.filter_common_words(para, title_keywords)
         self.common_section_keywords = self.filter_common_words(para, section_keywords)
-        # filters - 1) common words from title, 2) common words from section keywords, 3) length
+        # filters - 1) common words from title, 2) common words from section keywords, 3) length 4) filter words
         if len(self.common_title_keywords) >= self.title_match \
            and len(self.common_section_keywords) >= self.section_match \
            and self.filter_length(para) \
-           and para not in self.talk:
+           and len(self.filter_common_words(para, filter_words))==0:
             if self.taxonomy==0: return para
             else: return self.filter_common_words(self.taxonomy(para), self.thesis_taxonomy, self.taxonomy)
 
@@ -206,11 +232,12 @@ class TextFinder:
             for para in paras:
                 # clean para
                 para = para.text.encode('utf-8')
-                para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('   ','')
+                para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('   ',' ')
                 if self.apply_filters(para):
                     self.text = para
                     return para
-        return "Nothing Found"
+        self.text = ""
+        return ""
 
     def __repr__(self):
         s = "\n%s TextFind Class %s\n" % ("="*25, "="*25)
@@ -238,7 +265,7 @@ def run(topic, debug):
     section_names  = [["importance"], ["problem"], ["solution"], ["should"]]
 
     # generate thesis
-    my_thesis = Thesis(topic)
+    my_thesis = Thesis(topic, source="debate.org")
     talk = [my_thesis.title, my_thesis.thesis]
     f.write("%s\n\n%s" % (my_thesis.title, my_thesis.thesis))
     if debug: print my_thesis
@@ -251,7 +278,7 @@ def run(topic, debug):
         if debug: print section
 
         # find the text from the urls with approriate filters
-        text_find = TextFinder(section, talk, title_match=2, section_match=0, debug=debug)
+        text_find = TextFinder(section, talk, title_match=1, section_match=0, debug=debug)
         talk.append(text_find.run())
         f.write("\n\n%s" % text_find.text)
 
@@ -259,10 +286,12 @@ def run(topic, debug):
         if debug: print text_find
 
     # add quote
-    quote, author = quoteTest.gen_quotes(topic, my_thesis.title)
-    quote = '"' + quote + '"' + "--" + author
-    talk.append(quote)
-    f.write("\n\n%s" % quote)
+    try:
+        quote, author = quoteTest.gen_quotes(topic, my_thesis.title)
+        quote = '"' + quote + '"' + "--" + author
+        talk.append(quote)
+        f.write("\n\n%s" % quote)
+    except: pass
 
     print "\n\n%s%s%s" % ("="*25, "Final Talk", "="*25)
     for section in talk:
@@ -275,6 +304,10 @@ def run(topic, debug):
 def main(topic): 
     return run(topic, debug=False)
 
+<<<<<<< HEAD
 if __name__ == "__main__": 
     topic = raw_input("Enter topic: ")
     main(topic)
+=======
+if __name__ == "__main__": main("technology")
+>>>>>>> FETCH_HEAD
