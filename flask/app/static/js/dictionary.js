@@ -52,12 +52,14 @@ $(function() {
 			$('.d-chal').hide();
 			$('.d-soln').hide();
 			$('.d-impact').hide();
+			$('.d-quote').hide();
 
 			$('.part1').show();
 			$('.part2').show();
 			$('.part3').show();
 			$('.part4').show();
 			$('.part5').show();
+			$('.part6').show();
 		}
 	});
 
@@ -90,6 +92,7 @@ function splitText(text) {
 	var three = $('.part3').text().split(" ");
 	var four = $('.part4').text().split(" ");
 	var five = $('.part5').text().split(" ");
+	var six = $('.part6').text().split(" ");
 	// console.log(one);
 
 	$('.d-thesis').empty();
@@ -97,18 +100,21 @@ function splitText(text) {
 	$('.d-chal').empty();
 	$('.d-soln').empty();
 	$('.d-impact').empty();
+	$('.d-quote').empty();
 
 	$('.part1').hide();
 	$('.part2').hide();
 	$('.part3').hide();
 	$('.part4').hide();
 	$('.part5').hide();
+	$('.part6').hide();
 
 	$('.d-thesis').show();
 	$('.d-import').show();
 	$('.d-chal').show();
 	$('.d-soln').show();
 	$('.d-impact').show();
+	$('.d-quote').show();
 
 	for (var i = 0; i < one.length; i++) {
 		$('.d-thesis').append(space(one[i]));	
@@ -128,6 +134,10 @@ function splitText(text) {
 
 	for (var i = 0; i < five.length; i++) {
 		$('.d-impact').append(space(five[i]));	
+	}
+
+	for (var i = 0; i < six.length; i++) {
+		$('.d-quote').append(space(six[i]));	
 	}
 }
 
