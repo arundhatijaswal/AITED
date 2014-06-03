@@ -191,11 +191,18 @@ class TextFinder:
         section_keywords = self.scraper.section_keywords
         self.common_title_keywords = self.filter_common_words(para, title_keywords)
         self.common_section_keywords = self.filter_common_words(para, section_keywords)
-        # filters - 1) common words from title, 2) common words from section keywords, 3) length 4) filter words
-        if len(self.common_title_keywords) >= self.title_match \
-           and len(self.common_section_keywords) >= self.section_match \
-           and self.filter_length(para) \
-           and len(self.filter_common_words(para, filter_words))==0:
+        """ filters:
+            1) common words from title
+            2) common words from section keywords
+            3) length
+            4) filter words
+            5) duplicates
+        """
+        if len(self.common_title_keywords) >= self.title_match \ #1
+           and len(self.common_section_keywords) >= self.section_match \ #2
+           and self.filter_length(para) \ #3
+           and len(self.filter_common_words(para, filter_words))==0 \ #4
+           and para not in talk: #5
             if self.taxonomy==0: return para
             else: return self.filter_common_words(self.taxonomy(para), self.thesis_taxonomy, self.taxonomy)
 
@@ -265,7 +272,7 @@ def run(topic, debug):
     section_names  = [["importance"], ["problem"], ["solution"], ["should"]]
 
     # generate thesis
-    my_thesis = Thesis(topic, source="debate.org")
+    my_thesis = Thesis(topic, source="NYT")
     talk = [my_thesis.title, my_thesis.thesis]
     f.write("%s\n\n%s" % (my_thesis.title, my_thesis.thesis))
     if debug: print my_thesis
