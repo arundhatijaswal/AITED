@@ -34,7 +34,7 @@ def results():
     open('talk.txt', 'w').close()
     contents = []
 
-    TED_Talk.run(topic, True)
+    TED_Talk.run(topic, debug=True)
 
     lines = open('talk.txt').read().splitlines()
 
