@@ -221,8 +221,8 @@ class TextFinder:
             scraper.urls.remove(url)
             self.urls_tried.append(url)
 
-            #html = scraper.get_html(url, self.debug)
-            html = scraper.timeout(scraper.get_html, scraper.wait[1]+2, url, self.debug)
+            html = scraper.get_html(url, self.debug)
+            #html = scraper.timeout(scraper.get_html, scraper.wait[1]+2, url, self.debug)
             if not html:
                 print "%s%s%s" % ("-"*20, "html timed out", "-"*20)
                 continue
