@@ -164,7 +164,7 @@ function doubleTrouble(query) {
     	$('#show-panel').removeClass('down');
     }
     search_dict(query);
-	// search2(query);
+	search2(query);
 }
 
 // make definition request to Google Dictionary
@@ -180,7 +180,7 @@ function search_dict(query) {
 function request(data) {
 	console.log(data);
 	var search = $('#q').text();
-	search2(search);
+	// search2(search);
 
 	for (var i = 0; i < data.results.length; i++) {
 		var head = data.results[i].headword;
@@ -203,9 +203,10 @@ function request(data) {
 // make request to Big Huge Thesaurus
 function search2(query) {
 	var apiKey = "aqq3UFVvHqr7E7PSQki8";
-	var url = "http://thesaurus.altervista.org/thesaurus/v1?word=" + query + "&language=en_US&output=json&key=" + apiKey + "&callback=?";
+	var q = query.toLowerCase().replace(/[^a-z0-9\s]/gi, ''); 
+	var url = "http://thesaurus.altervista.org/thesaurus/v1?word=" + q + "&language=en_US&output=json&key=" + apiKey + "&callback=?";
 	$.getJSON(url, carryoutRequest);
-	$('#t-data').empty().append("<strong>Word: </strong><small class='query'>"+query+"</small>");
+	$('#t-data').empty().append("<strong>Word: </strong><small class='query'>"+q+"</small>");
 }
 
 //get and print synonyms
