@@ -198,11 +198,11 @@ class TextFinder:
             4) filter words
             5) duplicates
         """
-        if len(self.common_title_keywords) >= self.title_match \ #1
-           and len(self.common_section_keywords) >= self.section_match \ #2
-           and self.filter_length(para) \ #3
-           and len(self.filter_common_words(para, filter_words))==0 \ #4
-           and para not in talk: #5
+        if len(self.common_title_keywords) >= self.title_match \
+           and len(self.common_section_keywords) >= self.section_match \
+           and self.filter_length(para) \
+           and len(self.filter_common_words(para, filter_words))==0 \
+           and para not in self.talk:
             if self.taxonomy==0: return para
             else: return self.filter_common_words(self.taxonomy(para), self.thesis_taxonomy, self.taxonomy)
 
