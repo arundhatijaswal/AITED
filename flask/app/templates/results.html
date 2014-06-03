@@ -31,43 +31,76 @@
                 <input type="submit" id="submit" />
             </div>
         </form>
-    </div>       
+    </div>   
 </div>
+
+
 <div id="back">
+    <!-- loader -->
+    <div id="loader">
+        <section class="main">
+            <div class="wrapper">
+                <div class="inner">
+                    <span>L</span>
+                    <span>o</span>
+                    <span>a</span>
+                    <span>d</span>
+                    <span>i</span>
+                    <span>n</span>
+                    <span>g</span>
+                </div>
+            </div>
+        </section>
+    </div>     
 
     <!-- MODES -->
     <div id="modes">
         <div id="mode-select">
-            <label class="radio-inline">
+            <div class="radio">  
+                <input id="present" type="radio" name="displaymode" value="present" checked>  
+                <label for="present"><small>Presentation Mode</small></label>  
+                
+                <input id="annot" type="radio" name="displaymode" value="annot">  
+                <label for="annot"><small>Annotation Mode</small></label>  
+            </div>  
+
+            <!-- <label class="radio-inline">
                 <input type="radio" id="display" name="displaymode" value="present" checked> <small>Presentation Mode</small>
             </label>
 
             <label class="radio-inline">
                 <input type="radio" id="hide" name="displaymode" value="annotate"> <small>Annotation Mode</small>
-            </label>
+            </label> -->
         </div>
     </div>
+
 
     <!-- CONTENT TO BE DISPLAYED -->
     <div id="content">
         <h1 class="category">{{topic}}</h1>
 
         <h3 class="title">{{title}}</h3>
-
+        
+        <p class="template">Thesis</p>
         <p class="part1">{{thesis}}</p>
         <p class="d-thesis"></p>
-
+        
+        <p class="template">Importance</p>
         <p class="part2">{{importance}}</p>
         <p class="d-import"></p>
-
+        
+        <p class="template">Challenge</p>
         <p class="part3">{{challenge}}</p>
         <p class="d-chal"></p>
-
+        
+        <p class="template">Solution</p>
         <p class="part4">{{solution}}</p>
         <p class="d-soln"></p>
-
+        
+        <p class="template">Impact</p>
         <p class="part5">{{impact}}</p>
         <p class="d-impact"></p>
+        
     </div>
     
     <!-- EXTRAS -->
@@ -102,11 +135,11 @@
             </div>
             <div id="dict-start">
                 <label class="radio-inline">
-                    <input type="radio" id="display" name="readmode" value="display" checked> <small>Read Mode OFF</small>
+                    <input type="radio" id="hide" name="readmode" value="hide" checked> <small>Read Mode OFF</small>
                 </label>
 
                 <label class="radio-inline">
-                    <input type="radio" id="hide" name="readmode" value="hide"> <small>Read Mode ON</small>
+                    <input type="radio" id="display" name="readmode" value="display"> <small>Read Mode ON</small>
                 </label>
 
                 <div id="instructions" style="display:none;">
@@ -124,7 +157,20 @@
     <div id="container4">
         <div id="tts-hover"><p class="info">play</p></div>
         <div id="tts-main">
-            <div id="play"></div>
+            <div class="box-header">
+                <h3 class="top-head">Toggle Speech Mode</h3>
+                <p class="box-mini">Turn on (or off) the text-to-speech avatar</p>
+            </div>
+
+            <div id="play">
+                <label class="radio-inline">
+                    <input type="radio" id="talk-off" name="tts" value="talk-off" checked> <small>Avatar OFF</small>
+                </label>
+
+                <label class="radio-inline">
+                    <input type="radio" id="talk-on" name="tts" value="talk-on"> <small>Avatar ON</small>
+                </label>
+            </div>
         </div>
     </div>
 
@@ -142,6 +188,19 @@
         </div>
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                <script language="JavaScript" type="text/javascript">AC_VHost_Embed(4514086,300,400,'',1,1, 2370590, 0,1,0,'b1d83b4bf95069c05a6520e5da5df9a8',9);</script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script type="text/javascript">
         var value = $('.category').text();
         // console.log(value);
@@ -153,6 +212,22 @@
         setTimeout( "jQuery('div').removeClass('button');", 900 );
         setTimeout( "jQuery('.select-style').css({'float':'left', 'width':'65%', 'margin-left':'15%', 'margin-right':'10px'});", 900 );
         setTimeout( "jQuery('.main').hide(); jQuery('#content').show();", 900 );
+
+        $('.template').hide();
+
+        $('input:radio[name="displaymode"]').change( function() {
+            if ($(this).val() == 'present') {
+                $('.template').hide();
+            }
+
+            else if($(this).val() == 'annot') {
+                $('.template').show();
+            }
+        });
+
+        $( "#submit" ).click(function() {
+            $('#loader').show();
+        });
     </script>
 </div>
 {% endblock %}

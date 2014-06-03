@@ -1,18 +1,5 @@
 // animating boxes
 $(function() {
-	$('#news-hover').on('mouseenter', function() {
-		$('#news-hover').addClass('smaller');
-		$('#news-hover p').animate({
-	        opacity: '1'
-	    },250);
-	});
-	$('#news-hover').on('mouseleave', function() {
-		$('#news-hover').removeClass('smaller');
-		$('#news-hover p').animate({
-	        opacity: '0'
-	    },250);
-	});
-
 	$('#dict-hover').on('mouseenter', function() {
 		$('#dict-hover').addClass('smaller');
 		$('#dict-hover p').animate({
@@ -22,19 +9,6 @@ $(function() {
 	$('#dict-hover').on('mouseleave', function() {
 		$('#dict-hover').removeClass('smaller');
 		$('#dict-hover p').animate({
-	        opacity: '0'
-	    },250);
-	});
-
-	$('#tts-hover').on('mouseenter', function() {
-		$('#tts-hover').addClass('smaller');
-		$('#tts-hover p').animate({
-	        opacity: '1'
-	    },250);
-	});
-	$('#tts-hover').on('mouseleave', function() {
-		$('#tts-hover').removeClass('smaller');
-		$('#tts-hover p').animate({
 	        opacity: '0'
 	    },250);
 	});
@@ -59,30 +33,34 @@ $(function() {
 	    $('#dict-main').removeClass('focus');
 	});
 
-	$('#display').on('change', function(e) {
-		// console.log('changed');
-		$('#instructions').hide('slow');
-		$('#dict-wrapper').hide();
+
+
+	$('input:radio[name="readmode"]').change( function() {
 		
-		$('.d-thesis').hide();
-		$('.d-import').hide();
-		$('.d-chal').hide();
-		$('.d-soln').hide();
-		$('.d-impact').hide();
+		if ($(this).val() == 'display') {
+			$('#instructions').show('slow');
+			$('#dict-wrapper').show();
+			splitText();
+		}
 
-		$('.part1').show();
-		$('.part2').show();
-		$('.part3').show();
-		$('.part4').show();
-		$('.part5').show();
+		else if($(this).val() == 'hide') {
+			$('#instructions').hide('slow');
+			$('#dict-wrapper').hide();
+
+			$('.d-thesis').hide();
+			$('.d-import').hide();
+			$('.d-chal').hide();
+			$('.d-soln').hide();
+			$('.d-impact').hide();
+
+			$('.part1').show();
+			$('.part2').show();
+			$('.part3').show();
+			$('.part4').show();
+			$('.part5').show();
+		}
 	});
 
-	$('#hide').on('change', function(e) {
-		// console.log('changed');
-		$('#instructions').show('slow');
-		$('#dict-wrapper').show();
-		splitText();
-	});
 
 	var min = "-150px", max = "0px";
 
@@ -112,7 +90,7 @@ function splitText(text) {
 	var three = $('.part3').text().split(" ");
 	var four = $('.part4').text().split(" ");
 	var five = $('.part5').text().split(" ");
-	console.log(one);
+	// console.log(one);
 
 	$('.d-thesis').empty();
 	$('.d-import').empty();
@@ -160,13 +138,13 @@ function space(word) {
 
 // call the two search functions
 function doubleTrouble(query) {
-	$(this).addClass('highlighter');
+	// $(this).addClass('highlighter');
 	$('.words').click(function() {
 		$('.words').removeClass('highlighter');
 		$(this).addClass('highlighter');
 		var words = $(this).text();
-		console.log(words);
-		doubleTrouble(words);
+		// console.log(words);
+		// doubleTrouble(words);
 	});
 
 	if ($("#dict-results").css("bottom") == "-150px") {
@@ -175,30 +153,31 @@ function doubleTrouble(query) {
     	$('#show-panel').addClass('up');
     	$('#show-panel').removeClass('down');
     }
-    search(query);
-	search2(query);
+    search_dict(query);
+	// search2(query);
 }
 
 // make definition request to Google Dictionary
-function search(query) {
+function search_dict(query) {
 	var key = "AiDwz6xRBaLzcYATfWuJC3jaSeC8hjwM";
 	var q = query.toLowerCase().replace(/[^a-z0-9\s]/gi, ''); 
 	var url = "https://api.pearson.com/v2/dictionaries/ldoce5/entries?search="+q+"&jsonp=data&apikey="+key;
-	$.getJSON(url, handleRequest);
+	$.getJSON(url, request);
 	$('#d-data').empty().append("<strong>Word: </strong><small class='query' id='q'>"+q+"</small>");
 }
 
 // get definitions
-function handleRequest(data) {
-	// console.log(data);
+function request(data) {
+	console.log(data);
+	var search = $('#q').text();
+	search2(search);
+
 	for (var i = 0; i < data.results.length; i++) {
 		var head = data.results[i].headword;
 		// console.log(head);
-		var search = $('#q').text();
-		console.log(head, " ", search);
+		// console.log(head, " ", search);
 		if (head.toLowerCase() == search) {
 			var pos = data.results[i].part_of_speech;
-			var def = data.results[i].senses[0].definition;
 			var def = data.results[i].senses[0].definition;
 			$('#d-data').append("<p style='text-align:left;'><strong>Part of speech: </strong><small class='pos'>"+pos+"</small></p>");
 			$('#d-data').append("<p style='text-align:left;'><strong>Definition: </strong><small class='def'>"+def+"</small></p>");
@@ -214,21 +193,30 @@ function handleRequest(data) {
 // make request to Big Huge Thesaurus
 function search2(query) {
 	var apiKey = "aqq3UFVvHqr7E7PSQki8";
-	var q = query.toLowerCase().replace(/[^a-z0-9\s]/gi, ''); 
-	var url = "http://thesaurus.altervista.org/thesaurus/v1?word=" + q + "&language=en_US&output=json&key=" + apiKey + "&callback=?";
+	var url = "http://thesaurus.altervista.org/thesaurus/v1?word=" + query + "&language=en_US&output=json&key=" + apiKey + "&callback=?";
 	$.getJSON(url, carryoutRequest);
-	$('#t-data').empty().append("<strong>Word: </strong><small class='query'>"+q+"</small>");
+	$('#t-data').empty().append("<strong>Word: </strong><small class='query'>"+query+"</small>");
 }
 
 //get and print synonyms
 function carryoutRequest(word) { 
-  output = ""; 
-  for (key in word.response) { 
-    list = word.response[key].list; 
-    output += list.synonyms;
-  } 
-  if (output)
+	var output = ""; 
+	console.log(word);
+
+	for (var i=0; i<2; i++) { 
+		var key = word.response[i].list.synonyms; 
+		var data = "<p>"+key+"</p>";
+		output += data;
+	} 
+
+	if (output != "") {
 		$('#t-data').append('<p><small>'+output+'</small></p>');
+	}
+
+	else {
+		$('#t-data').append('<p><small>No Results</small></p>');
+	}
+		
 }
 
 

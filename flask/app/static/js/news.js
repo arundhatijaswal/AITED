@@ -4,6 +4,22 @@ $(function() {
 	    newsSearch();
 	});
 	
+
+	$('#news-hover').on('mouseenter', function() {
+		$('#news-hover').addClass('smaller');
+		$('#news-hover p').animate({
+	        opacity: '1'
+	    },250);
+	});
+
+	$('#news-hover').on('mouseleave', function() {
+		$('#news-hover').removeClass('smaller');
+		$('#news-hover p').animate({
+	        opacity: '0'
+	    },250);
+	});
+
+
 	$('body').on('click','#news-hover',function(){
 	    $('#news-hover').animate({
 	        right: '0px'
@@ -54,7 +70,7 @@ function newsSearch() {
 //				console.log(title);
 //				console.log(source);
 //				console.log(link);
-				var output = "<div class='result'><span><a href="+link+" target='_blank'><p class='name'>"+ title +"</p></a></span><p class='mini'>"+ source +"</p><p class='description'>"+ snip +"</p></div>";
+				var output = "<div class='result'><span><a href="+link+" target='_blank'><h3 class='name'>"+ title +"</h3></a></span><p class='mini'>"+ source +"</p><p class='description'>"+ snip +"</p></div>";
 				document.getElementById('articles').innerHTML += output;
 			}
     	}

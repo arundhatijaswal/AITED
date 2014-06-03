@@ -43,7 +43,7 @@ function talkSearch() {
 	console.log(query);
 	var category = "talks";
 	var url = "https://api.ted.com/v1/search.json?";
-	var request = url+"q="+query+"&categories="+category+"&api-key="+key;
+	var request = url+"q="+query+"&categories="+category+"&api-key="+key+"&callback=?";
 	$.getJSON(request, handleRequest);
 }
 
