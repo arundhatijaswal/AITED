@@ -228,16 +228,18 @@ def introduction(title, one, support):
 
     thesis = ""
     exclude = set(string.punctuation)
-    if title[-1] in exclude:
-         title = title[0:-1]
-    if one != "" and one[0] != "I":
-        one = one[0].lower() + one[1:] #lower the first character
-        thesis = one + " " + support
-    elif one == "" or one == support[0:len(one)]:
-        support = support[0].lower() + support[1:]
-        thesis = support
-    else:
-        thesis = one + " " + support
+    try:
+        if title[-1] in exclude:
+             title = title[0:-1]
+        if one != "" and one[0] != "I":
+            one = one[0].lower() + one[1:] #lower the first character
+            thesis = one + " " + support
+        elif one == "" or one == support[0:len(one)]:
+            support = support[0].lower() + support[1:]
+            thesis = support
+        else:
+            thesis = one + " " + support
+    except: pass
     temp1 = "When asked " + title[0].lower() + title[1:] + ", the short answer is " + thesis
     temp2 = "If asked " + title[0].lower() + title[1:] + ", I would say " + thesis
     temp3 = "When we think " + title[0].lower() + title[1:] + ", some of us will say " + thesis
