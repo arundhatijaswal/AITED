@@ -38,8 +38,6 @@ class Thesis:
 
     def thesis_debate_org(self, topic):
         title, main_point, support, url = thesis2.genThesis(topic)
-        while title == "":
-            title, main_point, support, url = thesis2.genThesis(topic)
         thesis = thesis2.introduction(title, main_point, support)
         url = url[:-15]
         return title, thesis, url
@@ -82,7 +80,7 @@ class Scraper:
     def google_query(self, keywords, thesis_obj):
         search = "https://www.google.com/search?q="
         related = "related:%s" % thesis_obj.url
-        words = '+OR+'.join(keywords)
+        words = '+OR+'.join(keywords[0].split())
         num_pages = '&num=%s' % 30
         self.query = "%s%s+%s%s" % (search, related, words, num_pages)
         return self.query
@@ -191,9 +189,10 @@ class TextFinder:
     def apply_filters(self, para):
         filter_words = ["www.", "[", "{"]
         title_keywords = self.scraper.thesis_obj.keywords.split()
-        section_keywords = self.scraper.section_keywords
+        section_keywords = self.scraper.section_keywords.split()
         self.common_title_keywords = self.filter_common_words(para, title_keywords)
         self.common_section_keywords = self.filter_common_words(para, section_keywords)
+        print self.common_section_keywords
         """ filters:
             1) common words from title
             2) common words from section keywords
@@ -282,8 +281,8 @@ def connectives(talk):
 
 def run(topic, debug):
     # section names to be used for search
- #   section_names  = ["importance because prominent need significant", "problem", "solution", "should"]
-    section_names  = [["importance"], ["problem"], ["solution"], ["should"]]
+    section_names  = [["importance because prominent need significant"], ["problem"], ["solution"], ["should"]]
+    #section_names  = [["importance"], ["problem"], ["solution"], ["should"]]
     
     # generate thesis
     my_thesis = Thesis(topic, source="debate.org")
@@ -298,7 +297,7 @@ def run(topic, debug):
         if debug: print section
 
         # find the text from the urls with approriate filters
-        text_find = TextFinder(section, talk, title_match=1, section_match=0, debug=debug)
+        text_find = TextFinder(section, talk, title_match=1, section_match=1, debug=debug)
         talk.append(text_find.run())
 
         # printing
