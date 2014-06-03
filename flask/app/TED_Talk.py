@@ -82,7 +82,7 @@ class Scraper:
     def google_query(self, keywords, thesis_obj):
         search = "https://www.google.com/search?q="
         related = "related:%s" % thesis_obj.url
-        words = '+OR+'.join(keywords[0].split())
+        words = '+OR+'.join(keywords.split())
         num_pages = '&num=%s' % 30
         self.query = "%s%s+%s%s" % (search, related, words, num_pages)
         return self.query
@@ -157,8 +157,8 @@ class Scraper:
         return urls
 
     def __repr__(self):
-        s = "\n%s %s %s\n" % ("="*25, self.section_keywords[0], "="*25)
-        s += "Section keywords: %s\n\n" % " ".join(self.section_keywords)
+        s = "\n%s %s %s\n" % ("="*25, self.section_keywords.split()[0], "="*25)
+        s += "Section keywords: %s\n\n" % self.section_keywords
         s += "Query:\n%s\n\n" % self.query
         if self.debug:
             enumerated_urls = [(num, str(url)) for (num, url) in enumerate(self.urls)]
@@ -194,7 +194,6 @@ class TextFinder:
         section_keywords = self.scraper.section_keywords.split()
         self.common_title_keywords = self.filter_common_words(para, title_keywords)
         self.common_section_keywords = self.filter_common_words(para, section_keywords)
-        print self.common_section_keywords
         """ filters:
             1) common words from title
             2) common words from section keywords
@@ -225,6 +224,13 @@ class TextFinder:
         if self.debug: print 'Category roots', roots
         return roots
 
+    def removeNonAscii(self, s):
+        if not isinstance(s, basestring): return s
+        s = s.replace('\n',' ').replace('\r',' ').replace('  ',' ')
+        s = s.replace("“", """""""").replace("’", "'").replace("—", "-")
+        s = "".join(i for i in s if ord(i)<128)
+        return s
+
     def run(self):
         scraper = self.scraper
         while scraper.urls:
@@ -243,8 +249,8 @@ class TextFinder:
             for para in paras:
                 # clean para
                 para = para.text.encode('utf-8')
-                para = "%s" % para.replace('\n',' ').replace('\r',' ').replace('   ',' ')
                 if self.apply_filters(para):
+                    para = self.removeNonAscii(para)
                     self.text = para
                     return para
         self.text = ""
@@ -266,25 +272,29 @@ class TextFinder:
 
 
 """=========================== Main functions =========================="""
-def connectives(talk):
-    new_talk = []
-    before_para = [["test1"], \
-                   ["test2"], \
-                   ["test2"]]
+def connectives(talk, author):
+    # impotance, problem, solution, conclusiom
+    before_para = ["", \
+                   "Think of this -", \
+                   "The fact is that ", \
+                   "So I make the argument that "]
 
-    after_para = [["test1"], \
-                   ["test2"], \
-                   ["test2"]]
-
-    for section in talk:
-        new_talk
-        
+    after_para = [" And that got me thinking.", \
+                   "", \
+                   " And that is the truth.", \
+                   " It's tough but it can be done! I would like to end with a quote by " + author + " -"]
+    
+    for i in range(4):
+        talk[i+2] = before_para[i] + talk[i+2] + after_para[i]
     return talk
 
 def run(topic, debug):
     # section names to be used for search
-    section_names  = [["importance because prominent need significant"], ["problem"], ["solution"], ["should"]]
-    #section_names  = [["importance"], ["problem"], ["solution"], ["should"]]
+    # sections - importance, annecdote, problem, solution
+    section_names  = ["importance essential because prominent significant", \
+                      "personally feel think thought another reason", \
+                      "solution consider need issue", \
+                      "should imagine difficult"]
     
     # generate thesis
     my_thesis = Thesis(topic, source="debate.org")
@@ -304,19 +314,24 @@ def run(topic, debug):
 
         # printing
         if debug: print text_find
-
+    
     # add quote
     try:
         quote, author = quoteTest.gen_quotes(topic, my_thesis.title)
-        quote = '"' + quote + '"' + "--" + author
+        quote = '"' + quote + '"'
         talk.append(quote)
         f.write("%s\n\n" % quote)
     except: pass
 
+    # add connectives
+    talk = connectives(talk, author)
+    
+    # print talk
     print "\n\n%s%s%s" % ("="*25, "Final Talk", "="*25)
     for section in talk:
         print "%s\n" % section
-
+        
+    
     # write to file
     f = open('talk.txt', 'w+')
     f.truncate()
