@@ -43,5 +43,15 @@ $(function() {
 
 	$('#talk-on').on('change', function(e) {
 		$('#myModal').modal('show');
+		vh_sceneLoaded();
 	});
 });
+
+
+function vh_sceneLoaded(){
+    // var text = $('.part1').text();
+    // console.log(text);
+    var text = "Hello. Welcome.";
+    //the scene begins playing, add actions here
+    sayText(text,1,1,3); 
+}
