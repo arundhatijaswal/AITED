@@ -309,7 +309,7 @@ def run(topic, debug):
 
 
 def main(topic): 
-    return run(topic, debug=False)
+    return run(topic, debug=True)
 
 if __name__ == "__main__": 
     topic = raw_input("Enter topic: ")
