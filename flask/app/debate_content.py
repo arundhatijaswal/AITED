@@ -152,7 +152,7 @@ def getDebate(topic, keywords, debug=False):
 """ ---------------------- Script Gen Functions --------------------"""
 def importance(debate):
     speaker0 = debate.getSpeaker(0)
-    s = "%s %s \n" % (speaker0.getPara(0), speaker0.quote)
+    s = "%s %s" % (speaker0.getPara(0), speaker0.quote)
     return s
 
 def problem(debate):

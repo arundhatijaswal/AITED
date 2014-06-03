@@ -2,6 +2,7 @@
 # scraping
 import urllib2
 from bs4 import BeautifulSoup
+from google import search
 from time import sleep
 
 # TED talk
@@ -262,19 +263,29 @@ class TextFinder:
 
 
 """=========================== Main functions =========================="""
+def connectives(talk):
+    new_talk = []
+    before_para = [["test1"], \
+                   ["test2"], \
+                   ["test2"]]
+
+    after_para = [["test1"], \
+                   ["test2"], \
+                   ["test2"]]
+
+    for section in talk:
+        new_talk
+        
+    return talk
 
 def run(topic, debug):
-    # write to file
-    f = open('talk.txt', 'w+')
-    f.truncate()
-    
     # section names to be used for search
+ #   section_names  = ["importance because prominent need significant", "problem", "solution", "should"]
     section_names  = [["importance"], ["problem"], ["solution"], ["should"]]
-
+    
     # generate thesis
-    my_thesis = Thesis(topic, source="NYT")
+    my_thesis = Thesis(topic, source="debate.org")
     talk = [my_thesis.title, my_thesis.thesis]
-    f.write("%s\n\n%s" % (my_thesis.title, my_thesis.thesis))
     if debug: print my_thesis
 
     # generate sections
@@ -287,7 +298,6 @@ def run(topic, debug):
         # find the text from the urls with approriate filters
         text_find = TextFinder(section, talk, title_match=1, section_match=0, debug=debug)
         talk.append(text_find.run())
-        f.write("\n\n%s" % text_find.text)
 
         # printing
         if debug: print text_find
@@ -297,14 +307,19 @@ def run(topic, debug):
         quote, author = quoteTest.gen_quotes(topic, my_thesis.title)
         quote = '"' + quote + '"' + "--" + author
         talk.append(quote)
-        f.write("\n\n%s" % quote)
+        f.write("%s\n\n" % quote)
     except: pass
 
     print "\n\n%s%s%s" % ("="*25, "Final Talk", "="*25)
     for section in talk:
-        print "\n%s" % section
-    
+        print "%s\n" % section
+
+    # write to file
+    f = open('talk.txt', 'w+')
+    f.truncate()
+    for section in talk: f.write("%s\n\n" % section)
     f.close()
+    
     return talk
 
 
