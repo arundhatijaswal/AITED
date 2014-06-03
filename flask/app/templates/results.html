@@ -194,7 +194,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                <script language="JavaScript" type="text/javascript">AC_VHost_Embed(4514086,300,400,'',1,1, 2370590, 0,1,0,'b1d83b4bf95069c05a6520e5da5df9a8',9);</script>
+                    <script language="JavaScript" type="text/javascript">
+                        AC_VHost_Embed(4514086,300,400,'',1,1, 2370590, 0,1,0,'b1d83b4bf95069c05a6520e5da5df9a8',9);
+                        function vh_sceneLoaded(){
+                            var text = $('.part1').text();
+                            //the scene begins playing, add actions here
+                            sayText(text,1,1,3); 
+                        }
+
+                    </script>
                 </div>
             </div>
         </div>

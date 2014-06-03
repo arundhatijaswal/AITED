@@ -45,11 +45,3 @@ $(function() {
 		$('#myModal').modal('show');
 	});
 });
-
-
-var text = $('#sample').text();
-
-function vh_sceneLoaded(){
-    //the scene begins playing, add actions here
-    sayText(text,1,1,3); 
-}
