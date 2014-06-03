@@ -37,21 +37,28 @@ $(function() {
 	    $('#tts-main').removeClass('focus');
 	});
 
-	$('#talk-off').on('change', function(e) {
-		$('#myModal').modal('hide');
-	});
+	$('input:radio[name="tts"]').change( function() {
+		
+		if ($(this).val() == 'talk-off') {
+			$('#myModal').modal('hide');
+		}
 
-	$('#talk-on').on('change', function(e) {
-		$('#myModal').modal('show');
-		vh_sceneLoaded();
+		else if($(this).val() == 'talk-on') {
+			$('#myModal').modal('show');
+			vh_sceneLoaded();
+		}
 	});
+	
+	$('#myModal').on('hidden.bs.modal', function (e) {
+		$("input[name='tts'][value='talk-off']").prop('checked', true);
+	})
 });
 
 
 function vh_sceneLoaded(){
-    // var text = $('.part1').text();
-    // console.log(text);
-    var text = "Hello. Welcome.";
+    var text = $('.part1').text();
+    console.log(text);
+    // var text = "Hello. Welcome.";
     //the scene begins playing, add actions here
     sayText(text,1,1,3); 
 }
