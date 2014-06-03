@@ -11,7 +11,7 @@ from alchemyapi import AlchemyAPI
 
 
 def gen_quotes(category, title):
-    print "%s %s %s" % ("=" * 30, "quotes", "=" * 30)
+    #print "%s %s %s" % ("=" * 30, "quotes", "=" * 30)
     keyword = ""
 
     '''delete punctuation in title'''
@@ -23,11 +23,11 @@ def gen_quotes(category, title):
     '''generate the list of keywords from title'''
     keywords = alchemy_keywords(title)
     if len(keywords) <= 1:
-        print "keywords not good from alchemyapi"
+        #print "keywords not good from alchemyapi"
         keywords = [word for word in title.lower().split() if word not in stopwords.words('english')]
     elif len(keywords) > 3:
         keywords = keywords[:2]
-        print "shorten the keywords: " + keywords
+        #print "shorten the keywords: " + keywords
 
     web_url = ""
     while web_url == "":
@@ -41,9 +41,9 @@ def gen_quotes(category, title):
             results = json['responseData']['results']
             '''too many keywords for finding a good result'''
             try:
-                print "Query tried: ", query1
+                #print "Query tried: ", query1
                 web_url = results[0]["url"]
-                print web_url
+                #print web_url
                 contents = results[0]['content'].split("...")
                 contents = filter(None, contents)
                 h = HTMLParser.HTMLParser()
@@ -55,19 +55,19 @@ def gen_quotes(category, title):
                 target_content = BeautifulSoup(target_content).text
                 target_content = " ".join(target_content.split())
             except Exception:
-                print "-----broke"
+                #print "-----broke"
                 del keywords[-1]
                 '''lower the quality of target_content in except'''
                 target_content = category
         except Exception:
-            print "query no result: " + query1
+            #print "query no result: " + query1
             result_urls = search(query1, num=10, pause=1.0)
             urls_list = [link for (num, link) in list(enumerate(result_urls))]
             web_url = urls_list[0]
-            print web_url
+            #print web_url
             target_content = category
 
-    print "target_content:" + target_content
+    #print "target_content:" + target_content
 
     '''start to fetch quotes from the right link'''
     success, quote, author = get_quote(web_url, target_content)
@@ -76,8 +76,8 @@ def gen_quotes(category, title):
     if success == -1:
         #first case: do another search with target_content
         requery = target_content + " site:brainyquote.com"
-        print "requery: " + requery
-        print "target_content: " + target_content
+        #print "requery: " + requery
+        #print "target_content: " + target_content
         quotes_urls = search(requery, num=20, pause=2.0)
         urls_list = [link for (num, link) in list(enumerate(quotes_urls))]
         quote_url = urls_list[0]
@@ -93,13 +93,13 @@ def alchemy_keywords(title):
     # categorize the paragraph
     if response['status'] == 'OK':
         for keyword in response['keywords']:
-            print keyword
+            #print keyword
             label, score = keyword['text'], keyword['relevance'][:4]
             keywords.append(str(label))
-    else:
-        print 'Error in concept tagging call: ', response['statusInfo']
+    else: pass
+        #print 'Error in concept tagging call: ', response['statusInfo']
     # roots = list(set(roots)) # remove duplicates
-    print 'Keywords: ', keywords
+    #print 'Keywords: ', keywords
     return keywords
 
 
@@ -133,7 +133,7 @@ def get_quote(web_url, target_content):
             author = q.find("div", {"class": "bq-aut"}).text
             break
     if quote == "":
-        print "fall to bad mode"
+        #print "fall to bad mode"
         sucess = -1
         quote = quotes_in_link[0].find("span", {"class": "bqQuoteLink"}).text
         author = author = quotes_in_link[0].find("div", {"class": "bq-aut"}).text
