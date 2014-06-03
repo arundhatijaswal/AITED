@@ -52,12 +52,14 @@ $(function() {
 			$('.d-chal').hide();
 			$('.d-soln').hide();
 			$('.d-impact').hide();
+			$('.d-quote').hide();
 
 			$('.part1').show();
 			$('.part2').show();
 			$('.part3').show();
 			$('.part4').show();
 			$('.part5').show();
+			$('.part6').show();
 		}
 	});
 
@@ -90,6 +92,7 @@ function splitText(text) {
 	var three = $('.part3').text().split(" ");
 	var four = $('.part4').text().split(" ");
 	var five = $('.part5').text().split(" ");
+	var six = $('.part6').text().split(" ");
 	// console.log(one);
 
 	$('.d-thesis').empty();
@@ -97,18 +100,21 @@ function splitText(text) {
 	$('.d-chal').empty();
 	$('.d-soln').empty();
 	$('.d-impact').empty();
+	$('.d-quote').empty();
 
 	$('.part1').hide();
 	$('.part2').hide();
 	$('.part3').hide();
 	$('.part4').hide();
 	$('.part5').hide();
+	$('.part6').hide();
 
 	$('.d-thesis').show();
 	$('.d-import').show();
 	$('.d-chal').show();
 	$('.d-soln').show();
 	$('.d-impact').show();
+	$('.d-quote').show();
 
 	for (var i = 0; i < one.length; i++) {
 		$('.d-thesis').append(space(one[i]));	
@@ -128,6 +134,10 @@ function splitText(text) {
 
 	for (var i = 0; i < five.length; i++) {
 		$('.d-impact').append(space(five[i]));	
+	}
+
+	for (var i = 0; i < six.length; i++) {
+		$('.d-quote').append(space(six[i]));	
 	}
 }
 
@@ -154,7 +164,7 @@ function doubleTrouble(query) {
     	$('#show-panel').removeClass('down');
     }
     search_dict(query);
-	// search2(query);
+	search2(query);
 }
 
 // make definition request to Google Dictionary
@@ -170,7 +180,7 @@ function search_dict(query) {
 function request(data) {
 	console.log(data);
 	var search = $('#q').text();
-	search2(search);
+	// search2(search);
 
 	for (var i = 0; i < data.results.length; i++) {
 		var head = data.results[i].headword;
@@ -193,9 +203,10 @@ function request(data) {
 // make request to Big Huge Thesaurus
 function search2(query) {
 	var apiKey = "aqq3UFVvHqr7E7PSQki8";
-	var url = "http://thesaurus.altervista.org/thesaurus/v1?word=" + query + "&language=en_US&output=json&key=" + apiKey + "&callback=?";
+	var q = query.toLowerCase().replace(/[^a-z0-9\s]/gi, ''); 
+	var url = "http://thesaurus.altervista.org/thesaurus/v1?word=" + q + "&language=en_US&output=json&key=" + apiKey + "&callback=?";
 	$.getJSON(url, carryoutRequest);
-	$('#t-data').empty().append("<strong>Word: </strong><small class='query'>"+query+"</small>");
+	$('#t-data').empty().append("<strong>Word: </strong><small class='query'>"+q+"</small>");
 }
 
 //get and print synonyms

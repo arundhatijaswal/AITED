@@ -38,6 +38,8 @@ class Thesis:
 
     def thesis_debate_org(self, topic):
         title, main_point, support, url = thesis2.genThesis(topic)
+        while title == "":
+            title, main_point, support, url = thesis2.genThesis(topic)
         thesis = thesis2.introduction(title, main_point, support)
         url = url[:-15]
         return title, thesis, url

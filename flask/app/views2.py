@@ -48,6 +48,7 @@ def results():
     challenge = contents[3]
     solution = contents[4]
     impact = contents[5] 
+    quote = contents[6]
     
     return render_template('results.html', 
                             topic = topic,
@@ -56,7 +57,8 @@ def results():
                             importance = importance,
                             challenge = challenge,
                             solution = solution, 
-                            impact = impact
+                            impact = impact,
+                            quote = quote
                             )
 
 if __name__ == '__main__':
