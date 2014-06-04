@@ -187,7 +187,16 @@ class TextFinder:
         return [word for word in keywords if word in para]
 
     def filter_length(self, para): return 300<len(para)<900
-    
+
+    def duplicates(self, para, talk):
+        for i in range(len(talk)):
+          if len(self.filter_common_words(para, talk[i].split()))>=50:
+               print "Wrong para "
+               print para
+               print talk
+               return False
+        return True                  
+         
     def apply_filters(self, para):
         filter_words = ["www.", "[", "{"]
         title_keywords = self.scraper.thesis_obj.keywords.split()
@@ -205,7 +214,7 @@ class TextFinder:
            and len(self.common_section_keywords) >= self.section_match \
            and self.filter_length(para) \
            and len(self.filter_common_words(para, filter_words))==0 \
-           and para not in self.talk:
+           and self.duplicates(para, self.talk):
             if self.taxonomy==0: return para
             else: return self.filter_common_words(self.taxonomy(para), self.thesis_taxonomy, self.taxonomy)
 
@@ -275,14 +284,14 @@ class TextFinder:
 def connectives(talk, author):
     # impotance, problem, solution, conclusiom
     before_para = ["", \
-                   "Think of this -", \
+                   "", \
                    "The fact is that ", \
-                   "So I make the argument that "]
+                   ""]
 
     after_para = [" And that got me thinking.", \
                    "", \
                    " And that is the truth.", \
-                   " It's tough but it can be done! I would like to end with a quote by " + author + " -"]
+                   "I would like to end with a quote by " + author + " -"]
     
     for i in range(4):
         talk[i+2] = before_para[i] + talk[i+2] + after_para[i]
@@ -301,6 +310,7 @@ def run(topic, debug):
     talk = [my_thesis.title, my_thesis.thesis]
     if debug: print my_thesis
 
+
     # generate sections
     for section_name in section_names:
         # make a scraper that returns url links
@@ -309,7 +319,7 @@ def run(topic, debug):
         if debug: print section
 
         # find the text from the urls with approriate filters
-        text_find = TextFinder(section, talk, title_match=1, section_match=1, debug=debug)
+        text_find = TextFinder(section, talk, title_match=2, section_match=0, debug=debug)
         talk.append(text_find.run())
 
         # printing
