@@ -56,9 +56,14 @@ $(function() {
 
 
 function vh_sceneLoaded(){
+	// readScript();
     var text = $('.part1').text();
     console.log(text);
     // var text = "Hello. Welcome.";
     //the scene begins playing, add actions here
-    sayText(text,1,1,3); 
+    sayText(text,1,3,4); 
 }
+
+// function readScript() {
+	
+// }
