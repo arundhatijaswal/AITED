@@ -60,8 +60,9 @@ function vh_sceneLoaded(){
     var text = $('.part1').text();
     console.log(text);
     // var text = "Hello. Welcome.";
-    //the scene begins playing, add actions here
-    sayText(text,1,3,4); 
+	//the scene begins playing, add actions here
+	// sayText(text, voice, lang ID, family ID)
+    sayText(text,3,1,4); 
 }
 
 // function readScript() {
