@@ -1,6 +1,6 @@
 ## TED 2.0
 
-TED 2.0 is a web-based system that automates the process of generating TED Talk-esque speech on a broad range of topics. Inspired by the TED A.I. XPrize, an upcoming competition focused on the automatic generation of a TED Talk, our main goal was to design and build a proof of concept that can eventually compete for the XPrize.  
+TED 2.0 is a web-based system that automates the process of generating a TED Talk-esque speech on a broad range of topics. Inspired by the TED A.I. XPrize, an upcoming competition focused on the automatic generation of a TED Talk, our main goal was to design and build a proof of concept that can eventually compete for the XPrize.  
 
 
 Designed and developed by Amanda Anumba, Divir Gupta, Arundhati Jaswal, and Yang Zhang, our system can ideally accommodate any user, including users who want to prepare for a speech or debate, to improve oratory and public speaking skills, to get inspiration, or even to read a TED Talk-like speech. 
@@ -16,7 +16,7 @@ Development
 ===========================
 - Run `thesis2.py` to generate a thesis from "debate.org"
 - Run `TED_Talk.py` to generate the entire talk. Inside the run function, the source of the thesis can be changed from "debate.org" to "NYT" to generate the thesis from New York Time's Room for Debate page
-- Run `quteTest.py` to get a quote related to the topic
+- Run `quoteTest.py` to get a quote related to the topic
 - Run `views2.py` to use the front end with the additional features like the dictionary, avatar, etc.
 
 
