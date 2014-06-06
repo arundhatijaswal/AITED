@@ -22,7 +22,7 @@ Development
 
 Developers
 ===========================
-Amanda Anumba
-Divir Gupta
-Arundhati Jaswal
+Amanda Anumba,
+Divir Gupta,
+Arundhati Jaswal,
 Yang Zhang
