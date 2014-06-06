@@ -23,6 +23,6 @@ Development
 Developers
 ===========================
 ***Amanda Anumba,***
-Divir Gupta,
-Arundhati Jaswal,
-Yang Zhang
+***Divir Gupta,***
+***Arundhati Jaswal,***
+***Yang Zhang***
