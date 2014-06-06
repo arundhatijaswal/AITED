@@ -6,20 +6,23 @@ TED 2.0 is a web-based system that automates the process of generating TED Talk-
 Designed and developed by Amanda Anumba, Divir Gupta, Arundhati Jaswal, and Yang Zhang, our system can ideally accommodate any user, including users who want to prepare for a speech or debate, to improve oratory and public speaking skills, to get inspiration, or even to read a TED Talk-like speech. 
 
 
-Developers
-===========================
-Amanda Anumba
-
-Divir Gupta
-
-Arundhati Jaswal
-
-Yang Zhang
-
-
 Usage
 ===========================
 
 All essential files are located in the `flask` folder. In order to run the project, make sure all dependencies listed in the `requirements.txt` file are installed. Then, run the `views2.py` file (located in the `app` folder) in the terminal by executing `python views2.py` in your terminal. This will launch a localhost server where you can interact with the front end and see the live process from the terminal. 
 
-The `TED_Talk.py` can be executed directly as well. Inside the run function, the source of the thesis can be changed from "debate.org" to "NYT" to generate the thesis from New York Time's Room for Debate page.
+
+Development
+===========================
+- Run `thesis2.py` to generate a thesis from "debate.org"
+- Run `TED_Talk.py` to generate the entire talk. Inside the run function, the source of the thesis can be changed from "debate.org" to "NYT" to generate the thesis from New York Time's Room for Debate page
+- Run `quteTest.py` to get a quote related to the topic
+- Run `views2.py` to use the front end with the additional features like the dictionary, avatar, etc.
+
+
+Developers
+===========================
+Amanda Anumba
+Divir Gupta
+Arundhati Jaswal
+Yang Zhang
