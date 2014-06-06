@@ -1,6 +1,9 @@
 ## TED 2.0
 
-TED 2.0 is a system that automates the process of generating a TED Talk. Users choose a topic from the provided list and after they submit, 
+TED 2.0 is a web-based system that automates the process of generating TED Talk-esque speech on a broad range of topics. Inspired by the TED A.I. XPrize, an upcoming competition focused on the automatic generation of a TED Talk, our main goal was to design and build a proof of concept that can eventually compete for the XPrize.  
+
+
+Designed and developed by Amanda Anumba, Divir Gupta, Arundhati Jaswal, and Yang Zhang, our system can ideally accommodate any user, including users who want to prepare for a speech or debate, to improve oratory and public speaking skills, to get inspiration, or even to read a TED Talk-like speech. 
 
 
 Developers
