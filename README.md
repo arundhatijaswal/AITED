@@ -14,10 +14,10 @@ All essential files are located in the `flask` folder. In order to run the proje
 
 Development
 ===========================
-- Run `thesis2.py` to generate a thesis from "debate.org"
-- Run `TED_Talk.py` to generate the entire talk. Inside the run function, the source of the thesis can be changed from "debate.org" to "NYT" to generate the thesis from New York Time's Room for Debate page
-- Run `quoteTest.py` to get a quote related to the topic
-- Run `views2.py` to use the front end with the additional features like the dictionary, avatar, etc.
+- `thesis2.py` generates a thesis from "debate.org"
+- `TED_Talk.py` generates the entire talk. Inside the run function, the source of the thesis can be changed from "debate.org" to "NYT" to generate the thesis from New York Time's Room for Debate page
+- `quoteTest.py` fetches a quote related to the topic
+- `views2.py` is used for the front end with the additional features like the dictionary, avatar, etc.
 
 
 Developers
